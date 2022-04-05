@@ -10,7 +10,7 @@
 
 **如果你满足了以上需求，那么可以前往下一节了。**
 
-如果你不想或不能安装 `docker` 和 `docker-compose`，那么你需要提前准备一个能被连接的 `openGauss` (其实就是 PostgresSQL 🤫) 数据库（在本机或者网络上均可）。
+如果你不想或不能安装 `docker` 和 `docker-compose`，那么你需要提前准备一个能被连接的 `openGauss` (其实就是 PostgreSQL 🤫) 数据库（在本机或者网络上均可）。
 
 ## 运行后端
 
