@@ -26,9 +26,9 @@
 
 ### 准备数据库
 
-如果你用了安装了 `docker-compose` ，请前往 `opengauss` 目录下运行命令 `docker-compose up -d` 即可启动并初始化数据库，然后前往下一节。
+如果你安装了 `docker-compose` ，请前往 `opengauss` 目录下运行命令 `docker-compose up -d` 即可启动并初始化数据库，然后前往下一节。
 
-如果你没有安装 `docker-compose`，那请你想办法先安装好 `opanGauss`，然后创建一个用户（用户名 `gaussdb` 密码 `Secretpassword@123`），再创建一个数据库名为 `postgres`，刚刚那个用户需要拥有对这个数据库的所有操作权限。
+如果你没有安装 `docker-compose`，那你需要先安装 `opanGauss` （你可以用 Linux 虚拟机），然后创建一个用户（用户名 `gaussdb` 密码 `Secretpassword@123`），再创建一个数据库名为 `postgres`，刚刚那个用户需要拥有对这个数据库的所有操作权限。
 
 > 给定用户名密码和数据库名称是为了快速运行起来。你当然可以自定义他们，不同的用户名密码运行后端的时候只需配置环境变量即可。
 
@@ -42,7 +42,7 @@
 
    `Started MallApplication in xx.xxx seconds (JVM running for xx.xxx)`
 
-   并且程序保持运行没有退出，表示运行成功，你可以开始后端开发了。
+   并且程序保持运行没有退出，这表示运行成功，你可以开始后端开发了。
 
 
 ## 环境变量说明
