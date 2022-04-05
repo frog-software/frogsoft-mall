@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  opengauss:
+    image: eustc-edu-cn.mirror.aliyuncs.com/nmotech/opengauss:2.1.0
+    container_name: opengauss-server
+    privileged: true
+    user: 0:0
+    environment:
+      # only for testing purposes
+      GS_PASSWORD: Secretpassword@123
+    ports:
+      # only for testing purposes
+      - "5432:5432"
+    volumes:
+      - "./db_data:/var/lib/opengauss"
