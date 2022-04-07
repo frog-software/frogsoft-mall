@@ -1,0 +1,77 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>mall-gateway</artifactId>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!-- SpringCloud Gateway -->
+    <dependency>
+      <artifactId>spring-cloud-starter-gateway</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+
+    <!-- SpringCloud Alibaba Nacos -->
+    <dependency>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+    </dependency>
+
+    <!-- SpringCloud Alibaba Nacos Config -->
+    <dependency>
+      <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+    </dependency>
+
+    <!-- Sentinel Datasource Nacos -->
+    <dependency>
+      <artifactId>sentinel-datasource-nacos</artifactId>
+      <groupId>com.alibaba.csp</groupId>
+    </dependency>
+
+    <!-- SpringBoot Actuator -->
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-loadbalancer</artifactId>
+    </dependency>
+
+
+  </dependencies>
+
+  <description>Frogsoft Mall 服务网关</description>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>mall</artifactId>
+    <groupId>org.frogsoft</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+</project>
