@@ -4,7 +4,7 @@
 
 你需要有：
 
-- `jdk`（项目基于 JDK 17，虽然 1.8 以上均可，建议直接使用 17 版本）
+- `jdk`（项目基于 JDK 11 ，建议使用 11 及以上）
 
 - `docker` 以及 `docker-compose` （如果你使用 Windows / macOS ，那么只需要安装 Docker Desktop 便包含了这两个组件）
 
