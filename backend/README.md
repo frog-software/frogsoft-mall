@@ -1,4 +1,4 @@
-# 如何运行 frogsoft-mall 后端
+# Quick Start: 如何运行 frogsoft-mall 后端
 
 ## 前期准备
 
@@ -6,54 +6,96 @@
 
 - `jdk`（项目基于 JDK 17，虽然 1.8 以上均可，建议直接使用 17 版本）
 
-- `docker` 以及 `docker-compose` （在开发阶段这个主要用于运行 `openGauss` 数据库）
+- `docker` 以及 `docker-compose` （如果你使用 Windows / macOS ，那么只需要安装 Docker Desktop 便包含了这两个组件）
 
-**如果你满足了以上需求，那么可以前往下一节了。**
-
-如果你不想或不能安装 `docker` 和 `docker-compose`，那么你需要提前准备一个能被连接的 `openGauss` (其实就是 PostgreSQL 🤫) 数据库（在本机或者网络上均可）。
+> 强烈建议使用 Docker，否则微服务项目需要运行的一堆东西（例如注册中心、配置中心）还有 openGauss 数据库，光安装就能让你折腾半天了。
 
 ## 运行后端
 
-你能看到我们的项目是这样的结构
+要成功运行后端，你需要运行这几类程序：
+
+1. 数据库 * 1 ( `openGauss` )
+2. 注册/配置中心 * 1 ( `nacos` + `mysql` )
+3. 微服务模块 * n
+
+我们会逐一启动他们。
+
+先熟悉一下我们后端目录的结构，等会你需要在这些目录间跳跃：
 
 ```
 .
-├── README.md
-├── backend
-├── frontend
+├── mall-auth
+├── mall-common
+├── mall-gateway
+├── mall-user
+├── ...
+├── nacos
 └── opengauss
 ```
 
-### 准备数据库
+### 运行数据库
 
-如果你安装了 `docker-compose` ，请前往 `opengauss` 目录下运行命令 `docker-compose up -d` 即可启动并初始化数据库，然后前往下一节。
+请前往 `opengauss` 目录下运行命令 `docker-compose up -d` 即可启动并初始化数据库。
 
-如果你没有安装 `docker-compose`，那你需要先安装 `opanGauss` （你可以用 Linux 虚拟机），然后创建一个用户（用户名 `gaussdb` 密码 `Secretpassword@123`），再创建一个数据库名为 `postgres`，刚刚那个用户需要拥有对这个数据库的所有操作权限。
+> 第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
+>
+> 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
 
-> 给定用户名密码和数据库名称是为了快速运行起来。你当然可以自定义他们，不同的用户名密码运行后端的时候只需配置环境变量即可。
+### 运行注册/配置中心
 
-### 运行后端
+请前往 `nacos` 目录下运行命令 `docker-compose up -d` 即可启动注册/配置中心。
 
-1. 将你所在的目录调整为 `backend`，也就是有 `pom.xml` 的目录
+> 同样，第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
+>
+> 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
 
-2. 运行命令 `mvnw spring-boot:run` (Windows), `./mvnw spring-boot:run` (Linux / macOS)
+然后在你的浏览器中打开 http://localhost:8848/nacos/ 并登录（用户名和密码均为 `nacos`）
 
-3. 如果不出意外，你将会看到控制台输出
+现在看后端目录下的 `nacos/config`  你会发现里面有***几***个文件，例如 `application-dev.yml` ，你需要对这里面 ***每个*** 文件做这样的操作：
 
-   `Started MallApplication in xx.xxx seconds (JVM running for xx.xxx)`
+1. 在 `配置管理 - 配置列表` 标签上，点击加号➕添加配置。
 
-   并且程序保持运行没有退出，这表示运行成功，你可以开始后端开发了。
+   ![nacos-config-page](readme-assets/nacos-config-page.png)
+
+2. 按照图中提示填写内容
+
+   ![nacos-new-config](readme-assets/nacos-new-config.png)
+
+3. 填写完成后点击右下角的 `发布` 按钮，该配置文件发布结束，继续对其他文件进行同样的操作。
+
+### 运行微服务模块
+
+上面我们看到了后端的目录结构，其中，这些目录包含了需要运行的模块：
+
+```
+├── mall-auth
+├── mall-gateway
+├── mall-user
+```
+
+> 这篇文档旨在 Quick Start ，这里暂时不会描述如何使用命令行启动项目。
+
+如果你使用 Intellij IDEA 那么你需要做的是：
+
+1. 不要新建项目，直接使用 IDEA 打开后端目录 `backend` ，等待索引完成。
+
+2. 启动 ***所有*** 上面列出的需要运行的模块，以下以 `mall-auth` 为例，你需要对要启动的所有模块做这样的操作
+
+3. 选择模块的主类
+
+   ![idea-module](readme-assets/idea-module.png)
+
+4. 右键选择 Debug 'xxx'，或使用快捷键 `ctrl+shift+D`
+
+   ![idea-start-debug](readme-assets/idea-start-debug.png)
+
+5. 这时你应该能在 Service Tab 中看到刚刚启动的模块了，下次你可以从这里快速启动
+
+   ![idea-service-tab](readme-assets/idea-service-tab.png)
 
 
 ## 环境变量说明
-| 变量名称            | 说明                      | 默认值                       |
-| ------------------- | ------------------------- | ---------------------------- |
-| `POSTGRES_URL`      | PostgreSQL 服务器所在地址 | `localhost`                  |
-| `POSTGRES_PORT`     | PostgreSQL 服务器所在端口 | `5432`                       |
-| `POSTGRES_DB`       | PostgreSQL 数据库名称     | `postgres`                   |
-| `POSTGRES_USERNAME` | PostgreSQL 用户名         | `gaussdb`                    |
-| `POSTGRES_PASSWORD` | PostgreSQL 用户密码       | `Secretpassword@123`         |
-| `PORT`              | Spring 后端所在端口       | `8080`                       |
-| `JWT_SECRET`        | JWT 密钥                  | `abcdefghijklmnopqrstuvwxyz` |
-| `JWT_EXPIRE_DELAY`  | JWT 密钥过期时间（秒）    | `86400`                      |
+| 变量名称    | 说明                 | 默认值      |
+| ----------- | -------------------- | ----------- |
+| `NACOS_URL` | NACOS Server 所在 IP | `127.0.0.1` |
 
