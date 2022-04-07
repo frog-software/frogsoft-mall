@@ -55,6 +55,12 @@
 
       <dependency>
         <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-loadbalancer</artifactId>
+        <version>${spring-cloud-bootstrap.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-bootstrap</artifactId>
         <version>${spring-cloud-bootstrap.version}</version>
       </dependency>

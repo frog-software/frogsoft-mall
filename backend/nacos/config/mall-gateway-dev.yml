@@ -12,14 +12,14 @@ spring:
       routes:
         # 授权认证模块
         - id: mall-auth
-          uri: http://localhost:9000/
+          uri: lb://mall-auth
           predicates:
             - Path=/v1/auth/**
           filters:
             - StripPrefix=2
         # 用户模块
         - id: mall-user
-          uri: http://localhost:9100/
+          uri: lb://mall-user
           predicates:
             - Path=/v1/users/**
           filters:
