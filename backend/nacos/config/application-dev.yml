@@ -1,0 +1,28 @@
+server:
+  shutdown: graceful
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+spring:
+  datasource:
+    username: gaussdb
+    password: Secretpassword@123
+    url: jdbc:postgresql://localhost:5432/postgres
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      time: HH:mm:ss
+      date-time: yyyy-MM-dd HH:mm:ss
+      date-time-zone: Asia/Shanghai
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  jpa:
+    hibernate:
+      ddl-auto: update
+jwt:
+  secret: abcdefghijklmnopqrstuvwxyz
+  expiration-delay: 86400
