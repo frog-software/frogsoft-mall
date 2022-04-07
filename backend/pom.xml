@@ -21,23 +21,8 @@
     <spring-cloud-bootstrap.version>3.1.1</spring-cloud-bootstrap.version>
     <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
     <alibaba.nacos.version>2.0.4</alibaba.nacos.version>
-    <spring-boot-admin.version>2.6.2</spring-boot-admin.version>
-    <swagger.fox.version>3.0.0</swagger.fox.version>
-    <swagger.core.version>1.6.2</swagger.core.version>
-    <tobato.version>1.27.2</tobato.version>
-    <kaptcha.version>2.3.2</kaptcha.version>
-    <pagehelper.boot.version>1.4.1</pagehelper.boot.version>
-    <dynamic-ds.version>3.5.0</dynamic-ds.version>
-    <commons.io.version>2.11.0</commons.io.version>
-    <commons.fileupload.version>1.4</commons.fileupload.version>
-    <velocity.version>2.3</velocity.version>
-    <fastjson.version>1.2.79</fastjson.version>
     <jjwt.version>0.11.2</jjwt.version>
-    <minio.version>8.2.2</minio.version>
-    <poi.version>4.1.2</poi.version>
     <lombok.version>1.18.22</lombok.version>
-    <commons-collections.version>3.2.2</commons-collections.version>
-    <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
   </properties>
 
   <!-- 依赖声明 -->
