@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            exposedHeaders: "Content-Disposition,Content-Type,Cache-Control"
+      routes:
+        # 授权认证模块
+        - id: mall-auth
+          uri: http://localhost:9000/
+          predicates:
+            - Path=/v1/auth/**
+          filters:
+            - StripPrefix=2
+        # 用户模块
+        - id: mall-user
+          uri: http://localhost:9100/
+          predicates:
+            - Path=/v1/users/**
+          filters:
+            - StripPrefix=2
