@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-import org.frogsoft.mall.auth.util.ResponseBodyWrapper;
+import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.springframework.http.HttpStatus;
 
 public class JwtExceptionResponse {

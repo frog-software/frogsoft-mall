@@ -1,5 +1,4 @@
-package org.frogsoft.mall.auth.repository.user;
-
+package org.frogsoft.mall.user.repository;
 
 import java.util.ArrayList;
 import java.util.Optional;

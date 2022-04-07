@@ -1,14 +1,13 @@
 package org.frogsoft.mall.auth.config;
 
 import lombok.AllArgsConstructor;
-import org.frogsoft.mall.auth.exception.basic.unauthorized.UnauthorizedException;
-import org.frogsoft.mall.auth.exception.user.UserNotFoundException;
 import org.frogsoft.mall.auth.repository.user.UserRepository;
 import org.frogsoft.mall.auth.security.RestAuthenticationEntryPoint;
 import org.frogsoft.mall.auth.security.jwt.JwtTokenAuthenticationFilter;
 import org.frogsoft.mall.auth.security.jwt.JwtTokenProvider;
+import org.frogsoft.mall.common.exception.basic.unauthorized.UnauthorizedException;
+import org.frogsoft.mall.common.exception.user.UserNotFoundException;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,8 +52,6 @@ public class SecurityConfig {
         .and()
         .authorizeRequests(c -> c
             .antMatchers("/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/users").permitAll()
-            .anyRequest().authenticated()
         )
         .addFilterBefore(
             new JwtTokenAuthenticationFilter(tokenProvider),

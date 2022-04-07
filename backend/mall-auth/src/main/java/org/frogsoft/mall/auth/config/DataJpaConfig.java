@@ -1,7 +1,7 @@
 package org.frogsoft.mall.auth.config;
 
 import java.util.Optional;
-import org.frogsoft.mall.auth.model.user.Username;
+import org.frogsoft.mall.common.model.user.Username;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
