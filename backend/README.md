@@ -88,8 +88,10 @@
 4. 右键选择 Debug 'xxx'，或使用快捷键 `ctrl+shift+D`
 
    ![idea-start-debug](readme-assets/idea-start-debug.png)
+   
+5. 查看日志是否报错。若启动正常，那么你可以继续启动下一个模块了，直到所有模块均启动成功。
 
-5. 这时你应该能在 Service Tab 中看到刚刚启动的模块了，下次你可以从这里快速启动
+现在你能在 Service Tab 中看到这个项目中的模块（第一次打开是没有的），下次你可以从这里快速启动。
 
    ![idea-service-tab](readme-assets/idea-service-tab.png)
 
