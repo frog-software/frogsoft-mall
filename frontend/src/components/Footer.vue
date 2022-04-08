@@ -1,5 +1,5 @@
 <template>
-  <div style="background: rgb(46, 46, 46);padding: 32px">
+  <div>
     <el-row
         align="middle"
         justify="space-around"
