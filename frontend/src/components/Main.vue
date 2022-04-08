@@ -53,7 +53,7 @@ onMounted(() => {
           <el-menu
               mode="horizontal"
               text-color="#606266"
-              active-text-color="#86A8E7"
+              active-text-color="#c1ab85"
               background-color="transparent"
           >
             <el-menu-item index="1">

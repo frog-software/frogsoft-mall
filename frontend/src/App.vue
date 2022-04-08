@@ -5,19 +5,23 @@ import Main from "./components/Main.vue";
 </script>
 
 <template>
-  <el-container class="container">
-    <el-header>
-      <Header/>
-    </el-header>
+  <div class="root">
+    <el-container class="container">
+      <el-header>
+        <Header/>
+      </el-header>
 
-    <el-main style="margin-top: 20px">
-      <Main />
-    </el-main>
+      <el-main style="margin-top: 20px">
+        <Main/>
+      </el-main>
 
-    <el-footer>
-      <Footer/>
-    </el-footer>
-  </el-container>
+      <el-footer>
+        <Footer/>
+      </el-footer>
+    </el-container>
+  </div>
+
+
 </template>
 
 <style>
@@ -30,10 +34,16 @@ import Main from "./components/Main.vue";
   /*margin-top: 60px;*/
 }
 
+.root {
+  width: 100%;
+  margin-left: -8px;
+  padding-right: 16px;
+  background: radial-gradient(circle at center, #373531, #1c1d20);
+}
+
 .container {
   padding-bottom: 60px;
-  margin: -8px -8px -48px;
-  background: radial-gradient(circle at center, #555, #000);
+  margin: -8px -16px -48px -8px;
   height: 100vh;
 }
 </style>

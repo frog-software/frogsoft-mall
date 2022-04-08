@@ -10,7 +10,7 @@ import Login from "./Login.vue";
         type="flex"
     >
       <el-col :span="1" :offset="4">
-        <img src="/public/frogsoft.svg" class="logoImage"/>
+        <img src="/frogsoft.svg" class="logoImage"/>
       </el-col>
 
       <el-col :span="4">
@@ -41,7 +41,7 @@ export default {
 
 <style scoped>
 .logoImage {
-  background: linear-gradient(to right, #FEAC5E, #C779D0, #4BC0C8);
+  background: linear-gradient(to right, #c1ab85, #f6eacc);
   width: 48px;
   border-radius: 50%;
 }
@@ -52,7 +52,7 @@ export default {
 }
 
 .logoTextContent {
-  color: #555555;
+  color: #333333;
   text-transform: uppercase;
   font-size: 52px;
   font-weight: bold;
@@ -67,11 +67,11 @@ export default {
   color: transparent;
   position: absolute;
   left: 0;
-  background: linear-gradient(to right, #FEAC5E, #C779D0, #4BC0C8);
+  background: linear-gradient(to right, #c1ab85, #f6eacc);
   background-clip: content-box;
   -webkit-background-clip: text;
 
-  clip-path: circle(144px at 0% 50%);
+  clip-path: circle(50px at 0% 50%);
   animation: logoTextLight 5s infinite;
   padding: 0;
   margin: 0;
