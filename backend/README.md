@@ -55,7 +55,7 @@
 
 ### 运行数据库
 
-在 `backend` 目录下运行命令 `docker-compose up opengauss -d` 即可启动并初始化数据库。
+在 `backend` 目录下运行命令 `docker-compose up -d opengauss` 即可启动并初始化数据库。
 
 > 第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
 >
@@ -63,7 +63,7 @@
 
 ### 运行注册/配置中心
 
-在 `backend` 目录下运行命令 `docker-compose up nacos -d` 即可启动注册/配置中心。
+在 `backend` 目录下运行命令 `docker-compose up -d nacos` 即可启动注册/配置中心。
 
 > 同样，第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
 >
