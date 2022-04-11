@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { StarFilled } from '@element-plus/icons-vue'
+import NavigatorBar       from "../components/NavigatorBar.vue";
 
 const count              = ref<number>(0)
 const searchInputIsFocus = ref<boolean>(false)
@@ -47,21 +47,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <el-row justify="center" style="display: flex; align-items: center">
+    <el-row justify="center" style="display: flex; align-items: center; margin-top: 32px">
       <el-col :span="10">
         <div>
-          <el-menu
-              mode="horizontal"
-              text-color="#606266"
-              active-text-color="#c1ab85"
-              background-color="transparent"
-          >
-            <el-menu-item index="1">
-                首页
-            </el-menu-item>
-            <el-menu-item index="2">Processing Center</el-menu-item>
-            <el-menu-item index="3">Processing Center</el-menu-item>
-          </el-menu>
+          <NavigatorBar />
         </div>
       </el-col>
       <el-col :span="4" :offset="1">
@@ -72,12 +61,11 @@ onMounted(() => {
             @focus="searchInputIsFocus=true"
             @blur="searchInputIsFocus=false"
             size="large"
-            style="width: 100%;"
+            style="width: 100%; background-color: transparent"
         >
         </el-autocomplete>
       </el-col>
     </el-row>
-
 
   </div>
 </template>

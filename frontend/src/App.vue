@@ -1,7 +1,7 @@
 <script setup>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import Main from "./components/Main.vue";
+import Main from "./views/Main.vue";
 </script>
 
 <template>
@@ -12,7 +12,8 @@ import Main from "./components/Main.vue";
       </el-header>
 
       <el-main style="margin-top: 20px">
-        <Main/>
+        <router-view />
+<!--        <Main/>-->
       </el-main>
 
       <el-footer>
@@ -38,12 +39,13 @@ import Main from "./components/Main.vue";
   width: 100%;
   margin-left: -8px;
   padding-right: 16px;
-  background: radial-gradient(circle at center, #373531, #1c1d20);
+  background: radial-gradient(circle at center, #2d2c2b, #1c1d20);
 }
 
 .container {
   padding-bottom: 60px;
   margin: -8px -16px -48px -8px;
   height: 100vh;
+  padding-top: 24px;
 }
 </style>
