@@ -14,19 +14,17 @@
         </router-link>
       </label>
       <label for="second" class="second">
-        <router-link to="/main/home" class="router-link">
+        <router-link to="/main/test1" class="router-link">
           特色优选
         </router-link>
       </label>
       <label for="third" class="third">
-        <router-link to="/main/test2" class="router-link">
+        <router-link to="/main/shop" class="router-link">
           为你推荐
         </router-link>
       </label>
       <div class="tab"></div>
     </nav>
-
-    <router-view />
   </div>
 </template>
 

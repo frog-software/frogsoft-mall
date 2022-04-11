@@ -67,6 +67,7 @@ onMounted(() => {
       </el-col>
     </el-row>
 
+    <router-view></router-view>
   </div>
 </template>
 
