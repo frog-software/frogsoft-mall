@@ -1,25 +1,48 @@
 <script setup>
 
+const switchTab = (index) => {
+  console.log(index)
+
+  document.getElementsByName('tab').forEach(i => {
+    i.checked = false;
+  })
+
+  switch (index) {
+    case 1:
+      document.getElementById('first').checked = true
+      break
+    case 2:
+      document.getElementById('second').checked = true
+      break
+    case 3:
+      document.getElementById('third').checked = true
+      break
+    default:
+      break
+  }
+}
+
 </script>
 
 <template>
   <div class="wrapper">
     <nav>
-      <input type="radio" name="tab" id="first" checked>
-      <input type="radio" name="tab" id="second">
-      <input type="radio" name="tab" id="third">
+      <input type="radio" name="tab" id="first" checked disabled>
+      <input type="radio" name="tab" id="second" disabled>
+      <input type="radio" name="tab" id="third" disabled>
+
       <label for="first" class="first">
-        <router-link to="/main/shop" class="router-link">
+        <router-link :to="{path: '/main/shop'}" class="router-link" @click.native="switchTab(1)">
           商城主页
         </router-link>
       </label>
       <label for="second" class="second">
-        <router-link to="/main/test1" class="router-link">
+        <router-link :to="{path: '/main/test1'}" class="router-link" @click.native="switchTab(2)">
           特色优选
         </router-link>
       </label>
       <label for="third" class="third">
-        <router-link to="/main/shop" class="router-link">
+        <router-link :to="{path: '/main/test1'}" class="router-link" @click.native="switchTab(3)">
           为你推荐
         </router-link>
       </label>
@@ -59,12 +82,11 @@ export default {
   width: 100%;
   position: relative;
   z-index: 1;
-  cursor: pointer;
 }
 
 .router-link {
   position: relative;
-  z-index: -1;
+  z-index: 2;
   color: #c1ab85;
   font-size: 18px;
   font-weight: bold;
@@ -99,15 +121,17 @@ export default {
 .wrapper nav #second:checked ~ label.second .router-link,
 .wrapper nav #third:checked ~ label.third .router-link {
   color: #f6eacc;
-  transition: 0.6s ;
+  transition: 0.6s;
 }
 
 .wrapper nav #first:checked ~ .tab {
   left: 0;
 }
+
 .wrapper nav #second:checked ~ .tab {
   left: 34%;
 }
+
 .wrapper nav #third:checked ~ .tab {
   left: 67%;
 }
