@@ -10,8 +10,8 @@ const routes = [
         component: () => import('../views/Main.vue'),
         children: [
             {
-                path: '/',
-                redirect: 'shop',
+                path: '/main',
+                redirect: '/main/shop',
             },
             {
                 path: 'shop',

@@ -46,6 +46,7 @@ const switchTab = (index) => {
           为你推荐
         </router-link>
       </label>
+
       <div class="tab"></div>
     </nav>
   </div>
