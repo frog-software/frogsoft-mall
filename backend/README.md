@@ -1,4 +1,24 @@
-# Quick Start: 如何运行 frogsoft-mall 后端
+# Quick Start: 如何运行 frogsoft-mall 后端（用户）
+
+## 前期准备
+
+你需要有：
+
+- `docker` 以及 `docker-compose` （如果你使用 Windows / macOS ，那么只需要安装 Docker Desktop 便包含了这两个组件）
+
+## 运行后端
+
+在 `backend` 目录下，运行 `docker-compose up -d` 即可。
+
+> 第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
+> 
+> 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
+
+服务网关监听于 `8080`  端口。
+
+
+
+# Quick Start: 如何运行 frogsoft-mall 后端（开发者）
 
 ## 前期准备
 
@@ -49,20 +69,6 @@
 >
 > 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
 
-然后在你的浏览器中打开 http://localhost:8848/nacos/ 并登录（用户名和密码均为 `nacos`）
-
-现在看后端目录下的 `nacos/config`  你会发现里面有***几***个文件，例如 `application-dev.yml` ，你需要对这里面 ***每个*** 文件做这样的操作：
-
-1. 在 `配置管理 - 配置列表` 标签上，点击加号➕添加配置。
-
-   ![nacos-config-page](readme-assets/nacos-config-page.png)
-
-2. 按照图中提示填写内容
-
-   ![nacos-new-config](readme-assets/nacos-new-config.png)
-
-3. 填写完成后点击右下角的 `发布` 按钮，该配置文件发布结束，继续对其他文件进行同样的操作。
-
 ### 运行微服务模块
 
 上面我们看到了后端的目录结构，其中，这些目录包含了需要运行的模块：
@@ -95,8 +101,34 @@
 
    ![idea-service-tab](readme-assets/idea-service-tab.png)
 
+服务网关监听于 `8080`  端口。
+
+
+
+## 如何修改/新建配置
+
+然后在你的浏览器中打开 http://localhost:8848/nacos/ 并登录（用户名和密码均为 `nacos`），看到 `配置管理 - 配置列表`。
+
+在新启动的实例上你应该也会看到我内置的几个配置文件，这足够启动微服务模块了，所以理论上是不需要做任何事情的。
+
+如果你要新建/修改配置的话，看一下下面的内容。
+
+现在看后端目录下的 `nacos/config`  你会发现里面有***几***个文件，例如 `application-dev.yml` 。虽然他们只是 NACOS 里面配置文件的备份，但这里面的文件和 NACOS 里面的配置是一一对应的，如果你修改或者新增了配置，记得更新一下这里面的文件。
+
+例如新增配置：
+
+1. 在 `配置管理 - 配置列表` 标签上，点击加号➕添加配置。
+
+   ![nacos-config-page](readme-assets/nacos-config-page.png)
+
+2. 字段跟 `nacos/config` 下的配置文件备份是这样对应的
+
+   ![nacos-new-config](readme-assets/nacos-new-config.png)
+
+3. 填写完成后点击右下角的 `发布` 按钮，该配置文件发布结束。
 
 ## 环境变量说明
+
 | 变量名称    | 说明                 | 默认值      |
 | ----------- | -------------------- | ----------- |
 | `NACOS_URL` | NACOS Server 所在 IP | `127.0.0.1` |
