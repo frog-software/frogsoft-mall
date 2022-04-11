@@ -1,0 +1,117 @@
+<script setup>
+
+</script>
+
+<template>
+  <div class="wrapper">
+    <nav>
+      <input type="radio" name="tab" id="first" checked>
+      <input type="radio" name="tab" id="second">
+      <input type="radio" name="tab" id="third">
+      <label for="first" class="first">
+        <router-link to="/main/shop" class="router-link">
+          商城主页
+        </router-link>
+      </label>
+      <label for="second" class="second">
+        <router-link to="/main/home" class="router-link">
+          特色优选
+        </router-link>
+      </label>
+      <label for="third" class="third">
+        <router-link to="/main/test2" class="router-link">
+          为你推荐
+        </router-link>
+      </label>
+      <div class="tab"></div>
+    </nav>
+
+    <router-view />
+  </div>
+</template>
+
+<script>
+export default {
+  name: "NavigatorBar"
+}
+</script>
+
+<style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  background: transparent;
+  line-height: 48px;
+  box-shadow: 0 0 6px #f6eacc;
+  border: 1px solid #f6eacc;
+  border-radius: 24px;
+}
+
+.wrapper nav {
+  display: flex;
+  position: relative;
+}
+
+.wrapper nav label {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.router-link {
+  position: relative;
+  z-index: -1;
+  color: #c1ab85;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  user-select: none;
+}
+
+.wrapper nav input {
+  display: none;
+}
+
+.wrapper nav .tab {
+  position: absolute;
+  height: 100%;
+  width: 33%;
+  left: 0;
+  bottom: 0;
+  border-radius: 24px;
+
+  /* 玻璃效果 */
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+
+  /* 贝塞尔曲线动画过渡 */
+  transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper nav #first:checked ~ label.first .router-link,
+.wrapper nav #second:checked ~ label.second .router-link,
+.wrapper nav #third:checked ~ label.third .router-link {
+  color: #f6eacc;
+  transition: 0.6s ;
+}
+
+.wrapper nav #first:checked ~ .tab {
+  left: 0;
+}
+.wrapper nav #second:checked ~ .tab {
+  left: 34%;
+}
+.wrapper nav #third:checked ~ .tab {
+  left: 67%;
+}
+
+</style>
