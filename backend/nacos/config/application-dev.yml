@@ -6,9 +6,9 @@ server:
     include-stacktrace: never
 spring:
   datasource:
-    username: gaussdb
-    password: Secretpassword@123
-    url: jdbc:postgresql://${OPENGAUSS_URL:localhost}:5432/postgres
+    username: ${OPENGAUSS_USERNAME:gaussdb}
+    password: ${OPENGAUSS_PASSWORD:Secretpassword@123}
+    url: jdbc:postgresql://${OPENGAUSS_URL:localhost}:${OPENGAUSS_PORT:5432}/${OPENGAUSS_DB:postgres}
   lifecycle:
     timeout-per-shutdown-phase: 30s
   mvc:
