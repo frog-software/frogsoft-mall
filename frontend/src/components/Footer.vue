@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div style="margin-top: 60px;">
     <el-row
         align="middle"
         justify="space-around"
         type="flex"
     >
-      <el-col :span="3">
+      <el-col :span="3" :offset="5">
         <img
             src="/FrogsoftMall-White.svg"
             alt="网站页脚Footer"
             style="width: 20vw"
         >
       </el-col>
-      <el-col :span="14" style="color: white">
+      <el-col :span="14" style="color: white; ">
         <span>相关链接：</span>
 
         <el-link

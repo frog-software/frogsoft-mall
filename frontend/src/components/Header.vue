@@ -4,12 +4,12 @@ import Login from "./Login.vue";
 </script>
 
 <template>
-  <div style="padding: 24px 0 24px">
+  <div style="padding-bottom: 8px; margin-top: 8px">
     <el-row
         align="middle"
         type="flex"
     >
-      <el-col :span="1" :offset="4">
+      <el-col :span="1" :offset="3">
         <img src="/frogsoft.svg" class="logoImage"/>
       </el-col>
 
@@ -21,7 +21,7 @@ import Login from "./Login.vue";
         </el-button>
       </el-col>
 
-      <el-col :span="1" :offset="8">
+      <el-col :span="1" :offset="9">
         <Login />
       </el-col>
     </el-row>
@@ -49,6 +49,7 @@ export default {
 .logoText {
   justify-content: center;
   align-items: center;
+  font-family: "Microsoft YaHei";
 }
 
 .logoTextContent {
@@ -56,7 +57,6 @@ export default {
   text-transform: uppercase;
   font-size: 52px;
   font-weight: bold;
-  font-family: monospace;
   position: relative;
   padding: 0;
   margin: 0;

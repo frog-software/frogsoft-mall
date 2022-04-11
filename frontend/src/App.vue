@@ -7,18 +7,13 @@ import Main from "./views/Main.vue";
 <template>
   <div class="root">
     <el-container class="container">
-      <el-header>
+      <el-main >
         <Header/>
-      </el-header>
 
-      <el-main style="margin-top: 20px">
         <router-view />
-<!--        <Main/>-->
-      </el-main>
 
-      <el-footer>
         <Footer/>
-      </el-footer>
+      </el-main>
     </el-container>
   </div>
 
@@ -43,9 +38,9 @@ import Main from "./views/Main.vue";
 }
 
 .container {
-  padding-bottom: 60px;
+  /*padding-bottom: 60px;*/
   margin: -8px -16px -48px -8px;
   height: 100vh;
-  padding-top: 24px;
+  /*padding-top: 24px;*/
 }
 </style>
