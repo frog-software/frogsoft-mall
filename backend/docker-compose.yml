@@ -46,8 +46,7 @@ services:
   # 授权认证模块
   mall-auth:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile-auth
+      context: mall-auth
     image: frogsoftware/mall-auth:0.0.1
     restart: unless-stopped
     environment:
@@ -63,8 +62,7 @@ services:
  # 服务网关
   mall-gateway:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile-gateway
+      context: mall-gateway
     image: frogsoftware/mall-gateway:0.0.1
     restart: unless-stopped
     environment:
@@ -78,8 +76,7 @@ services:
  # 用户模块
   mall-user:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile-user
+      context: mall-user
     image: frogsoftware/mall-user:0.0.1
     restart: unless-stopped
     environment:
