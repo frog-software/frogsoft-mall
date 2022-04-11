@@ -113,7 +113,7 @@ input:valid ~ label {
 }
 
 .el-popper.is-customized .el-popper__arrow::before {
-  background: linear-gradient(45deg, rgb(193,171,133), rgb(246,234,204));
+  background: linear-gradient(45deg, #c1ab85, #f6eacc);
   right: 0;
 }
 </style>
