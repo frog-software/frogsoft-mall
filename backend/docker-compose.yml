@@ -1,0 +1,93 @@
+version: "3.7"
+
+services:
+  # NACOS
+  nacos:
+    image: ustc-edu-cn.mirror.aliyuncs.com/nacos/nacos-server
+    restart: unless-stopped
+    env_file:
+      - ./nacos/nacos-standlone-mysql.env
+    volumes:
+      - ./nacos/standalone-logs/:/home/nacos/logs
+      - ./nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties
+    # 仅测试用，可以去除
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    depends_on:
+      - mysql
+
+  # NACOS 数据库
+  mysql:
+    image: ustc-edu-cn.mirror.aliyuncs.com/nacos/nacos-mysql:8.0.16
+    restart: unless-stopped
+    env_file:
+      - ./nacos/mysql.env
+    volumes:
+      - ./nacos/mysql:/var/lib/mysql
+      - ./nacos/db-dump:/docker-entrypoint-initdb.d/
+
+  # openGauss 数据库
+  opengauss:
+    image: ustc-edu-cn.mirror.aliyuncs.com/enmotech/opengauss:2.1.0
+    restart: unless-stopped
+    privileged: true
+    user: 0:0
+    environment:
+      # 测试用
+      GS_PASSWORD: Secretpassword@123
+    # 仅测试用，可以去除
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./opengauss/db_data:/var/lib/opengauss
+
+  # 授权认证模块
+  mall-auth:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-auth
+    image: frogsoftware/mall-auth:0.0.1
+    restart: unless-stopped
+    environment:
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "9000:9000"
+    depends_on:
+      - nacos
+      - opengauss
+
+ # 服务网关
+  mall-gateway:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-gateway
+    image: frogsoftware/mall-gateway:0.0.1
+    restart: unless-stopped
+    environment:
+      NACOS_URL: nacos
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mall-auth
+      - mall-user
+
+ # 用户模块
+  mall-user:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-user
+    image: frogsoftware/mall-user:0.0.1
+    restart: unless-stopped
+    environment:
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "9100:9100"
+    depends_on:
+      - nacos
+      - opengauss

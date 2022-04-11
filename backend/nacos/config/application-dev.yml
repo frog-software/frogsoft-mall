@@ -8,7 +8,7 @@ spring:
   datasource:
     username: gaussdb
     password: Secretpassword@123
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://${OPENGAUSS_URL:localhost}:5432/postgres
   lifecycle:
     timeout-per-shutdown-phase: 30s
   mvc:
