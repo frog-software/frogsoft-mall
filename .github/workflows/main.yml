@@ -1,0 +1,83 @@
+name: CI to Docker Hub
+on:
+  # only run manually
+  workflow_dispatch:
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Maven Package
+        run: cd backend && mvn -B package -DskipTests -f ./pom.xml
+
+      - name: Build and push (mall-auth)
+        id: docker_build_backend_mall_auth
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-auth
+          file: ./backend/mall-auth/Dockerfile
+          push: true
+          tags: frogsoftware/mall-auth:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Build and push (mall-gateway)
+        id: docker_build_backend_mall_gateway
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-gateway
+          file: ./backend/mall-gateway/Dockerfile
+          push: true
+          tags: frogsoftware/mall-gateway:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Build and push (mall-user)
+        id: docker_build_backend_mall_user
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-user
+          file: ./backend/mall-user/Dockerfile
+          push: true
+          tags: frogsoftware/mall-user:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Image digest (mall-auth)
+        run: echo ${{ steps.docker_build_backend_mall_auth.outputs.digest }}
+
+      - name: Image digest (mall-gateway)
+        run: echo ${{ steps.docker_build_backend_mall_gateway.outputs.digest }}
+
+      - name: Image digest (mall-user)
+        run: echo ${{ steps.docker_build_backend_mall_user.outputs.digest }}
