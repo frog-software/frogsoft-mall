@@ -68,6 +68,12 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
     </dependency>
 
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
 
   <description>Frogsoft Mall 通用模块</description>
