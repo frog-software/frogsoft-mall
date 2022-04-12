@@ -7,18 +7,6 @@
   <groupId>org.frogsoft</groupId>
   <artifactId>mall</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <dependencies>
-    <dependency>
-      <groupId>org.frogsoft</groupId>
-      <artifactId>mall-common</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
-  </dependencies>
   <name>frogsoft-mall</name>
   <description>Frogsoft Mall</description>
 
@@ -159,7 +147,7 @@
         <configuration>
           <excludes>
             <exclude>
-              <groupId><org class="projectlomb">      </org>ok</groupId>
+              <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
