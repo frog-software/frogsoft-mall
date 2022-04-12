@@ -19,8 +19,8 @@
     </plugins>
   </build>
 
-  <dependencies>
 
+  <dependencies>
     <!-- SpringCloud Gateway -->
     <dependency>
       <artifactId>spring-cloud-starter-gateway</artifactId>
