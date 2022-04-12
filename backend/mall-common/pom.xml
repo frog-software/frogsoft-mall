@@ -8,7 +8,12 @@
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
-
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
 
