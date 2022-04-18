@@ -4,9 +4,8 @@ import Login from "./Login.vue";
 </script>
 
 <template>
-  <div style="padding-bottom: 8px; margin-top: 8px">
+  <div style="padding-bottom: 8px; margin-top: 32px">
     <el-row
-        align="middle"
         type="flex"
     >
       <el-col :span="1" :offset="3">
@@ -21,7 +20,7 @@ import Login from "./Login.vue";
         </el-button>
       </el-col>
 
-      <el-col :span="1" :offset="9">
+      <el-col :span="1" :offset="8">
         <Login />
       </el-col>
     </el-row>

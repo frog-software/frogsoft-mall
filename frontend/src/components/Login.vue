@@ -1,6 +1,6 @@
 <template>
   <el-tooltip effect="customized">
-    <el-avatar :size="45" style="padding: 0; margin: 0" effect="customized"/>
+    <el-avatar :size="56" style="padding: 0; margin: 0; box-shadow: 0 0 64px #f6eacc; border: 1px solid #f6eacc; background-color: #f6eacc" effect="customized" src="/avataaars.svg"/>
 
     <template #content>
       <div class="loginRoot">

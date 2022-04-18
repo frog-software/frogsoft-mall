@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import NavigatorBar       from "../components/NavigatorBar.vue";
+import TopSwiper from "../components/TopSwiper.vue";
 
-const count              = ref<number>(0)
 const searchInputIsFocus = ref<boolean>(false)
 
 // 搜索栏可自动补全的热词
@@ -46,29 +46,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <el-row justify="center" style="display: flex; align-items: center; margin-top: 32px">
-      <el-col :span="10">
-        <div>
-          <NavigatorBar />
-        </div>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-autocomplete
-            v-model="searchContent"
-            :fetch-suggestions="queryHotWords"
-            placeholder="开始搜索"
-            @focus="searchInputIsFocus=true"
-            @blur="searchInputIsFocus=false"
-            size="large"
-            style="width: 100%; background-color: transparent"
-        >
-        </el-autocomplete>
-      </el-col>
-    </el-row>
 
-    <router-view></router-view>
-  </div>
+
+  <el-row justify="center" style="display: flex; align-items: center; margin-top: 32px">
+    <el-col :span="10">
+      <div>
+        <NavigatorBar/>
+      </div>
+    </el-col>
+    <el-col :span="4" :offset="1">
+      <el-autocomplete
+          v-model="searchContent"
+          :fetch-suggestions="queryHotWords"
+          placeholder="开始搜索"
+          @focus="searchInputIsFocus=true"
+          @blur="searchInputIsFocus=false"
+          size="large"
+          style="width: 100%; background-color: transparent"
+      >
+      </el-autocomplete>
+    </el-col>
+  </el-row>
+
+  <router-view/>
+
+
 </template>
 
 <script lang="ts">

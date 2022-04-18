@@ -33,14 +33,11 @@ import Main from "./views/Main.vue";
 .root {
   width: 100%;
   margin-left: -8px;
-  padding-right: 16px;
   background: radial-gradient(circle at center, #2d2c2b, #1c1d20);
 }
 
 .container {
-  /*padding-bottom: 60px;*/
   margin: -8px -16px -48px -8px;
   height: 100vh;
-  /*padding-top: 24px;*/
 }
 </style>
