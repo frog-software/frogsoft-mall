@@ -1,35 +1,75 @@
+<script setup lang="ts">
+import { ElMessage } from "element-plus";
+import { ref } from "vue";
+import { useStore } from "../store";
+
+const store = useStore();
+const username = ref<string>("");
+const password = ref<string>("");
+
+function login() {
+  if (!username.value) ElMessage.warning("请输入用户名");
+  else if (!password.value) ElMessage.warning("请输入密码");
+  else store.dispatch("login", { username, password });
+}
+</script>
+
 <template>
   <el-tooltip effect="customized">
-    <el-avatar :size="56" style="padding: 0; margin: 0; box-shadow: 0 0 64px #f6eacc; border: 1px solid #f6eacc; background-color: #f6eacc" effect="customized" src="/avataaars.svg"/>
+    <el-avatar
+      :size="56"
+      style="
+        padding: 0;
+        margin: 0;
+        box-shadow: 0 0 64px #f6eacc;
+        border: 1px solid #f6eacc;
+        background-color: #f6eacc;
+      "
+      effect="customized"
+      :src="store.state.info?.avatar || '/avataaars.svg'"
+    />
 
     <template #content>
       <div class="loginRoot">
-        <div class="loginInputData">
-          <input type="text" required/>
-          <div class="loginUnderLine" />
-          <label>你的账户</label>
-        </div>
+        <el-row v-if="store.getters.hasLogin" justify="center">
+          <el-button color="#c1ab85" @click="store.commit('logout')" style="color: white">
+            退出登录
+          </el-button>
+        </el-row>
+        <div v-else>
+          <div class="loginInputData">
+            <input type="text" required v-model="username" />
+            <div class="loginUnderLine" />
+            <label>你的账户</label>
+          </div>
 
-        <div class="loginInputData" style="margin-top: 36px">
-          <input type="password" required/>
-          <div class="loginUnderLine" />
-          <label>你的密码</label>
-        </div>
+          <div class="loginInputData" style="margin-top: 36px">
+            <input type="password" required v-model="password" />
+            <div class="loginUnderLine" />
+            <label>你的密码</label>
+          </div>
 
-        <el-button color="#c1ab85" style="color: white; margin-top: 36px; width: 100%">登录</el-button>
+          <el-button
+            color="#c1ab85"
+            style="color: white; margin-top: 36px; width: 100%"
+            @click="login"
+          >
+            登录
+          </el-button>
+        </div>
       </div>
     </template>
   </el-tooltip>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: "Login"
-}
+  name: "Login",
+};
 </script>
 
 <style scoped>
-*{
+* {
   outline: none;
   box-sizing: border-box;
 }
@@ -99,7 +139,6 @@ input:valid ~ label {
 .loginRoot .loginInputData input:valid ~ .loginUnderLine {
   transform: scaleX(1);
 }
-
 </style>
 
 <style>
