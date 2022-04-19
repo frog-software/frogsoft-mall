@@ -1,10 +1,9 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios' //导入axios 和钩子
-import {ElLoading, ElMessage} from 'element-plus' //导入ElLoading
-import {ILoadingInstance} from 'element-plus/lib/components/loading/src/loading.type' //导入ElLoading钩子
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios' //导入 axios 和钩子
+import { ElLoading, ElMessage } from 'element-plus' //导入ElLoading
 
 // 初始化loading
 
-export class Request {
+class Request {
     public static axiosInstance: AxiosInstance
     public static loading?: ILoadingInstance //loading实例 挂载到公共的静态属性上 方便获取
 
@@ -16,7 +15,7 @@ export class Request {
         })
         // 初始化拦截器
         this.initInterceptors()
-        return axios
+        return this.axiosInstance
     }
 
     // 初始化拦截器
@@ -40,7 +39,7 @@ export class Request {
 
                 const token = localStorage.getItem('ACCESS_TOKEN') //保存token到localStorage中
                 if (token) {
-                    ;(config as any).headers.Authorization = 'Bearer ' + token //携带请求头
+                    ; (config as any).headers.Authorization = 'Bearer ' + token //携带请求头
                     // ;(config as any).headers.Authorization = sessionStorage.token
                 }
                 return config
@@ -53,14 +52,14 @@ export class Request {
         // 响应拦截器
         this.axiosInstance.interceptors.response.use(
             // 请求成功
-            (response: AxiosResponse) => {
+            (response: any) => {
                 this.loading?.close() //将loading移除
                 return response
             },
             // 请求失败
             (error: any) => {
                 this.loading?.close() //将loading移除
-                const {response} = error
+                const { response } = error
                 if (response) {
                     // 请求已发出，但是不在2xx的范围
                     Request.errorHandle(response)
@@ -91,3 +90,55 @@ export class Request {
         }
     }
 }
+const axiosInstance = Request.init()
+export function get<T>(url: string, data: object = {}) {
+    return new Promise<T>((resolve, reject) => {
+        axiosInstance.get(url, { params: data })
+            .then((res: { data: { data: T } }) => {
+                resolve(res.data.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+}
+
+export function post<T>(url: string, data: object = {}) {
+    return new Promise<T>((resolve, reject) => {
+        axiosInstance.post(url, data)
+            .then((res: { data: { data: T } }) => {
+                resolve(res.data.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+}
+
+export function put<T>(url: string, data: object = {}) {
+    return new Promise<T>((resolve, reject) => {
+        axiosInstance.put(url, data)
+            .then((res: { data: { data: T } }) => {
+                resolve(res.data.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+}
+
+export function del<T>(url: string, data: object = {}) {
+    return new Promise<T>((resolve, reject) => {
+        axiosInstance.delete(url, { params: data })
+            .then((res: { data: { data: T } }) => {
+                resolve(res.data.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+}
+
+export default {
+    get, post, put, del,
+};
