@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import Login      from "./Login.vue";
+import RotateMenu from "./DrawerMenu.vue";
 
-import Login from "./Login.vue";
 </script>
 
 <template>
@@ -22,6 +23,10 @@ import Login from "./Login.vue";
 
       <el-col :span="1" :offset="8">
         <Login />
+      </el-col>
+
+      <el-col :span="1" :offset="1">
+        <RotateMenu />
       </el-col>
     </el-row>
   </div>
