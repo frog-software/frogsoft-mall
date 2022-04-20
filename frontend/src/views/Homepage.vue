@@ -9,7 +9,7 @@
 
       <div style="color: #999999; margin-top: 24px; text-align: left" class="text">
         <p style="font-size: 18px">
-          我们致力于打造一款现代电商，犹如提着油灯在黑暗中闪闪发光探索的前行者。
+          我们致力于打造一款现代电商，犹如提着油灯在黑暗中闪闪发光前行的探索者。
         </p>
       </div>
 
@@ -17,7 +17,7 @@
         <p>开始你的电商之旅来探索更多内容！</p>
       </div>
 
-      <router-link :to="{ path: '/main' }" style="margin-left: -24vw; text-decoration: none">
+      <router-link :to="{ path: '/main' }" style="margin-left: -24vw; text-decoration: none" @click.native="switchTab(0)">
         <el-button class="start-button" round>
           开始购物
         </el-button>
@@ -110,7 +110,7 @@ export default {
 
 @keyframes start-button-in {
   0% {
-    transform: translateY(35vh);
+    transform: translateY(30vh);
     opacity: 0;
   }
   100% {
@@ -122,7 +122,7 @@ export default {
 .photo-text {
   color: white;
   margin-left: 8px;
-  margin-top: 156px;
+  margin-top: 13vh;
   font-family: 'Arial Black';
   text-align: left;
   opacity: 0;
@@ -140,9 +140,9 @@ export default {
 
   animation-name: bar-in;
   animation-iteration-count: 1;
-  animation-duration: 0.8s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
-  animation-delay: 0.3s;
+  animation-delay: 0.2s;
   animation-fill-mode: forwards;
 }
 </style>
