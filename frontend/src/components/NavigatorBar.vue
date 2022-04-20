@@ -146,6 +146,7 @@ export default {
 #second:checked ~ .el-col .under-point,
 #third:checked ~ .el-col .under-point {
   opacity: 1;
+  animation: none;
 }
 
 @keyframes dot-top-in {
