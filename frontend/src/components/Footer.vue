@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 60px;">
+  <div style="">
     <el-row
         align="middle"
         justify="space-around"
@@ -12,19 +12,19 @@
             style="width: 20vw"
         >
       </el-col>
-      <el-col :span="14" style="color: white; ">
+      <el-col :span="14" style="color: #999999; ">
         <span>相关链接：</span>
 
         <el-link
             href="https://github.com/frog-software/frogsoft-mall"
-            style="color: white;padding-left: 8px;font-size: large"
+            style="color: #999999; padding-left: 8px; font-size: large"
         >
           Github - Frogsoft Mall
         </el-link>
 
         <div>
           Copyrights © {{ new Date().getFullYear() }}
-          <el-link herf="https://github.com/frog-software" style="color: white;font-size: large">
+          <el-link herf="https://github.com/frog-software" style="color: #999999;font-size: large">
             Frogsoft
           </el-link>
           . All Rights Reserved.

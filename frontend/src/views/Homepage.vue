@@ -1,5 +1,5 @@
 <template>
-  <el-row style="margin-top: -120px; margin-bottom: -156px">
+  <el-row style="margin-top: -120px; margin-bottom: -56px; height: 880px">
     <el-col :span="9" :offset="4" style="font-family: 微軟正黑體, serif;">
       <div style="color: white; margin-top: 180px;  " class="main-text">
         <p style="margin-left: -12px; font-size: 72px; display: inline; width: auto;  font-weight: bold;" >知你所爱，寻你所需。</p>
@@ -110,7 +110,7 @@ export default {
 
 @keyframes start-button-in {
   0% {
-    transform: translateY(40vh);
+    transform: translateY(35vh);
     opacity: 0;
   }
   100% {

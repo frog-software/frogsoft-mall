@@ -2,17 +2,20 @@
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import Main from "./views/Main.vue";
+import Homepage from "./views/Homepage.vue";
 </script>
 
 <template>
   <div class="root">
     <el-container class="container">
-      <el-main >
+      <el-header style="height: 100px">
         <Header/>
+      </el-header>
 
+      <el-main >
         <router-view />
 
-        <Footer/>
+        <Footer />
       </el-main>
     </el-container>
   </div>
@@ -33,11 +36,14 @@ import Main from "./views/Main.vue";
 .root {
   width: 100%;
   margin-left: -8px;
-  background: radial-gradient(circle at center, #2d2c2b, #1c1d20);
+  /*background: radial-gradient(circle at center, #2d2c2b, #1c1d20);*/
+  background: #010101;
 }
 
 .container {
   margin: -8px -16px -48px -8px;
   height: 100vh;
 }
+
+
 </style>
