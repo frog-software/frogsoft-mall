@@ -9,25 +9,20 @@ interface TopSwiperItem {
 
 const topSwiper = ref<TopSwiperItem[]>([
   {
-    title: 'AAAAAAAA',
-    subtitle: 'aaaaaaa',
-    image: 'https://images.unsplash.com/photo-1648737119422-2680a7e39089?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80',
+    title: 'APPAREL',
+    subtitle: 'Free worldwide shipping',
+    image: 'https://cdn.junipercreates.com/apexlegends/images/Banner%201%20-%20Apparel%20(Desktop)_1644548927802.jpg',
   },
   {
-    title: 'BBBBBBBB',
-    subtitle: 'bbbbbbbb',
-    image: 'https://images.unsplash.com/photo-1638913662415-8c5f79b20656?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-  },
-  {
-    title: 'AAAAAAAA',
-    subtitle: 'aaaaaaa',
-    image: 'https://images.unsplash.com/photo-1640622658799-54e6039d189b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+    title: 'ACCESSORIES',
+    subtitle: 'Legendary collection',
+    image: 'https://cdn.junipercreates.com/apexlegends/images/Banner%202%20-%20Accessories%20(Desktop)_1644548870047.jpg',
   },
 ])
 
 let timer         = ref<any>(null);
 let activeIndex   = ref<number>(0)
-const activeImage = ref<string>('https://images.unsplash.com/photo-1638913662415-8c5f79b20656?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')
+const activeImage = ref<string>(topSwiper.value[activeIndex.value].image)
 
 const stopAutoPlay = () => {
   if (timer) {
@@ -74,9 +69,11 @@ export default {
 
 <style scoped>
 .container {
-  height: 540px;
-  width: 85vw;
-  margin: 36px 0 0;
+  height: 500px;
+  width: 100%;
+  margin-bottom: 36px;
+
+  background: #42b983;
 
   position: relative;
   display: flex;
@@ -85,11 +82,25 @@ export default {
   align-items: center;
   overflow: hidden;
 
-  border-radius: 24px;
+  animation: topSwiper-in;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes topSwiper-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .banner {
   width: 100%;
+  height: 100%;
   max-width: 1920px;
   background-size: cover;
   background-position: center;
@@ -105,6 +116,7 @@ export default {
   color: white;
   backdrop-filter: blur(20px);
   padding-top: 20px;
+  margin-right: -1px;
 }
 
 .title {
