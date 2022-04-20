@@ -2,7 +2,6 @@
 import Login        from "./Login.vue";
 import RotateMenu   from "./DrawerMenu.vue";
 import NavigatorBar from "./NavigatorBar.vue";
-import test from "./test.vue";
 
 </script>
 
