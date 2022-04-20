@@ -17,7 +17,7 @@
         <p>开始你的电商之旅来探索更多内容！</p>
       </div>
 
-      <router-link :to="{ path: '/main' }" style="margin-left: 12vw">
+      <router-link :to="{ path: '/main' }" style="margin-left: -24vw; text-decoration: none">
         <el-button class="start-button" round>
           开始购物
         </el-button>
@@ -93,7 +93,6 @@ export default {
   background: linear-gradient(to right, #fb902d, #ea4d2f);
   border: 0;
   color: white;
-  margin-left: -24vw;
   width: 240px;
   height: 56px;
   opacity: 0;
