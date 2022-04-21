@@ -108,6 +108,10 @@ export default {
   animation-fill-mode: forwards;
 }
 
+.start-button:hover {
+  background: linear-gradient(to right, #ffa664, #e87a64)
+}
+
 @keyframes start-button-in {
   0% {
     transform: translateY(30vh);
