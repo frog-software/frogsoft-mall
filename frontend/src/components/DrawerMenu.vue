@@ -23,18 +23,19 @@ const routerLinkList = ref<routerLinkItem[]>([
 </script>
 
 <template>
-  <nav class="menu">
-    <input type="checkbox" class="menu-toggle" id="menu_toggle" >
-    <label for="menu_toggle"></label>
+  <div class="menu" style="background: #42b983">
+    <input type="checkbox" class="menu-toggle" id="menu_toggle">
+    <label for="menu_toggle" style="position: absolute; top: 0; bottom: 0"></label>
 
     <div>
       <div v-for="item in routerLinkList" class="menu-item">
         <router-link :to="{ path: item.path }">
-          <el-button type="primary" :icon="item.icon" circle size="large" class="button"/>
+          <el-button type="primary" :icon="item.icon" size="large" class="button"/>
         </router-link>
       </div>
     </div>
-  </nav>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -44,103 +45,106 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
 
+/* 触发框 */
 .menu-toggle {
   position: absolute;
-  display: block;
   top: 0;
   bottom: 0;
-  right: 24.1vw;
+
+  /* 只能以这种方式设置不可见 */
+  display: block;
+  opacity: 0;
+
   width: 32px;
   height: 32px;
   z-index: 2;
-  opacity: 0;
-  margin: auto;
+
   cursor: pointer;
+  margin: auto;
 }
 
+/* 中杠 */
+.menu-toggle + label::before,
+.menu-toggle + label,
+.menu-toggle + label::after {
+  width: 32px;
+  height: 3px;
+  display: block;
+  z-index: 1;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: transform 0.5s, top 0.5s;
+  margin: auto;
+  cursor: pointer;
+  position: absolute;
+  top: 24px;
+
+}
+
+/* 上下杠公用 */
+.menu-toggle + label::before,
+.menu-toggle + label::after {
+  width: 32px;
+  height: 3px;
+  display: block;
+  z-index: 1;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: transform 0.5s, top 0.5s;
+  content: '';
+  position: absolute;
+}
+
+/* 横杠悬浮 */
 .menu-toggle:hover + label,
 .menu-toggle:hover + label::before,
 .menu-toggle:hover + label::after {
   background: white;
 }
 
-.menu-toggle:checked + label {
-  background: transparent;
-}
-
 .menu-toggle:checked + label::before,
 .menu-toggle:checked + label::after {
   top: 0;
-  width: 36px;
+  width: 32px;
   transform-origin: 50% 50%;
 }
 
-/* 上中下三条横杠 */
+/* 横杠触发 */
 .menu-toggle:checked + label::before {
+  background: white;
   transform: rotate(45deg);
 }
-
-.menu-toggle ~ div .menu-item {
-  visibility: collapse;
+.menu-toggle:checked + label {
+  background: transparent;
+}
+.menu-toggle:checked + label::after {
+  background: white;
+  transform: rotate(-45deg);
 }
 
+/* 关闭时按钮禁用 */
+.menu-toggle ~ div .menu-item {
+  opacity: 0;
+  visibility: collapse;
+}
 .menu-toggle:checked ~ div .menu-item {
   opacity: 1;
   visibility: visible;
 }
 
-.menu-toggle:checked + label::after {
-  transform: rotate(-45deg);
-}
-
-
+/* 弹出按钮动画 */
 .menu-toggle:checked ~ div .menu-item:nth-child(1) {
-  transform: translateX(80px);
+  transform: translateX(60px);
 }
-
 .menu-toggle:checked ~ div .menu-item:nth-child(2) {
-  transform: translateX(160px);
+  transform: translateX(120px);
 }
 
-.menu-toggle + label {
-  width: 36px;
-  height: 5px;
-  display: block;
-  z-index: 6;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.7);
-  transition: transform 0.5s, top 0.5s;
-  margin: auto;
-
-  position: absolute;
-  top: 24px;
-  right: 24vw;
-  cursor: pointer;
-}
-
-.menu-toggle + label::before,
-.menu-toggle + label::after {
-  width: 36px;
-  height: 5px;
-  display: block;
-  z-index: 6;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.7);
-  transition: transform 0.5s, top 0.5s;
-  content: '';
-  position: absolute;
-  left: 0;
-}
-
+/* 上下杠位置 */
 .menu-toggle + label::before {
   top: 10px;
 }
-
 .menu-toggle + label::after {
   top: -10px;
 }
@@ -148,23 +152,22 @@ export default {
 .menu-item {
   position: absolute;
   display: block;
-  top: 0;
-  right: 23.5vw;
+  top: 4px;
+  bottom: 0;
   margin: auto;
-  opacity: 0;
+  visibility: collapse;
   transition: all 0.5s;
-  z-index: 5;
+  z-index: 1;
 }
 
 .button {
-  height: 56px;
-  width: 56px;
+  height: 48px;
+  width: 48px;
+  font-size: 30px;
   margin: auto;
-  font-size: 28px;
-  color: #c1ab85;
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: white;
+  background: transparent;
+  border: none;
 }
 
 .button:hover {
