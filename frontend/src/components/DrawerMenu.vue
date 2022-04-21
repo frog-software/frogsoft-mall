@@ -8,16 +8,19 @@ import {
 interface routerLinkItem {
   path: string,
   icon: Component,
+  content: string,
 }
 
 const routerLinkList = ref<routerLinkItem[]>([
   {
     path: '/cart',
     icon: ShoppingCart,
+    content: '购物车',
   },
   {
     path: '/user',
     icon: User,
+    content: '个人中心',
   },
 ])
 </script>
@@ -30,7 +33,9 @@ const routerLinkList = ref<routerLinkItem[]>([
     <div>
       <div v-for="item in routerLinkList" class="menu-item">
         <router-link :to="{ path: item.path }">
-          <el-button type="primary" :icon="item.icon" size="large" class="button"/>
+          <el-tooltip :content="item.content" placement="bottom" :hide-after="0">
+            <el-button type="primary" :icon="item.icon" size="large" class="button"/>
+          </el-tooltip>
         </router-link>
       </div>
     </div>
@@ -152,7 +157,7 @@ export default {
 .menu-item {
   position: absolute;
   display: block;
-  top: 4px;
+  top: 6px;
   bottom: 0;
   margin: auto;
   visibility: collapse;
