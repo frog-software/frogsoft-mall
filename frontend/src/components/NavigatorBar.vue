@@ -119,8 +119,6 @@ export default {
   background: white;
   border-radius: 50%;
   opacity: 0;
-  position: absolute;
-  top: 48px;
 }
 
 .router-item:hover ~ .under-point {

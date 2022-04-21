@@ -26,15 +26,15 @@ import NavigatorBar from "./NavigatorBar.vue";
 <!--        </router-link>-->
 <!--      </el-col>-->
 
-      <el-col :span="12" :offset="3">
+      <el-col :span="13" :offset="3">
         <NavigatorBar />
       </el-col>
 
-      <el-col :span="1" :offset="1">
+      <el-col :span="1" :offset="2">
         <Login />
       </el-col>
 
-      <el-col :span="1" :offset="1">
+      <el-col :span="1" style="margin-left: 48px">
         <RotateMenu />
       </el-col>
     </el-row>
