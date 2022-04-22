@@ -2,7 +2,7 @@
 
 // 商品描述内容过长则需要省略
 const goodsDescriptionFormat = (str: string) => {
-  const MAX_LENGTH = 55;
+  const MAX_LENGTH = 43;
 
   if (str.length >= MAX_LENGTH)
     return str.substring(0, MAX_LENGTH) + "..."
@@ -13,19 +13,24 @@ const goodsDescriptionFormat = (str: string) => {
 
 <template>
   <div class="card">
-    <div class="photo">
-      <el-image
-          style="width: 100%; height: 100%"
-          fit="cover"
-          src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fy.zdmimg.com%2F202111%2F19%2F6197a5b7a9bac538.jpg_d250.jpg&refer=http%3A%2F%2Fy.zdmimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652883296&t=86b2ce25d59b5edf0b002e322d646ea4"
-      />
+    <el-image
+        style="width: 100%"
+        fit="cover"
+        src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fy.zdmimg.com%2F202111%2F19%2F6197a5b7a9bac538.jpg_d250.jpg&refer=http%3A%2F%2Fy.zdmimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652883296&t=86b2ce25d59b5edf0b002e322d646ea4"
+    />
+
+    <div style="position: absolute; bottom: 12px; right: 20px; background: linear-gradient(to right, #d52342, #f83e5b); border-radius: 6px">
+      <el-tag color="transparent" plain effect="dark" style="border: none">
+        新品上市
+      </el-tag>
     </div>
 
-    <div style="margin-top: 140px">
-      <h1 style="padding: 0 16px">这是一个商品名</h1>
-      <p style="word-break: break-all; word-wrap: break-word; text-align: left; padding: 0 12px">
-        {{ goodsDescriptionFormat('这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍这是一个介绍') }}
-      </p>
+    <div style="position: absolute; bottom: 0">
+      <div class="goods-detail">
+        <p style="font-weight: bold; font-size: 20px; margin: 0">{{ '这是一个商品名' }}</p>
+        <p style="font-size: 12px; color: #666666">{{ goodsDescriptionFormat('这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述') }}</p>
+        <p style="font-size: 14px; margin-top: 8px; color: #000000; font-weight: bold">RMB <span>{{ '22' }}</span></p>
+      </div>
     </div>
   </div>
 </template>
@@ -38,41 +43,24 @@ export default {
 
 <style scoped>
 .card {
-  margin-left: 8px;
-  margin-right: 8px;
-  margin-bottom: 24px;
-  background: rgba(255, 255, 255, 0.01);
+  width: 256px;
+  height: 400px;
+  margin-right: 24px;
+  background: #f6f5f8;
+  overflow: hidden;
   border-radius: 8px;
   backdrop-filter: blur(20px);
-  border-top: 1px solid #f6eacc;
-  border-left: 1px solid #f6eacc;
-  border-right: 1px solid #777777;
-  border-bottom: 1px solid #777777;
-  box-shadow: 0 0 4px #f6eacc;
+  /*box-shadow: 0 0 4px #f6eacc;*/
 
-  height: 320px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
+
+
 }
 
-.card .photo {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  transition: 0.5s;
-}
-
-.card:hover .photo {
-  top: 20px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+.goods-detail {
+  text-align: left;
+  color: #111111;
+  font-family: 微軟正黑體;
+  padding: 0 24px;
 }
 
 </style>
