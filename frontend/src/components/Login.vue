@@ -15,19 +15,18 @@ function login() {
 </script>
 
 <template>
-  <el-tooltip effect="customized">
-    <el-avatar
-      :size="56"
-      style="
-        padding: 0;
-        margin: 0;
-        box-shadow: 0 0 64px #f6eacc;
-        border: 1px solid #f6eacc;
-        background-color: #f6eacc;
+  <el-tooltip effect="customized" placement="bottom">
+      <el-avatar
+          :size="56"
+          style="
+        /*box-shadow: 0 0 64px #f6eacc;*/
+        border: none;
+        background-color: transparent;
       "
-      effect="customized"
-      :src="store.state.info?.avatar || '/avataaars.svg'"
-    />
+          effect="customized"
+          :src="store.state.info?.avatar || '/avataaars.svg'"
+      />
+
 
     <template #content>
       <div class="loginRoot">
@@ -38,13 +37,13 @@ function login() {
         </el-row>
         <div v-else>
           <div class="loginInputData">
-            <input type="text" required v-model="username" />
+            <input type="text" required v-model="username" title=""/>
             <div class="loginUnderLine" />
             <label>你的账户</label>
           </div>
 
           <div class="loginInputData" style="margin-top: 36px">
-            <input type="password" required v-model="password" />
+            <input type="password" required v-model="password" title=""/>
             <div class="loginUnderLine" />
             <label>你的密码</label>
           </div>
@@ -75,7 +74,6 @@ export default {
 }
 
 label {
-  font-family: "Microsoft YaHei";
   font-weight: normal;
 }
 
@@ -95,13 +93,13 @@ label {
 .loginRoot .loginInputData input {
   width: 100%;
   height: 100%;
+  margin-top: 2px;
   border: none;
-  font-size: 17px;
+  font-size: 16px;
   border-bottom: 2px solid transparent;
   background-color: transparent;
-  font-family: "Microsoft YaHei";
   font-weight: normal;
-  color: #eeeeee;
+  color: white;
 }
 
 .loginRoot .loginInputData input:focus ~ label {
@@ -119,7 +117,7 @@ input:valid ~ label {
 .loginRoot .loginInputData label {
   position: absolute;
   bottom: 10px;
-  left: 0px;
+  left: 0;
   color: #808080;
   pointer-events: none;
   transition: all 0.2s ease;
@@ -127,7 +125,7 @@ input:valid ~ label {
 
 .loginRoot .loginInputData .loginUnderLine {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   height: 2px;
   width: 100%;
   background: #f6eacc;
@@ -146,9 +144,11 @@ input:valid ~ label {
   /* Set padding to ensure the height is 32px */
   padding: 6px 12px;
   background: radial-gradient(circle at center, #2c2b2a, #1c1d20);
-  box-shadow: 10px 10px 15px #1c1d20;
+  /*box-shadow: 10px 10px 15px #1c1d20;*/
   border-radius: 8px;
   /*box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);*/
+  font-family: 微軟正黑體;
+  color: white;
 }
 
 .el-popper.is-customized .el-popper__arrow::before {
