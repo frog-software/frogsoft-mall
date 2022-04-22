@@ -116,7 +116,7 @@ export default {
 .under-point {
   width: 8px;
   height: 8px;
-  background: white;
+  background: #f6eacc;
   border-radius: 50%;
   opacity: 0;
 }
