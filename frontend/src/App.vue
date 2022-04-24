@@ -1,8 +1,7 @@
 <script setup>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import Main from "./views/Main.vue";
-import Homepage from "./views/Homepage.vue";
+
 </script>
 
 <template>
@@ -30,11 +29,10 @@ import Homepage from "./views/Homepage.vue";
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /*margin-top: 60px;*/
 }
 
 .root {
-  width: 100%;
+  width: calc(99vw + 2px);
   margin-left: -8px;
   /*background: radial-gradient(circle at center, #2d2c2b, #1c1d20);*/
   background: #010101;
@@ -42,7 +40,8 @@ import Homepage from "./views/Homepage.vue";
 
 .container {
   margin: -8px -16px -48px -8px;
-  height: 100vh;
+  width: 100%;
+  /*height: 100vh;*/
 }
 
 
