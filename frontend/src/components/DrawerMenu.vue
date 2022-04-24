@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Component, ref } from "vue";
+import { Component, ref, markRaw } from "vue";
 import {
   ShoppingCart,
   User,
@@ -14,12 +14,12 @@ interface routerLinkItem {
 const routerLinkList = ref<routerLinkItem[]>([
   {
     path: '/cart',
-    icon: ShoppingCart,
+    icon: markRaw(ShoppingCart),
     content: '购物车',
   },
   {
     path: '/user',
-    icon: User,
+    icon: markRaw(User),
     content: '个人中心',
   },
 ])
@@ -33,7 +33,7 @@ const routerLinkList = ref<routerLinkItem[]>([
     <div>
       <div v-for="item in routerLinkList" class="menu-item">
         <router-link :to="{ path: item.path }">
-          <el-tooltip :content="item.content" placement="bottom" :hide-after="0">
+          <el-tooltip :content="item.content" placement="bottom" :hide-after="0" effect="customized">
             <el-button type="primary" :icon="item.icon" size="large" class="button"/>
           </el-tooltip>
         </router-link>
@@ -170,13 +170,12 @@ export default {
   width: 48px;
   font-size: 30px;
   margin: auto;
-  color: white;
+  color: rgba(255, 255, 255, 0.7);
   background: transparent;
   border: none;
 }
 
 .button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  color: white;
 }
-
 </style>
