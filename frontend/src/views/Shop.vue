@@ -46,20 +46,18 @@ const startExplore = () => {
 }
 
 const handleScrollDown = (id: number) => {
-  if (id !== shopMainList.value.length) {
-    let t = document.getElementsByName('shop-main-row')
+  let rowList = document.getElementsByName('shop-main-row')
 
-    t[id].scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }
+  rowList[id].scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  })
 }
 
-const onAppear = document.getElementsByName('shop-main-row')
+const rowAppear = document.getElementsByName('shop-main-row')
 
 const scrollHandler = () => {
-  onAppear.forEach((elem) => {
+  rowAppear.forEach((elem) => {
     const vwTop      = window.scrollY;
     const vwBottom   = (window.scrollY + window.innerHeight);
     const elemTop    = elem.offsetTop;
@@ -94,7 +92,7 @@ onUnmounted(() => {
 
       <div style="display: flex; justify-content: center">
         <div style="cursor: pointer; width: 4vw;" @click="startExplore">
-          <p style="color: #999999; margin: 0 0 24px; width: 4em">探索更多</p>
+          <p style="color: #999999; margin: 0 0 24px">探索更多</p>
           <el-icon class="start-icon">
             <arrow-down/>
           </el-icon>
@@ -147,7 +145,8 @@ onUnmounted(() => {
         </el-row>
 
         <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                 @click="handleScrollDown(item.id)">
+                 @click="handleScrollDown(item.id)"
+                 v-if="item.id !== shopMainList.length">
           <arrow-down/>
         </el-icon>
 
@@ -176,14 +175,13 @@ onUnmounted(() => {
         </el-row>
 
         <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                 @click="handleScrollDown(item.id)">
+                 @click="handleScrollDown(item.id)"
+                 v-if="item.id !== shopMainList.length">
           <arrow-down/>
         </el-icon>
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script lang="ts">
@@ -257,14 +255,14 @@ export default {
 
 .visible {
   animation-name: row-top-in;
-  animation-duration: 1s;
+  animation-duration: 0.8s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
 @keyframes row-top-in {
   0% {
-    transform: translateY(300px);
+    transform: translateY(240px);
     opacity: 0;
   }
   100% {
