@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import GoodsCard          from "../components/GoodsCard.vue";
-import TopSwiper          from "../components/TopSwiper.vue";
-import { onMounted, ref } from "vue";
+import GoodsCard                       from "../components/GoodsCard.vue";
+import TopSwiper                       from "../components/TopSwiper.vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import {
   ArrowDown,
-}                         from '@element-plus/icons-vue'
+}                                      from '@element-plus/icons-vue'
 
 interface goods {
   name: string,
@@ -16,7 +16,7 @@ interface shopMainItem {
   title: string,
   description: string,
   // goodsList: goods[],
-  id: string,
+  id: number,
 }
 
 const testGoodsList = ref<goods[]>()
@@ -24,17 +24,17 @@ const testGoodsList = ref<goods[]>()
 const shopMainList = ref<shopMainItem[]>([
   {
     image: 'https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    title: '拒绝被定义',
-    description: '你应该有自己的想法与个性。',
+    title: '大显身手',
+    description: '精彩由此开始。',
     // goodsList: testGoodsList,
-    id: '1',
+    id: 1,
   },
   {
-    image: 'https://images.pexels.com/photos/39561/solar-flare-sun-eruption-energy-39561.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    image: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     title: '帮手在此',
     description: '时时待命应你所需。',
     // goodsList: testGoodsList,
-    id: '2',
+    id: 2,
   },
 ])
 
@@ -45,24 +45,64 @@ const startExplore = () => {
   })
 }
 
-const handleScrollDown = (id: string) => {
-  let t = document.getElementsByName('shop-main-row')
-  t[<number>id].scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-  })
+const handleScrollDown = (id: number) => {
+  if (id !== shopMainList.value.length) {
+    let t = document.getElementsByName('shop-main-row')
+
+    t[id].scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+}
+
+const onAppear = document.getElementsByName('shop-main-row')
+
+const scrollHandler = () => {
+  onAppear.forEach((elem) => {
+    const vwTop      = window.scrollY;
+    const vwBottom   = (window.scrollY + window.innerHeight);
+    const elemTop    = elem.offsetTop;
+    const elemHeight = elem.offsetHeight;
+
+    if (vwBottom > elemTop && ((vwTop - elemHeight) < elemTop)) {
+      elem.classList.add("visible");
+    }
+  });
 }
 
 onMounted(() => {
-  // window.addEventListener('scroll', handleScroll)
+  window.addEventListener('scroll', scrollHandler, true)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', scrollHandler, true)
 })
 
 </script>
 
 <template>
-  <div style="justify-content: center; display: flex">
-    <TopSwiper/>
+  <div style="height: calc(100vh - 100px)">
+    <div style="justify-content: center; display: flex">
+      <TopSwiper/>
+    </div>
+
+    <div>
+      <p class="slogan">
+        <span style="color: #c1ab85">这个商店</span>，产品都称心，体验更如意。
+      </p>
+
+      <div style="display: flex; justify-content: center">
+        <div style="cursor: pointer; width: 4vw;" @click="startExplore">
+          <p style="color: #999999; margin: 0 0 24px; width: 4em">探索更多</p>
+          <el-icon class="start-icon">
+            <arrow-down/>
+          </el-icon>
+        </div>
+      </div>
+    </div>
   </div>
+
 
   <!--  <el-row style="margin-top: 48px; display: flex; justify-content: center">-->
   <!--    <el-col :span="3">-->
@@ -80,27 +120,12 @@ onMounted(() => {
   <!--      </el-col>-->
   <!--    </el-row>-->
 
-  <div style="margin-bottom: 13vh">
-    <p class="slogan">
-      <span style="color: #c1ab85">这个商店</span>，产品都称心，体验更如意。
-    </p>
-
-    <div style="display: flex; justify-content: center">
-      <div style="cursor: pointer; width: 4vw;" @click="startExplore">
-        <p style="color: #999999; margin: 0 0 24px">探索更多</p>
-        <el-icon class="start-icon">
-          <arrow-down/>
-        </el-icon>
-      </div>
-    </div>
-  </div>
-
   <div v-for="(item, idx) in shopMainList">
-    <div style="height: calc(100vh - 100px); width: 100%;" id="shop-main">
-      <div v-if="(idx % 2) === 0" style="height: 100%">
-        <el-row name="shop-main-row">
-          <el-col :span="6" :offset="4">
-            <el-image :src="item.image" style="border-radius: 12px; margin-top: 15vh"/>
+    <div style="height: 100vh; width: 100%;" id="shop-main">
+      <div v-if="(idx % 2) === 0" style="height: 100%; padding-top: 8vh; overflow: hidden">
+        <el-row name="shop-main-row" style="overflow-y: auto">
+          <el-col :span="6" :offset="4" style="display: flex; flex-direction: column; justify-content: center">
+            <el-image :src="item.image" style="border-radius: 12px"/>
           </el-col>
 
           <el-col :span="10" :offset="1">
@@ -108,7 +133,7 @@ onMounted(() => {
               <p class="shop-item-title-left">{{ item.title }}</p>
               <p class="shop-item-description-left">{{ item.description }}</p>
 
-              <el-scrollbar style="height: 350px; margin-top: 6vh">
+              <el-scrollbar style="height: 420px; margin-top: 4vh">
                 <div style="display: flex;">
                   <div v-for="item in 12" :key="item">
                     <router-link :to="{ path: '/goods' }" style="text-decoration: none">
@@ -127,14 +152,14 @@ onMounted(() => {
         </el-icon>
 
       </div>
-      <div v-else :id="item.id" style="height: 100%">
-        <el-row name="shop-main-row">
+      <div v-else :id="item.id" style="height: 100%; padding-top: 8vh; overflow: hidden">
+        <el-row name="shop-main-row" style="overflow-y: auto">
           <el-col :span="10" :offset="3">
             <div class="goods-content-root-right">
               <p class="shop-item-title-right">{{ item.title }}</p>
               <p class="shop-item-description-right">{{ item.description }}</p>
 
-              <el-scrollbar style="height: 350px; margin-top: 6vh">
+              <el-scrollbar style="height: 420px; margin-top: 4vh">
                 <div style="display: flex;">
                   <div v-for="item in 12" :key="item">
                     <router-link :to="{ path: '/goods' }" style="text-decoration: none">
@@ -145,8 +170,8 @@ onMounted(() => {
               </el-scrollbar>
             </div>
           </el-col>
-          <el-col :span="6" :offset="1">
-            <el-image :src="item.image" style="border-radius: 12px; margin-top: 15vh"/>
+          <el-col :span="6" :offset="1" style="display: flex; flex-direction: column; justify-content: center">
+            <el-image :src="item.image" style="border-radius: 12px;"/>
           </el-col>
         </el-row>
 
@@ -157,6 +182,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
 
 </template>
 
@@ -193,25 +219,14 @@ export default {
   }
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.01);
-  border-radius: 10px;
-  backdrop-filter: blur(20px);
-  border-top: 1px solid #f6eacc;
-  border-left: 1px solid #f6eacc;
-  border-right: 1px solid #777777;
-  border-bottom: 1px solid #777777;
-  box-shadow: 0 0 4px #f6eacc;
-}
-
 .goods-content-root-left {
   margin-left: 4vw;
-  margin-top: 10vh;
+  margin-top: 8vh;
 }
 
 .goods-content-root-right {
   margin-right: 4vw;
-  margin-top: 10vh;
+  margin-top: 8vh;
 }
 
 .shop-item-title-left,
@@ -238,5 +253,23 @@ export default {
   font-size: 36px;
   font-family: 微軟正黑體;
   color: #999999;
+}
+
+.visible {
+  animation-name: row-top-in;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes row-top-in {
+  0% {
+    transform: translateY(300px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 </style>
