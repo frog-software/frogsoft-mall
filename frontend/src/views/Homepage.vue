@@ -1,8 +1,8 @@
 <template>
-  <el-row style="margin-top: -120px; margin-bottom: -56px; height: 880px">
+  <el-row style="margin-top: -120px; margin-bottom: -56px; height: calc(100vh - 56px)">
     <el-col :span="9" :offset="4" style="font-family: 微軟正黑體, serif;">
       <div style="color: white; margin-top: 180px;  " class="main-text">
-        <p style="margin-left: -12px; font-size: 72px; display: inline; width: auto;  font-weight: bold;" >知你所爱，寻你所需。</p>
+        <p style="margin-left: -22px; font-size: 72px; display: inline; width: auto;  font-weight: bold;" >知你所爱，寻你所需。</p>
       </div>
 
       <div style="height: 4px; margin: 8px -6px; background: linear-gradient(to right, white, transparent);" class="bar"/>
