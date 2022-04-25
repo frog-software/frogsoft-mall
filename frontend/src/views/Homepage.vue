@@ -1,39 +1,40 @@
 <template>
-  <el-row style="margin-top: -120px; margin-bottom: -56px; height: calc(100vh - 56px)">
-    <el-col :span="9" :offset="4" style="font-family: 微軟正黑體, serif;">
-      <div style="color: white; margin-top: 180px;  " class="main-text">
-        <p style="margin-left: -22px; font-size: 72px; display: inline; width: auto;  font-weight: bold;" >知你所爱，寻你所需。</p>
-      </div>
+  <div style="height: calc(100vh - 180px); overflow: hidden; margin-top: -60px; ">
+    <el-row>
+      <el-col :span="9" :offset="4" style="font-family: 微軟正黑體, serif;">
+        <div style="color: white; margin-top: 180px;  " class="main-text">
+          <p style="font-size: 72px; display: inline; width: auto;  font-weight: bold;" >知你所爱，寻你所需。</p>
+        </div>
 
-      <div style="height: 4px; margin: 8px -6px; background: linear-gradient(to right, white, transparent);" class="bar"/>
+        <div style="height: 4px; margin: 8px -6px; background: linear-gradient(to right, white, transparent);" class="bar"/>
 
-      <div style="color: #999999; margin-top: 24px; text-align: left" class="text">
-        <p style="font-size: 18px">
-          我们致力于打造一款现代电商，犹如提着油灯在黑暗中闪闪发光前行的探索者。
-        </p>
-      </div>
+        <div style="color: #999999; margin-top: 24px; text-align: left" class="text">
+          <p style="font-size: 18px">
+            我们致力于打造一款现代电商，犹如提着油灯在黑暗中闪闪发光前行的探索者。
+          </p>
+        </div>
 
-      <div style="color: #999999; margin-left: -23vw; margin-top: 64px;" class="text">
-        <p>开始你的电商之旅来探索更多内容！</p>
-      </div>
+        <div style="color: #999999; margin-top: 64px; text-align: left" class="text">
+          <p>开始你的电商之旅来探索更多内容！</p>
 
-      <router-link :to="{ path: '/main' }" style="margin-left: -24vw; text-decoration: none" @click.native="switchTab(0)">
-        <el-button class="start-button" round>
-          开始购物
-        </el-button>
-      </router-link>
+          <router-link :to="{ path: '/main' }" style="text-decoration: none" @click.native="switchTab(0)">
+            <el-button class="start-button" round>
+              开始购物
+            </el-button>
+          </router-link>
+        </div>
 
+        <div class="photo-text">
+          <p>Lantern lighting up in the pitch darkness of the autumn night.</p>
+          <p style="color: #999999; font-size: 14px; margin-top: -1em">By David Gabrić</p>
+        </div>
+      </el-col>
 
-      <div class="photo-text">
-        <p>Lantern lighting up in the pitch darkness of the autumn night.</p>
-        <p style="color: #999999; font-size: 14px; margin-top: -1em">By David Gabrić</p>
-      </div>
-    </el-col>
-
-    <el-col :span="10" style="user-select: none" class="photo">
-      <el-image src="/homepage-image-transparent.png" style="z-index: 0; -webkit-user-drag: none"/>
-    </el-col>
-  </el-row>
+      <el-col :span="10" style="user-select: none" class="photo">
+        <el-image src="/homepage-image-transparent.png" style="z-index: 0; -webkit-user-drag: none"/>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -49,6 +50,9 @@ export default {
   animation-duration: 0.8s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
+
+  text-align: left;
+  margin-left: -36px;
 }
 
 .text {
@@ -126,7 +130,7 @@ export default {
 .photo-text {
   color: white;
   margin-left: 8px;
-  margin-top: 13vh;
+  margin-top: 100px;
   font-family: 'Arial Black';
   text-align: left;
   opacity: 0;

@@ -11,10 +11,11 @@ import Footer from "./components/Footer.vue";
         <Header/>
       </el-header>
 
-      <el-main >
-        <router-view />
 
-        <Footer />
+      <el-main>
+        <router-view/>
+
+        <Footer/>
       </el-main>
     </el-container>
   </div>
