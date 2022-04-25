@@ -1,4 +1,4 @@
-package org.frogsoft.mall.auth.security.jwt;
+package org.frogsoft.mall.user.security.jwt;
 
 import static java.util.stream.Collectors.joining;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
-import org.frogsoft.mall.auth.repository.user.UserRepository;
+import org.frogsoft.mall.user.repository.UserRepository;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.user.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

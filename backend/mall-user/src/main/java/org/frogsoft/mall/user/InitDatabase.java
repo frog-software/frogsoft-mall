@@ -14,11 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class InitDatabase {
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-  }
-
-  @Bean
   CommandLineRunner init(
       PasswordEncoder passwordEncoder,
       UserRepository userRepository

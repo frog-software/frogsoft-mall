@@ -1,4 +1,4 @@
-package org.frogsoft.mall.auth.security.jwt;
+package org.frogsoft.mall.common.exception.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

@@ -2,7 +2,7 @@ package org.frogsoft.mall.auth.config;
 
 import lombok.AllArgsConstructor;
 import org.frogsoft.mall.auth.repository.user.UserRepository;
-import org.frogsoft.mall.auth.security.RestAuthenticationEntryPoint;
+import org.frogsoft.mall.common.security.RestAuthenticationEntryPoint;
 import org.frogsoft.mall.auth.security.jwt.JwtTokenAuthenticationFilter;
 import org.frogsoft.mall.auth.security.jwt.JwtTokenProvider;
 import org.frogsoft.mall.common.exception.basic.unauthorized.UnauthorizedException;
