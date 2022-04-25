@@ -53,6 +53,20 @@ class Request {
         this.axiosInstance.interceptors.response.use(
             // 请求成功
             (response: any) => {
+                for (var i in response.data.data) {
+
+                    if (i.toLowerCase().includes('time')) {
+                        response.data.data[i] = new Date(response.data.data[i])
+                    }
+                    if (Array.isArray(response.data.data[i]))
+                        for (var j in response.data.data[i])
+                            for (var k in response.data.data[i][j]) {
+                                if (k.toLowerCase().includes('time')) {
+                                    response.data.data[i][j][k] = new Date(response.data.data[i][j][k])
+                                }
+                            }
+
+                }
                 this.loading?.close() //将loading移除
                 return response
             },

@@ -10,3 +10,12 @@ export interface Address {
     name: string, // 姓名
     address: DetailsAddress // 地址
 }
+
+export interface LogisticsDetails {
+    id: string,
+    sender: Address,
+    receiver: Address,
+    sendTime: Date,
+    expectedReceiveTime: Date,
+    companyObligate: string
+}

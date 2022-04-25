@@ -9,3 +9,9 @@ export interface UserResponseInfo {
     accountList: string[],
     balance: string,
 }
+
+export interface CustomerSimpleInfo {
+    avatar: string,
+    nickname: string,
+    id: string
+}
