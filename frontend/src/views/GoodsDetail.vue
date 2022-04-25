@@ -36,6 +36,9 @@ const getDecimal = (n: number) => {
 
 const buyNum = ref<number>(1)
 
+const addGoodsToCart = () => {
+  console.log('nb')
+}
 
 </script>
 
@@ -91,10 +94,7 @@ const buyNum = ref<number>(1)
             </el-col>
           </el-row>
 
-
-
-
-          <el-button class="cart-button" style="border-radius: 16px 0 0 16px;">加入购物车</el-button>
+          <el-button class="cart-button" style="border-radius: 16px 0 0 16px;" @click="addGoodsToCart">加入购物车</el-button>
           <el-button class="buy-button" style="border-radius: 0 16px 16px 0;">立即购买</el-button>
         </div>
       </el-col>
@@ -128,19 +128,18 @@ export default {
   width: 240px;
   height: 56px;
   font-size: 16px;
-  font-weight: bolder;
+  font-weight: normal;
   margin: 8px 0 0 0;
 }
 
 .cart-button {
-  background: linear-gradient(to right, #c1ab85, #f6eacc);
+  background: #010101;
+  color: #f6eacc;
   border: 1px solid #f6eacc;
-  color: transparent;
-  -webkit-background-clip: text;
 }
 
 .cart-button:hover {
-  background: rgba(1,1,1, 0.7);
+  background: rgba(80, 80, 80, 0.5);
 }
 
 .buy-button {
@@ -148,6 +147,10 @@ export default {
   border: 1px solid #f6eacc;
   border-left: none;
   color: #010101;
+}
+
+.buy-button:hover {
+  background: linear-gradient(to right, rgba(246,234,204, 0.8), rgba(193,171,133, 0.8));
 }
 
 </style>
