@@ -1,8 +1,10 @@
 package org.frogsoft.mall.user.controller;
 
 import java.util.ArrayList;
+import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.forbidden.ForbiddenException;
+import org.frogsoft.mall.common.exception.basic.unauthorized.UnauthorizedException;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.frogsoft.mall.user.dto.UserDto;
@@ -23,6 +25,7 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/")
+  @RolesAllowed({"ROLE_ADMIN"})
   public ResponseEntity<?> getAllUsers() {
     return new ResponseBodyWrapper<ArrayList<UserDto>>()
         .status(HttpStatus.OK)
@@ -36,6 +39,11 @@ public class UserController {
       @PathVariable(value = "username") String username,
       @AuthenticationPrincipal User authenticatedUser
   ) {
+
+    // 这个只是测试的时候会是 null, 其实是不需要的 (因为可以配置这个接口强制鉴权，就不会是 null 了)
+    if (authenticatedUser == null) {
+      throw new UnauthorizedException("你没有登录");
+    }
 
     if (!(username.equals(authenticatedUser.getUsername())
         || authenticatedUser.getRoles().contains("ROLE_ADMIN")
