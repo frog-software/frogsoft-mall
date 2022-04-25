@@ -14,6 +14,7 @@ public class ProductDtoMapper {
         .setProductName(product.getProductName())
         .setBrand(product.getBrand())
         .setCategory(product.getCategory())
-        .setPrize(product.getPrize());
+        .setPrice(product.getPrice())
+        .setDescription(product.getDescription());
   }
 }
