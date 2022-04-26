@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"frogsoftware/object-storage/providers/tencentcloud"
 	"frogsoftware/object-storage/utils"
 	"net/http"
@@ -28,7 +27,7 @@ func main() {
 		fullPath = utils.RemovePrefix("/", fullPath)
 		// path must not be empty
 		if len(fullPath) == 0 {
-			c.String(http.StatusBadRequest, "invalid path")
+			c.String(http.StatusBadRequest, "Invalid Path")
 			return
 		}
 		// prefix with 'mall/'
@@ -46,7 +45,8 @@ func main() {
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Upload Failed")
 		}
-		c.String(http.StatusOK, fmt.Sprintf("%s", c.Request.URL))
+
+		c.String(http.StatusCreated, c.Request.URL.Path)
 	}
 
 	router := gin.Default()
