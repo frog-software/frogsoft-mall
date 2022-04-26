@@ -4,7 +4,9 @@ import TopSwiper                       from "../components/TopSwiper.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import {
   ArrowDown,
-}                                      from '@element-plus/icons-vue'
+  ColdDrink
+}                  from '@element-plus/icons-vue'
+import { CDN_URL } from "../consts/urls"
 
 interface goods {
   name: string,
@@ -21,21 +23,37 @@ interface shopMainItem {
 
 const testGoodsList = ref<goods[]>()
 
+// 特殊展示的商店商品列表
 const shopMainList = ref<shopMainItem[]>([
   {
-    image: 'https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    image: CDN_URL + '/shop-special-example-1.webp',
     title: '大显身手',
     description: '精彩由此开始。',
     // goodsList: testGoodsList,
     id: 1,
   },
   {
-    image: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    image: CDN_URL + '/shop-special-example-2.webp',
     title: '帮手在此',
     description: '时时待命应你所需。',
     // goodsList: testGoodsList,
     id: 2,
   },
+])
+
+// 下方一般分类的商品列表
+const commandGoodsList = ref<any>([
+  {
+    name: '新品上市',
+    // goodsList
+  },
+  {
+    name: '运动健康',
+    //
+  },
+  {
+    name: '智能家居'
+  }
 ])
 
 const startExplore = () => {
@@ -80,108 +98,123 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div style="height: calc(100vh - 100px)">
-    <div style="justify-content: center; display: flex">
-      <TopSwiper/>
+  <div>
+    <div style="height: calc(100vh - 100px)">
+      <div style="justify-content: center; display: flex">
+        <TopSwiper/>
+      </div>
+
+      <div>
+        <p class="slogan">
+          <span style="color: #c1ab85; font-weight: bold">这个商店</span>，产品都称心，体验更如意。
+        </p>
+
+        <div style="display: flex; justify-content: center">
+          <div style="cursor: pointer; width: 96px; " @click="startExplore">
+            <p style="color: #999999; margin: 0 0 24px">探索更多</p>
+            <el-icon class="start-icon">
+              <arrow-down/>
+            </el-icon>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <p class="slogan">
-        <span style="color: #c1ab85">这个商店</span>，产品都称心，体验更如意。
-      </p>
+    <div v-for="(item, idx) in shopMainList">
+      <div style="height: 100vh; width: 100%; " id="shop-main">
+        <div v-if="(idx % 2) === 0" :id="item.id" style="height: 100%; overflow: hidden;">
+          <el-row name="shop-main-row" style="overflow-y: auto; padding-top: 6vh; ">
+            <el-col :span="6" :offset="4" style="display: flex; flex-direction: column; justify-content: center">
+              <el-image :src="item.image" style="border-radius: 12px"/>
+            </el-col>
 
-      <div style="display: flex; justify-content: center">
-        <div style="cursor: pointer; width: 4vw;" @click="startExplore">
-          <p style="color: #999999; margin: 0 0 24px">探索更多</p>
-          <el-icon class="start-icon">
+            <el-col :span="9" :offset="1">
+              <div class="goods-content-root-left">
+                <p class="shop-item-title-left">{{ item.title }}</p>
+                <p class="shop-item-description-left">{{ item.description }}</p>
+
+                <el-scrollbar style="height: 440px; margin-top: 4vh;" always>
+                  <div style="display: flex; padding: 12px">
+                    <div v-for="item in 12" :key="item">
+                      <div style="margin-right: 24px">
+                        <router-link :to="{ path: '/goods' }" style="text-decoration: none;">
+                          <GoodsCard/>
+                        </router-link>
+                      </div>
+                    </div>
+                  </div>
+                </el-scrollbar>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
+                   @click="handleScrollDown(item.id)"
+                   v-if="item.id !== shopMainList.length">
+            <arrow-down/>
+          </el-icon>
+
+        </div>
+        <div v-else :id="item.id" style="height: 100%; overflow: hidden; ">
+          <el-row name="shop-main-row" style="overflow-y: auto; padding-top: 6vh;">
+            <el-col :span="10" :offset="3">
+              <div class="goods-content-root-right">
+                <p class="shop-item-title-right">{{ item.title }}</p>
+                <p class="shop-item-description-right">{{ item.description }}</p>
+
+                <el-scrollbar style="height: 440px; margin-top: 4vh" always>
+                  <div style="display: flex; padding: 12px">
+                    <div v-for="item in 12" :key="item">
+                      <div style="margin-right: 24px">
+                        <router-link :to="{ path: '/goods' }" style="text-decoration: none;">
+                          <GoodsCard/>
+                        </router-link>
+                      </div>
+                    </div>
+                  </div>
+                </el-scrollbar>
+              </div>
+            </el-col>
+            <el-col :span="6" :offset="1" style="display: flex; flex-direction: column; justify-content: center">
+              <el-image :src="item.image" style="border-radius: 12px;"/>
+            </el-col>
+          </el-row>
+
+          <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
+                   @click="handleScrollDown(item.id)"
+                   v-if="item.id !== shopMainList.length">
             <arrow-down/>
           </el-icon>
         </div>
       </div>
     </div>
-  </div>
 
-
-  <!--  <el-row style="margin-top: 48px; display: flex; justify-content: center">-->
-  <!--    <el-col :span="3">-->
-  <!--      <div class="glass" style="height: 500px"></div>-->
-  <!--    </el-col>-->
-
-  <!--      <el-col :span="9" :offset="1">-->
-  <!--        <div class="glass" style="padding: 24px">-->
-  <!--          <el-carousel :interval="4000" type="card" :key="item" height="200px">-->
-  <!--            <el-carousel-item v-for="item in 6">-->
-  <!--              <h3>{{ item }}</h3>-->
-  <!--            </el-carousel-item>-->
-  <!--          </el-carousel>-->
-  <!--        </div>-->
-  <!--      </el-col>-->
-  <!--    </el-row>-->
-
-  <div v-for="(item, idx) in shopMainList">
-    <div style="height: 100vh; width: 100%;" id="shop-main">
-      <div v-if="(idx % 2) === 0" style="height: 100%; padding-top: 8vh; overflow: hidden">
-        <el-row name="shop-main-row" style="overflow-y: auto">
-          <el-col :span="6" :offset="4" style="display: flex; flex-direction: column; justify-content: center">
-            <el-image :src="item.image" style="border-radius: 12px"/>
-          </el-col>
-
-          <el-col :span="10" :offset="1">
-            <div class="goods-content-root-left">
-              <p class="shop-item-title-left">{{ item.title }}</p>
-              <p class="shop-item-description-left">{{ item.description }}</p>
-
-              <el-scrollbar style="height: 420px; margin-top: 4vh">
-                <div style="display: flex;">
-                  <div v-for="item in 12" :key="item">
-                    <router-link :to="{ path: '/goods' }" style="text-decoration: none">
-                      <GoodsCard/>
-                    </router-link>
-                  </div>
-                </div>
-              </el-scrollbar>
-            </div>
-          </el-col>
-        </el-row>
-
-        <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                 @click="handleScrollDown(item.id)"
-                 v-if="item.id !== shopMainList.length">
-          <arrow-down/>
+    <div style="display: flex; flex-direction: column; align-items: center; padding-top: 84px" v-for="item in commandGoodsList">
+      <div style="font-size: 36px; display: flex; flex-direction: row">
+        <el-icon color="#f6eacc" style="transform: rotateY(180deg); margin-top: 14px">
+          <cold-drink/>
         </el-icon>
 
+        <p style="font-size: 48px; margin: 0 12px; font-family: 微軟正黑體; font-weight: normal; color: #f6eacc; user-select: none">{{ item.name }}</p>
+
+        <el-icon color="#f6eacc" style="margin-top: 14px">
+          <cold-drink/>
+        </el-icon>
       </div>
-      <div v-else :id="item.id" style="height: 100%; padding-top: 8vh; overflow: hidden">
-        <el-row name="shop-main-row" style="overflow-y: auto">
-          <el-col :span="10" :offset="3">
-            <div class="goods-content-root-right">
-              <p class="shop-item-title-right">{{ item.title }}</p>
-              <p class="shop-item-description-right">{{ item.description }}</p>
 
-              <el-scrollbar style="height: 420px; margin-top: 4vh">
-                <div style="display: flex;">
-                  <div v-for="item in 12" :key="item">
-                    <router-link :to="{ path: '/goods' }" style="text-decoration: none">
-                      <GoodsCard/>
-                    </router-link>
-                  </div>
-                </div>
-              </el-scrollbar>
-            </div>
-          </el-col>
-          <el-col :span="6" :offset="1" style="display: flex; flex-direction: column; justify-content: center">
-            <el-image :src="item.image" style="border-radius: 12px;"/>
+      <div style="width: 60%; display: flex; justify-content: center; margin-top: 24px">
+        <el-row justify="space-between" gutter="24px">
+          <el-col :span="6" style="display: flex; justify-content: center; margin-top: 24px" v-for="item in 8">
+            <router-link :to="{ path: '/goods' }" style="text-decoration: none; ">
+              <GoodsCard/>
+            </router-link>
           </el-col>
         </el-row>
-
-        <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                 @click="handleScrollDown(item.id)"
-                 v-if="item.id !== shopMainList.length">
-          <arrow-down/>
-        </el-icon>
       </div>
     </div>
   </div>
+
+
 </template>
 
 <script lang="ts">
@@ -270,4 +303,6 @@ export default {
     opacity: 1;
   }
 }
+
+
 </style>
