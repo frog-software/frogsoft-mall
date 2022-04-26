@@ -2,7 +2,7 @@
   <div style="height: calc(100vh - 180px); overflow: hidden; margin-top: -60px; ">
     <el-row>
       <el-col :span="10" :offset="4" style="font-family: 微軟正黑體, serif;">
-        <div style="color: white; margin-top: 180px; " class="main-text">
+        <div style="color: white; margin-top: 18vh; " class="main-text">
           <p style="font-size: 72px; min-width: 10em; font-weight: bold; margin: 0" >知你所爱，寻你所需。</p>
         </div>
 
