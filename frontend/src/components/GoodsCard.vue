@@ -56,7 +56,11 @@ export default {
   background: #f6f5f8;
   overflow: hidden;
   border-radius: 8px;
-  /*box-shadow: 0 0 4px #f6eacc;*/
+  user-select: none;
+}
+
+.card:hover {
+  box-shadow: 0px 0px 15px 3px rgba(246,234,204,0.75);
 }
 
 .goods-detail {
