@@ -1,28 +1,41 @@
 <script setup lang="ts">
-import { ref }     from "vue";
-import { CDN_URL } from "../consts/urls";
-
-interface goods {
-  name: string,
-  image: string[],
-  description: string,
-  price: number,
-  category: string,
-}
+import { ref }                               from "vue";
+import { CDN_URL }                           from "../consts/urls";
+import { ProductDetails, ProductSimpleInfo } from "../types/product";
+import { ShopResponseInfo }                  from "../types/shop";
+import { CommentDetails }                    from "../types/comment";
+import { CustomerSimpleInfo }                from "../types/user";
+import { Star }                  from '@element-plus/icons-vue'
 
 const currentImage = ref<number>(0)
 
-const testGoods = ref<goods>({
-  name: 'iPad Pro',
-  image: [
+const testShop = ref<ShopResponseInfo>({
+  rate: 2.7,
+  shopName: 'APPLE',
+})
+
+const testCommentList = ref<CommentDetails[]>()
+
+const testGoods = ref<ProductDetails>({
+  id: 'AAAA',
+  category: '电子产品',
+  brand: 'APPLE',
+  productName: 'iPad Pro',
+  price: 123.456,
+  shop: testShop,
+  description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
+  commentList: testCommentList,
+  imageList: [
+    `${CDN_URL}/goodsdetail-example-1.png`,
+    `${CDN_URL}/goodsdetail-example-2.png`,
+    `${CDN_URL}/goodsdetail-example-3.png`,
+    `${CDN_URL}/goodsdetail-example-4.png`,
     `${CDN_URL}/goodsdetail-example-1.png`,
     `${CDN_URL}/goodsdetail-example-2.png`,
     `${CDN_URL}/goodsdetail-example-3.png`,
     `${CDN_URL}/goodsdetail-example-4.png`,
   ],
-  description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
-  price: 123.456,
-  category: '电子产品'
+  thumb: `${CDN_URL}/goodsdetail-example-1.png`,
 })
 
 const switchImage = (idx: number) => {
@@ -45,17 +58,17 @@ const addGoodsToCart = () => {
   <div style="min-height: calc(100vh - 200px)">
     <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 16vw; ">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>{{ testGoods.name }}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ testGoods.productName }}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-row style="margin-top: 24px">
-      <el-col :span="7" :offset="5" style="display: flex; justify-content: center">
+      <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
         <div>
-          <el-image style="border-radius: 12px; width: 90%" :src="testGoods.image[currentImage]"/>
+          <el-image style="border-radius: 12px; width: 90%" :src="testGoods.imageList[currentImage]"/>
 
           <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
             <div style="display: flex; width: 15vw; padding: 12px 24px; ">
-              <div v-for="(src, idx) in testGoods.image" :key="src" @click="switchImage(idx)">
+              <div v-for="(src, idx) in testGoods.imageList" :key="src" @click="switchImage(idx)">
                 <el-image :src="src" fit="contain" class="image-thumb"/>
               </div>
             </div>
@@ -63,9 +76,9 @@ const addGoodsToCart = () => {
         </div>
       </el-col>
 
-      <el-col :span="8" :offset="1" style="font-family: 微軟正黑體; color: white; text-align: left">
+      <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left">
         <div>
-          <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ testGoods.name }}</p>
+          <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ testGoods.productName }}</p>
           <p style="margin-top: 24px">{{ testGoods.description }}</p>
         </div>
 
@@ -83,8 +96,26 @@ const addGoodsToCart = () => {
             </el-col>
           </el-row>
 
-          <el-button class="cart-button" style="border-radius: 16px 0 0 16px;" @click="addGoodsToCart">加入购物车</el-button>
-          <el-button class="buy-button" style="border-radius: 0 16px 16px 0;">立即购买</el-button>
+          <div>
+            <el-button class="cart-button" @click="addGoodsToCart">加入购物车</el-button>
+            <el-button class="buy-button">立即购买</el-button>
+          </div>
+        </div>
+
+        <div style="width: 90%; margin-top: 56px; border-top: 1px solid #f6eacc; color: white">
+          <el-row style="display: flex; align-items: center; ">
+            <el-col :span="4" >
+              <p>商店评分</p>
+            </el-col>
+            <el-col :span="4" >
+              <el-rate
+                  v-model="testGoods.shop.rate"
+                  disabled
+                  :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
+                  disabled-void-color="transparent"
+              />
+            </el-col>
+          </el-row>
         </div>
       </el-col>
     </el-row>
@@ -119,12 +150,14 @@ export default {
   font-size: 16px;
   font-weight: normal;
   margin: 8px 0 0 0;
+  box-shadow: 0 8px 40px 2px rgba(246,234,204,0.52);
 }
 
 .cart-button {
   background: #010101;
   color: #f6eacc;
   border: 1px solid #f6eacc;
+  border-radius: 16px 0 0 16px;
 }
 
 .cart-button:hover {
@@ -136,6 +169,7 @@ export default {
   border: 1px solid #f6eacc;
   border-left: none;
   color: #010101;
+  border-radius: 0 16px 16px 0;
 }
 
 .buy-button:hover {
