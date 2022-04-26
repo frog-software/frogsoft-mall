@@ -1,0 +1,40 @@
+package tencentcloud
+
+import (
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+
+	"github.com/tencentyun/cos-go-sdk-v5"
+)
+
+func NewClient() *cos.Client {
+	cosUrl := os.Getenv("COS_URL")
+	cosSecretId := os.Getenv("COS_SECRET_ID")
+	cosSecretKey := os.Getenv("COS_SECRET_KEY")
+
+	// check empty environment variables
+	if len(cosUrl) == 0 || len(cosSecretId) == 0 || len(cosSecretKey) == 0 {
+		fmt.Errorf("COS_URL, COS_SECRET_ID, COS_SECRET_KEY must be set")
+		os.Exit(1)
+	}
+
+	// login
+	u, _ := url.Parse(cosUrl)
+	b := &cos.BaseURL{
+		BucketURL: u,
+	}
+	c := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  cosSecretId,
+			SecretKey: cosSecretKey,
+		},
+	})
+
+	return c
+}
+
+func TranslateObjectUrl(objectId string, cosClient *cos.Client) string {
+	return cosClient.BaseURL.BucketURL.String() + objectId
+}
