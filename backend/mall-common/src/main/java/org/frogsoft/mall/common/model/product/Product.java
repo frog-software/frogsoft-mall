@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +22,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.frogsoft.mall.common.model.comment.Comment;
 import org.frogsoft.mall.common.model.shop.Shop;
+import org.frogsoft.mall.common.util.JpaConverterListJson;
 
 @Getter
 @Setter
@@ -50,6 +52,13 @@ public class Product {
     // 一对多关系：评论模型外键
     @OneToMany(mappedBy = "product")
     private List<Comment> commentList ;
+
+    // 存储缩略图的URL列表（以JSON格式存储字符串列表）
+    @Convert(converter = JpaConverterListJson.class)
+    private List<String> imageList;
+
+    // 存储头图的URL
+    private String thumb;
 
     /**
      * 多对一关系，由多方维系关系

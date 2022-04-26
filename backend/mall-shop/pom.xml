@@ -1,7 +1,24 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>mall-common</artifactId>
+  <artifactId>mall-shop</artifactId>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
 
     <!-- SpringBoot Web -->
@@ -10,16 +27,16 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
 
+    <!-- SpringCloud Alibaba Nacos -->
+    <dependency>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+    </dependency>
+
     <!-- SpringCloud Alibaba Nacos Config -->
     <dependency>
       <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
       <groupId>com.alibaba.cloud</groupId>
-    </dependency>
-
-    <!-- SpringBoot Actuator -->
-    <dependency>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-      <groupId>org.springframework.boot</groupId>
     </dependency>
 
     <dependency>
@@ -29,11 +46,6 @@
 
     <dependency>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-boot-starter-security</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
 
@@ -58,14 +70,15 @@
     </dependency>
 
     <dependency>
-      <artifactId>postgresql</artifactId>
-      <groupId>org.postgresql</groupId>
-      <scope>runtime</scope>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -73,15 +86,17 @@
       <groupId>org.projectlombok</groupId>
       <optional>true</optional>
     </dependency>
+
     <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-      <version>1.2.39</version>
+      <artifactId>mall-common</artifactId>
+      <groupId>org.frogsoft</groupId>
+      <scope>compile</scope>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
   </dependencies>
 
-  <description>Frogsoft Mall 通用模块</description>
+  <description>Frogsoft Mall 店铺模块</description>
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -90,6 +105,5 @@
     <groupId>org.frogsoft</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-
 
 </project>

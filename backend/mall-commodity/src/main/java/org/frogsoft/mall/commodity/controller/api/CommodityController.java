@@ -1,7 +1,8 @@
-package org.frogsoft.mall.commodity.controller;
+package org.frogsoft.mall.commodity.controller.api;
 
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
+import org.frogsoft.mall.commodity.controller.request.AddProductRequset;
 import org.frogsoft.mall.commodity.dto.ProductDto;
 import org.frogsoft.mall.common.exception.basic.forbidden.ForbiddenException;
 import org.frogsoft.mall.common.model.product.Product;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +28,18 @@ public class CommodityController {
 
     private final CommodityService commodityService;
 
-/*    // PD01-01
-    @PostMapping("/{id}/simple")*/
+    // PD01-01
+    @PostMapping("/simple")
+    public ResponseEntity<?> addProductToShop(
+        @RequestBody AddProductRequset addProductRequset,
+        @AuthenticationPrincipal User authenticatedUser
+    ){
+        ProductDto savedProduct = commodityService.saveProduct(addProductRequset, authenticatedUser);
+        return new ResponseBodyWrapper<ProductDto>()
+            .status(HttpStatus.CREATED)
+            .body(savedProduct)
+            .build();
+    }
 
     // PD01-02
     @GetMapping("/{id}/simple")
