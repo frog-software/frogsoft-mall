@@ -55,9 +55,9 @@ func main() {
 		case "GET":
 			getObject(ctx)
 		case "POST":
-			putObject(ctx)
-		case "PUT":
 			ctx.Next()
+		case "PUT":
+			putObject(ctx)
 		case "DELETE":
 			ctx.Next()
 		default:
