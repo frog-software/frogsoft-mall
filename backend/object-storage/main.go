@@ -1,8 +1,9 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"frogsoftware/object-storage/providers/tencentcloud"
+	"frogsoftware/object-storage/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,6 @@ func main() {
 	client := tencentcloud.NewClient()
 
 	getObject := func(c *gin.Context) {
-
 		// get the path
 		fullPath := c.Request.URL.Path
 		// generate a url pointing to COS
@@ -21,13 +21,41 @@ func main() {
 		c.Redirect(http.StatusMovedPermanently, cosUrl)
 	}
 
+	putObject := func(c *gin.Context) {
+		// get the path
+		fullPath := c.Request.URL.Path
+		// remove forward slash
+		fullPath = utils.RemovePrefix("/", fullPath)
+		// path must not be empty
+		if len(fullPath) == 0 {
+			c.String(http.StatusBadRequest, "invalid path")
+			return
+		}
+		// prefix with 'mall/'
+		fullPath = "mall/" + fullPath
+		// single file
+		file, _ := c.FormFile("file")
+
+		fd, err := file.Open()
+		if err != nil {
+			c.String(http.StatusBadRequest, "Invalid File")
+		}
+
+		err = tencentcloud.UploadFile(fullPath, fd, client)
+
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Upload Failed")
+		}
+		c.String(http.StatusOK, fmt.Sprintf("%s", c.Request.URL))
+	}
+
 	router := gin.Default()
 	router.Use(func(ctx *gin.Context) {
 		switch ctx.Request.Method {
 		case "GET":
 			getObject(ctx)
 		case "POST":
-			ctx.Next()
+			putObject(ctx)
 		case "PUT":
 			ctx.Next()
 		case "DELETE":
