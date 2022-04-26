@@ -5,7 +5,7 @@ import { ProductDetails, ProductSimpleInfo } from "../types/product";
 import { ShopResponseInfo }                  from "../types/shop";
 import { CommentDetails }                    from "../types/comment";
 import { CustomerSimpleInfo }                from "../types/user";
-import { Star }                  from '@element-plus/icons-vue'
+import { Star, Minus, Plus }                  from '@element-plus/icons-vue'
 
 const currentImage = ref<number>(0)
 
@@ -92,7 +92,9 @@ const addGoodsToCart = () => {
               </p>
             </el-col>
             <el-col :span="6" style="display: flex; align-items: center; margin-top: 4px">
-              <el-input-number v-model="buyNum" :min="1" />
+              <el-button :icon="Minus" class="num-control-button-left" :disabled="buyNum === 1" @click="buyNum--"/>
+              <input v-model="buyNum" class="num-control"/>
+              <el-button :icon="Plus" class="num-control-button-right" @click="buyNum++"/>
             </el-col>
           </el-row>
 
@@ -174,6 +176,50 @@ export default {
 
 .buy-button:hover {
   background: linear-gradient(to right, rgba(246,234,204, 0.8), rgba(193,171,133, 0.8));
+}
+
+.num-control {
+  border-radius: 0;
+  border: none;
+  outline: none;
+  text-align: center;
+  height: 28px;
+  background: transparent;
+  color: white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  width: 3em;
+  margin: 0;
+}
+
+.num-control-button-left,
+.num-control-button-right {
+  background: #010101;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+.num-control-button-left {
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+  border-right: none;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.num-control-button-right {
+  border-top: 1px solid white;
+  border-left: none;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.num-control-button-left:hover,
+.num-control-button-right:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 </style>
