@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.forbidden.ForbiddenException;
 import org.frogsoft.mall.common.exception.basic.unauthorized.UnauthorizedException;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.frogsoft.mall.user.dto.UserDto;
 import org.frogsoft.mall.user.service.UserService;
@@ -37,7 +38,7 @@ public class UserController {
   @GetMapping("/{username}")
   public ResponseEntity<?> getOneUser(
       @PathVariable(value = "username") String username,
-      @AuthenticationPrincipal User authenticatedUser
+      @AuthenticationPrincipal UserDetail authenticatedUser
   ) {
 
     // 这个只是测试的时候会是 null, 其实是不需要的 (因为可以配置这个接口强制鉴权，就不会是 null 了)
