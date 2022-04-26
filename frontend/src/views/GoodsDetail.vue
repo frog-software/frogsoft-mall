@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref }   from "vue";
-import GoodsCard from "../components/GoodsCard.vue";
+import { ref }     from "vue";
+import { CDN_URL } from "../consts/urls";
 
 interface goods {
   name: string,
@@ -15,11 +15,10 @@ const currentImage = ref<number>(0)
 const testGoods = ref<goods>({
   name: 'iPad Pro',
   image: [
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-202203?wid=1765&hei=2000&fmt=jpeg&qlt=95&.v=1645665079887',
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-wifi-spacegray-202203?wid=470&hei=556&fmt=png-alpha&.v=1645066742664',
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-wifi-pink-202203?wid=470&hei=556&fmt=png-alpha&.v=1645066399526',
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-wifi-purple-202203?wid=470&hei=556&fmt=png-alpha&.v=1645066730601',
-    'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-wifi-blue-202203?wid=470&hei=556&fmt=png-alpha&.v=1645065732688',
+    `${CDN_URL}/goodsdetail-example-1.png`,
+    `${CDN_URL}/goodsdetail-example-2.png`,
+    `${CDN_URL}/goodsdetail-example-3.png`,
+    `${CDN_URL}/goodsdetail-example-4.png`,
   ],
   description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
   price: 123.456,
@@ -53,16 +52,6 @@ const addGoodsToCart = () => {
       <el-col :span="7" :offset="5" style="display: flex; justify-content: center">
         <div>
           <el-image style="border-radius: 12px; width: 90%" :src="testGoods.image[currentImage]"/>
-
-<!--          <el-scrollbar style="height: 130px; width: 30vw; margin-top: 4px">-->
-<!--            <div style="display: flex">-->
-<!--                <el-image-->
-<!--                    v-for="src in testGoods.image"-->
-<!--                    :key="src" :src="src" fit="contain"-->
-<!--                    class="scrollbar-demo-item"-->
-<!--                    @click.native="() => { console.log('nbnb') }"/>-->
-<!--            </div>-->
-<!--          </el-scrollbar>-->
 
           <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
             <div style="display: flex; width: 15vw; padding: 12px 24px; ">

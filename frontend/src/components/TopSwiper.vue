@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { CDN_URL } from "../consts/urls"
 
 interface TopSwiperItem {
   title: string,
@@ -11,12 +12,12 @@ const topSwiper = ref<TopSwiperItem[]>([
   {
     title: 'APPAREL',
     subtitle: 'Free worldwide shipping',
-    image: 'https://cdn.junipercreates.com/apexlegends/images/Banner%201%20-%20Apparel%20(Desktop)_1644548927802.jpg',
+    image: `${CDN_URL}/topswiper-example-1.jpg`,
   },
   {
     title: 'ACCESSORIES',
     subtitle: 'Legendary collection',
-    image: 'https://cdn.junipercreates.com/apexlegends/images/Banner%202%20-%20Accessories%20(Desktop)_1644548870047.jpg',
+    image: `${CDN_URL}/topswiper-example-2.jpg`,
   },
 ])
 
@@ -72,8 +73,6 @@ export default {
   height: 500px;
   width: 100%;
   margin-bottom: 36px;
-
-  background: #42b983;
 
   position: relative;
   display: flex;
@@ -136,7 +135,7 @@ export default {
 }
 
 .title.active {
-  color: #c1ab85;
+  color: #f67129;
   font-size: 24px;
   font-weight: bold;
 }

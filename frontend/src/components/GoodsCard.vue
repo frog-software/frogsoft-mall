@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref }     from "vue";
+import { CDN_URL } from "../consts/urls"
+
+const image = ref<string>(CDN_URL + '/goodscard-example.webp')
 
 // 商品描述内容过长则需要省略
 const goodsDescriptionFormat = (str: string) => {
@@ -16,7 +20,7 @@ const goodsDescriptionFormat = (str: string) => {
     <el-image
         style="width: 100%"
         fit="cover"
-        src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fy.zdmimg.com%2F202111%2F19%2F6197a5b7a9bac538.jpg_d250.jpg&refer=http%3A%2F%2Fy.zdmimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652883296&t=86b2ce25d59b5edf0b002e322d646ea4"
+        :src=image
     />
 
     <div>
