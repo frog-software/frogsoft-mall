@@ -2,8 +2,8 @@ package main
 
 import (
 	"frogsoftware/object-storage/providers/tencentcloud"
-	"frogsoftware/object-storage/utils"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +24,7 @@ func main() {
 		// get the path
 		fullPath := c.Request.URL.Path
 		// remove forward slash
-		fullPath = utils.RemovePrefix("/", fullPath)
+		fullPath = strings.TrimPrefix(fullPath, "/")
 		// path must not be empty
 		if len(fullPath) == 0 {
 			c.String(http.StatusBadRequest, "Invalid Path")

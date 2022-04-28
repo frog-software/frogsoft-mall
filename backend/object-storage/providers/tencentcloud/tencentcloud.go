@@ -37,6 +37,7 @@ func NewClient() *cos.Client {
 	return c
 }
 
+// code style: 要把 context 放在前面，以后重构
 func TranslateObjectUrl(objectId string, cosClient *cos.Client) string {
 	return cosClient.BaseURL.BucketURL.String() + objectId
 }
