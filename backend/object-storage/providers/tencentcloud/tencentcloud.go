@@ -11,23 +11,23 @@ import (
 )
 
 func NewClient() *cos.Client {
-	cosUrl := os.Getenv("COS_URL")
-	cosSecretId := os.Getenv("COS_SECRET_ID")
+	cosURL := os.Getenv("COS_URL")
+	cosSecretID := os.Getenv("COS_SECRET_ID")
 	cosSecretKey := os.Getenv("COS_SECRET_KEY")
 
 	// check empty environment variables
-	if len(cosUrl) == 0 || len(cosSecretId) == 0 || len(cosSecretKey) == 0 {
+	if len(cosURL) == 0 || len(cosSecretID) == 0 || len(cosSecretKey) == 0 {
 		panic("COS_URL, COS_SECRET_ID, COS_SECRET_KEY must be set")
 	}
 
 	// login
-	u, _ := url.Parse(cosUrl)
+	u, _ := url.Parse(cosURL)
 	b := &cos.BaseURL{
 		BucketURL: u,
 	}
 	c := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  cosSecretId,
+			SecretID:  cosSecretID,
 			SecretKey: cosSecretKey,
 		},
 	})
