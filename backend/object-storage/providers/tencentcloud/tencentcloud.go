@@ -2,7 +2,6 @@ package tencentcloud
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -18,8 +17,7 @@ func NewClient() *cos.Client {
 
 	// check empty environment variables
 	if len(cosUrl) == 0 || len(cosSecretId) == 0 || len(cosSecretKey) == 0 {
-		fmt.Fprintln(os.Stderr, "COS_URL, COS_SECRET_ID, COS_SECRET_KEY must be set")
-		os.Exit(1)
+		panic("COS_URL, COS_SECRET_ID, COS_SECRET_KEY must be set")
 	}
 
 	// login
