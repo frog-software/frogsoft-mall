@@ -8,13 +8,39 @@ import { CustomerSimpleInfo }                from "../types/user";
 import { Star, Minus, Plus }                  from '@element-plus/icons-vue'
 
 const currentImage = ref<number>(0)
+const commentContent = ref<string>('')
 
 const testShop = ref<ShopResponseInfo>({
   rate: 2.7,
   shopName: 'APPLE',
 })
 
-const testCommentList = ref<CommentDetails[]>()
+const testCustomer = ref<CustomerSimpleInfo>({
+  avatar: '/avataaars.svg',
+  nickname: '这是一个测试名',
+  id: '1',
+})
+
+const testProductSimple = ref<ProductSimpleInfo>()
+
+const testCommentList = ref<CommentDetails[]>([
+  {
+    type: 1,
+    content: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
+    customer: testCustomer,
+    product: testProductSimple,
+    commentTime: Date.now(),
+    parentId: 123,
+  },
+  {
+    type: 1,
+    content: '你好你好',
+    customer: testCustomer,
+    product: testProductSimple,
+    commentTime: Date.now(),
+    parentId: 123,
+  }
+])
 
 const testGoods = ref<ProductDetails>({
   id: 'AAAA',
@@ -52,75 +78,124 @@ const addGoodsToCart = () => {
   console.log('nb')
 }
 
+const submitComment = () => {
+  console.log('nbnb')
+}
 </script>
 
 <template>
-  <div style="min-height: calc(100vh - 200px)">
-    <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 16vw; ">
+  <div>
+    <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 16vw;">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>{{ testGoods.productName }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row style="margin-top: 24px">
-      <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
-        <div>
-          <el-image style="border-radius: 12px; width: 90%" :src="testGoods.imageList[currentImage]"/>
+    <div style="margin-top: 24px">
+      <el-row style="height: 70vh">
+        <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
+          <div>
+            <el-image style="border-radius: 12px; width: 90%" :src="testGoods.imageList[currentImage]"/>
 
-          <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
-            <div style="display: flex; width: 15vw; padding: 12px 24px; ">
-              <div v-for="(src, idx) in testGoods.imageList" :key="src" @click="switchImage(idx)">
-                <el-image :src="src" fit="contain" class="image-thumb"/>
+            <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
+              <div style="display: flex; width: 15vw; padding: 12px 24px; ">
+                <div v-for="(src, idx) in testGoods.imageList" :key="src" @click="switchImage(idx)">
+                  <el-image :src="src" fit="contain" class="image-thumb"/>
+                </div>
               </div>
+            </el-scrollbar>
+          </div>
+        </el-col>
+
+        <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left; ">
+          <div>
+            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ testGoods.productName }}</p>
+            <p style="margin-top: 24px; width: 90%">{{ testGoods.description }}</p>
+          </div>
+
+          <div style="margin-top: 56px">
+            <el-row>
+              <el-col :span="9">
+                <p>
+                  <span style="font-size: 36px">{{ (testGoods.price * buyNum).toFixed(0) }}</span>
+                  <span style="font-size: 24px">{{ ' . ' + getDecimal(testGoods.price * buyNum) }}</span>
+                  <span style="font-size: 24px"> RMB</span>
+                </p>
+              </el-col>
+              <el-col :span="6" style="display: flex; align-items: center; margin-top: 4px">
+                <el-button :icon="Minus" class="num-control-button-left" :disabled="buyNum === 1" @click="buyNum--"/>
+                <input v-model="buyNum" class="num-control"/>
+                <el-button :icon="Plus" class="num-control-button-right" @click="buyNum++"/>
+              </el-col>
+            </el-row>
+
+            <div>
+              <el-button class="cart-button" @click="addGoodsToCart">加入购物车</el-button>
+              <el-button class="buy-button">立即购买</el-button>
             </div>
-          </el-scrollbar>
-        </div>
-      </el-col>
+          </div>
 
-      <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left">
-        <div>
-          <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ testGoods.productName }}</p>
-          <p style="margin-top: 24px">{{ testGoods.description }}</p>
-        </div>
+          <div style="width: 90%; margin-top: 56px; border-top: 1px solid #f6eacc; color: white">
+            <el-row style="display: flex; align-items: center; ">
+              <el-col :span="4" >
+                <p>商店评分</p>
+              </el-col>
+              <el-col :span="4" >
+                <el-rate
+                    v-model="testGoods.shop.rate"
+                    disabled
+                    :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
+                    disabled-void-color="transparent"
+                />
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
 
-        <div style="margin-top: 56px">
-          <el-row>
-            <el-col :span="9">
-              <p>
-                <span style="font-size: 36px">{{ (testGoods.price * buyNum).toFixed(0) }}</span>
-                <span style="font-size: 24px">{{ ' . ' + getDecimal(testGoods.price * buyNum) }}</span>
-                <span style="font-size: 24px"> RMB</span>
-              </p>
-            </el-col>
-            <el-col :span="6" style="display: flex; align-items: center; margin-top: 4px">
-              <el-button :icon="Minus" class="num-control-button-left" :disabled="buyNum === 1" @click="buyNum--"/>
-              <input v-model="buyNum" class="num-control"/>
-              <el-button :icon="Plus" class="num-control-button-right" @click="buyNum++"/>
-            </el-col>
-          </el-row>
+    <div style="display: flex; justify-content: center; font-family: 微軟正黑體; margin-top: 64px; margin-bottom: 64px">
+      <div style="width: 50%; ">
+        <p style="color: white; text-align: left; font-size: 24px; margin: 0">商品评论</p>
+
+        <div style="margin: 16px 0">
+          <el-input
+              v-model="commentContent"
+              :rows="4"
+              type="textarea"
+              placeholder="发一条友善的评论"
+              maxlength="150"
+              input-style="border-radius: 12px; background: transparent; height: 120px; color: #eeeeee"
+          />
 
           <div>
-            <el-button class="cart-button" @click="addGoodsToCart">加入购物车</el-button>
-            <el-button class="buy-button">立即购买</el-button>
+            <el-button class="comment-summit" @click="submitComment">发表评论</el-button>
           </div>
         </div>
 
-        <div style="width: 90%; margin-top: 56px; border-top: 1px solid #f6eacc; color: white">
-          <el-row style="display: flex; align-items: center; ">
-            <el-col :span="4" >
-              <p>商店评分</p>
-            </el-col>
-            <el-col :span="4" >
-              <el-rate
-                  v-model="testGoods.shop.rate"
-                  disabled
-                  :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
-                  disabled-void-color="transparent"
-              />
-            </el-col>
-          </el-row>
+        <div>
+          <div style="width: 100%; margin-top: 48px; padding-top: 8px">
+            <div v-for="item in testCommentList">
+              <div style="margin-top: 32px">
+                <el-row>
+                  <el-col :span="1" :offset="1">
+                    <el-avatar :src="item.customer.avatar" :size="48"/>
+                  </el-col>
+                  <el-col :span="21" :offset="1" style="text-align: left; ">
+                    <div style="color: #eeeeee">
+                      <p style="margin: 0; font-weight: bold">{{ item.customer.nickname }}</p>
+                      <p style="color: #999999">{{ item.content }}</p>
+                    </div>
+
+
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -222,4 +297,16 @@ export default {
   background: rgba(255, 255, 255, 0.3);
 }
 
+.comment-summit {
+  background: transparent;
+  border: 1px solid #a8abb2;
+  float: right;
+  color: #a8abb2;
+  margin: 16px;
+}
+
+.comment-summit:hover {
+  background: linear-gradient(to right, #f6eacc, #c1ab85);
+  color: #010101;
+}
 </style>
