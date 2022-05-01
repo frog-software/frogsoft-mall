@@ -19,8 +19,6 @@ import Footer from "./components/Footer.vue";
       </el-main>
     </el-container>
   </div>
-
-
 </template>
 
 <style>
@@ -35,14 +33,13 @@ import Footer from "./components/Footer.vue";
 .root {
   width: calc(99vw + 2px);
   margin-left: -8px;
-  /*background: radial-gradient(circle at center, #2d2c2b, #1c1d20);*/
   background: #010101;
 }
 
 .container {
   margin: -8px -16px -48px -8px;
   width: 100%;
-  /*height: 100vh;*/
+  min-width: 1400px;
 }
 
 

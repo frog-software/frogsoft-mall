@@ -64,7 +64,7 @@ const routerCheck = () => {
 
 <template>
   <div style="display: flex; justify-content: right; align-items: center">
-    <div style="position: absolute; left: 14vw">
+    <div style="position: absolute; left: 240px">
       <input type="radio" name="dot" id="Homepage" class="input-dot" disabled checked/>
       <el-col style="display: flex; flex-direction: column; align-items: center">
         <router-link to="/" class="router-item" @click.native="switchTab(-1)">
