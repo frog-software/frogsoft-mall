@@ -5,42 +5,29 @@ import { ProductDetails, ProductSimpleInfo } from "../types/product";
 import { ShopResponseInfo }                  from "../types/shop";
 import { CommentDetails }                    from "../types/comment";
 import { CustomerSimpleInfo }                from "../types/user";
-import { Star, Minus, Plus }                  from '@element-plus/icons-vue'
+import { Minus, Plus }                 from '@element-plus/icons-vue'
+import { getProductDetails }                 from "../services/product";
 
+const buyNum = ref<number>(1)
 const currentImage = ref<number>(0)
 const commentContent = ref<string>('')
+const currentGoods = ref<ProductDetails>()
 
-const testShop = ref<ShopResponseInfo>({
-  rate: 2.7,
-  shopName: 'APPLE',
-})
+const switchImage = (idx: number) => {
+  currentImage.value = idx
+}
 
-const testCustomer = ref<CustomerSimpleInfo>({
-  avatar: '/avataaars.svg',
-  nickname: '这是一个测试名',
-  id: '1',
-})
+const getDecimal = (n: number) => {
+  return String(n.toFixed(2)).split('.')[1]
+}
 
-const testProductSimple = ref<ProductSimpleInfo>()
+const addGoodsToCart = () => {
+  console.log('nb')
+}
 
-const testCommentList = ref<CommentDetails[]>([
-  {
-    type: 1,
-    content: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
-    customer: testCustomer,
-    product: testProductSimple,
-    commentTime: new Date(),
-    parentId: 123,
-  },
-  {
-    type: 1,
-    content: '你好你好',
-    customer: testCustomer,
-    product: testProductSimple,
-    commentTime: new Date(),
-    parentId: 123,
-  }
-])
+const submitComment = () => {
+  console.log('nbnb')
+}
 
 const testGoods = ref<ProductDetails>({
   id: 'AAAA',
@@ -48,9 +35,37 @@ const testGoods = ref<ProductDetails>({
   brand: 'APPLE',
   productName: 'iPad Pro',
   price: 123.456,
-  shop: testShop,
+  shop: {
+    rate: 3.7,
+    shopName: 'APPLE',
+  },
   description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
-  commentList: testCommentList,
+  commentList: [
+    {
+      type: 1,
+      content: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
+      customer: {
+        avatar: '/avataaars.svg',
+        nickname: '这是一个测试名',
+        id: '1',
+      },
+      product: null,
+      commentTime: new Date(),
+      parentId: 123,
+    },
+    {
+      type: 1,
+      content: '你好你好a ',
+      customer: {
+        avatar: '/avataaars.svg',
+        nickname: '这是另一个测试名',
+        id: '2',
+      },
+      product: null,
+      commentTime: new Date(),
+      parentId: 123,
+    },
+  ],
   imageList: [
     `${CDN_URL}/goodsdetail-example-1.png`,
     `${CDN_URL}/goodsdetail-example-2.png`,
@@ -64,41 +79,31 @@ const testGoods = ref<ProductDetails>({
   thumb: `${CDN_URL}/goodsdetail-example-1.png`,
 })
 
-const switchImage = (idx: number) => {
-  currentImage.value = idx
-}
+getProductDetails(1).then(res => {
+  // currentGoods.value = testGoods.value
+  currentGoods.value = res
+  console.log(res)
+})
 
-const getDecimal = (n: number) => {
-  return String(n.toFixed(2)).split('.')[1]
-}
 
-const buyNum = ref<number>(1)
-
-const addGoodsToCart = () => {
-  console.log('nb')
-}
-
-const submitComment = () => {
-  console.log('nbnb')
-}
 </script>
 
 <template>
-  <div>
-    <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 16vw;">
+  <div style="min-width: 1400px; ">
+    <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 320px;">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>{{ testGoods.productName }}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ currentGoods?.productName }}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <div style="margin-top: 24px">
-      <el-row style="height: 70vh">
+      <el-row style="height: 680px">
         <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
           <div>
-            <el-image style="border-radius: 12px; width: 90%" :src="testGoods.imageList[currentImage]"/>
+            <el-image style="border-radius: 12px; width: 400px" :src="currentGoods?.imageList[currentImage]"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
               <div style="display: flex; width: 15vw; padding: 12px 24px; ">
-                <div v-for="(src, idx) in testGoods.imageList" :key="src" @click="switchImage(idx)">
+                <div v-for="(src, idx) in currentGoods?.imageList" :key="src" @click="switchImage(idx)">
                   <el-image :src="src" fit="contain" class="image-thumb"/>
                 </div>
               </div>
@@ -108,16 +113,16 @@ const submitComment = () => {
 
         <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left; ">
           <div>
-            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ testGoods.productName }}</p>
-            <p style="margin-top: 24px; width: 90%">{{ testGoods.description }}</p>
+            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ currentGoods?.productName }}</p>
+            <p style="margin-top: 24px; width: 90%">{{ currentGoods?.description }}</p>
           </div>
 
           <div style="margin-top: 56px">
             <el-row>
               <el-col :span="9">
                 <p>
-                  <span style="font-size: 36px">{{ (testGoods.price * buyNum).toFixed(0) }}</span>
-                  <span style="font-size: 24px">{{ ' . ' + getDecimal(testGoods.price * buyNum) }}</span>
+                  <span style="font-size: 36px">{{ (currentGoods?.price * buyNum).toFixed(0) }}</span>
+                  <span style="font-size: 24px">{{ ' . ' + getDecimal(currentGoods?.price * buyNum) }}</span>
                   <span style="font-size: 24px"> RMB</span>
                 </p>
               </el-col>
@@ -139,9 +144,9 @@ const submitComment = () => {
               <el-col :span="4" >
                 <p>商店评分</p>
               </el-col>
-              <el-col :span="4" >
+              <el-col :span="4" v-if="currentGoods?.shop.rate">
                 <el-rate
-                    v-model="testGoods.shop.rate"
+                    v-model="currentGoods.shop.rate"
                     disabled
                     :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
                     disabled-void-color="transparent"
@@ -174,7 +179,7 @@ const submitComment = () => {
 
         <div>
           <div style="width: 100%; margin-top: 48px; padding-top: 8px">
-            <div v-for="item in testCommentList">
+            <div v-for="item in currentGoods?.commentList">
               <div style="margin-top: 32px">
                 <el-row>
                   <el-col :span="1" :offset="1">
@@ -186,7 +191,7 @@ const submitComment = () => {
                       <p style="color: #999999">{{ item.content }}</p>
 
                       <p style="text-align: right; color: #999999; margin-right: 16px; margin-top: 0">
-                        {{ (item.commentTime.getMonth() + 1) + '月' + item.commentTime.getDate() + '日 ' + item.commentTime.getHours() + ':' + (item.commentTime.getMinutes() < 10 ? '0' + item.commentTime.getMinutes() : item.commentTime.getMinutes()) }}
+                        {{ item.commentTime.getFullYear() + '年 ' + (item.commentTime.getMonth() + 1) + '月' + item.commentTime.getDate() + '日 ' + item.commentTime.getHours() + ':' + (item.commentTime.getMinutes() < 10 ? '0' + item.commentTime.getMinutes() : item.commentTime.getMinutes()) }}
                       </p>
                     </div>
 
@@ -213,7 +218,7 @@ export default {
 <style scoped>
 
 .image-thumb {
-  width: 4vw;
+  width: 72px;
   margin-top: 12px;
   margin-right: 20px;
   border-radius: 4px;
