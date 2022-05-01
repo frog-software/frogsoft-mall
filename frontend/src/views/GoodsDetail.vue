@@ -29,7 +29,7 @@ const testCommentList = ref<CommentDetails[]>([
     content: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
     customer: testCustomer,
     product: testProductSimple,
-    commentTime: Date.now(),
+    commentTime: new Date(),
     parentId: 123,
   },
   {
@@ -37,7 +37,7 @@ const testCommentList = ref<CommentDetails[]>([
     content: '你好你好',
     customer: testCustomer,
     product: testProductSimple,
-    commentTime: Date.now(),
+    commentTime: new Date(),
     parentId: 123,
   }
 ])
@@ -184,6 +184,10 @@ const submitComment = () => {
                     <div style="color: #eeeeee">
                       <p style="margin: 0; font-weight: bold">{{ item.customer.nickname }}</p>
                       <p style="color: #999999">{{ item.content }}</p>
+
+                      <p style="text-align: right; color: #999999; margin-right: 16px; margin-top: 0">
+                        {{ (item.commentTime.getMonth() + 1) + '月' + item.commentTime.getDate() + '日 ' + item.commentTime.getHours() + ':' + (item.commentTime.getMinutes() < 10 ? '0' + item.commentTime.getMinutes() : item.commentTime.getMinutes()) }}
+                      </p>
                     </div>
 
 
@@ -222,7 +226,7 @@ export default {
 
 .cart-button,
 .buy-button {
-  width: 240px;
+  width: 40%;
   height: 56px;
   font-size: 16px;
   font-weight: normal;
