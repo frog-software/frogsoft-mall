@@ -30,6 +30,9 @@ export default {
 .input-box {
   font-family: 微軟正黑體;
   color: #eeeeee;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
 }
 
 label {
@@ -59,13 +62,13 @@ label {
   background: #b3b3b3;
 }
 .input-box label span::before {
-  width: 100%;
+  width: 20px;
   height: 2px;
   box-shadow: 0 -18px 0 #b3b3b3;
 }
 .input-box label span::after {
   width: 2px;
-  height: 100%;
+  height: 20px;
   box-shadow: 18px 0 0 #b3b3b3;
 }
 
@@ -81,6 +84,6 @@ input:checked ~ span.yes::after {
 }
 
 input:checked ~ span.yes {
-  transform: rotate(-45deg) translate(2px, -10px);
+  transform: rotate(-45deg) translate(0px, -1px);
 }
 </style>

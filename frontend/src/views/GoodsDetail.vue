@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref }                               from "vue";
 import { CDN_URL }                           from "../consts/urls";
-import { ProductDetails, ProductSimpleInfo } from "../types/product";
-import { ShopResponseInfo }                  from "../types/shop";
-import { CommentDetails }                    from "../types/comment";
-import { CustomerSimpleInfo }                from "../types/user";
+import { ProductDetails } from "../types/product";
 import { Minus, Plus }                 from '@element-plus/icons-vue'
 import { getProductDetails }                 from "../services/product";
 
@@ -18,6 +15,7 @@ const switchImage = (idx: number) => {
 }
 
 const getDecimal = (n: number) => {
+  if (!n) return '00'
   return String(n.toFixed(2)).split('.')[1]
 }
 
@@ -92,17 +90,17 @@ getProductDetails(1).then(res => {
   <div style="min-width: 1400px; ">
     <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 320px;">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>{{ currentGoods?.productName }}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ currentGoods?.productName || '商品名未定义' }}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <div style="margin-top: 24px">
-      <el-row style="height: 680px">
+      <el-row style="height: 640px">
         <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
           <div>
-            <el-image style="border-radius: 12px; width: 400px" :src="currentGoods?.imageList[currentImage]"/>
+            <el-image fit="contain" style="border-radius: 12px; width: 400px; height: 400px" :src="currentGoods?.imageList[currentImage]" alt="商品图片"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
-              <div style="display: flex; width: 15vw; padding: 12px 24px; ">
+              <div style="display: flex; width: 400px; padding: 12px 24px; ">
                 <div v-for="(src, idx) in currentGoods?.imageList" :key="src" @click="switchImage(idx)">
                   <el-image :src="src" fit="contain" class="image-thumb"/>
                 </div>
@@ -113,15 +111,15 @@ getProductDetails(1).then(res => {
 
         <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left; ">
           <div>
-            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ currentGoods?.productName }}</p>
-            <p style="margin-top: 24px; width: 90%">{{ currentGoods?.description }}</p>
+            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ currentGoods?.productName || '商品名未定义'}}</p>
+            <p style="margin-top: 24px; width: 90%">{{ currentGoods?.description || '商品描述未定义' }}</p>
           </div>
 
           <div style="margin-top: 56px">
             <el-row>
               <el-col :span="9">
                 <p>
-                  <span style="font-size: 36px">{{ (currentGoods?.price * buyNum).toFixed(0) }}</span>
+                  <span style="font-size: 36px">{{ (currentGoods?.price * buyNum || 0).toFixed(0) }}</span>
                   <span style="font-size: 24px">{{ ' . ' + getDecimal(currentGoods?.price * buyNum) }}</span>
                   <span style="font-size: 24px"> RMB</span>
                 </p>
@@ -158,7 +156,7 @@ getProductDetails(1).then(res => {
       </el-row>
     </div>
 
-    <div style="display: flex; justify-content: center; font-family: 微軟正黑體; margin-top: 64px; margin-bottom: 64px">
+    <div style="display: flex; justify-content: center; font-family: 微軟正黑體; margin-bottom: 64px">
       <div style="width: 50%; ">
         <p style="color: white; text-align: left; font-size: 24px; margin: 0">商品评论</p>
 
@@ -179,7 +177,7 @@ getProductDetails(1).then(res => {
 
         <div>
           <div style="width: 100%; margin-top: 48px; padding-top: 8px">
-            <div v-for="item in currentGoods?.commentList">
+            <div v-if="currentGoods?.commentList" v-for="item in currentGoods?.commentList">
               <div style="margin-top: 32px">
                 <el-row>
                   <el-col :span="1" :offset="1">
@@ -199,6 +197,10 @@ getProductDetails(1).then(res => {
                   </el-col>
                 </el-row>
               </div>
+            </div>
+
+            <div v-else style="display: flex; justify-content: center; width: 100%">
+              <el-empty description="还没有评论"/>
             </div>
           </div>
         </div>
