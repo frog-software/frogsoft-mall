@@ -2,7 +2,7 @@
   <div class="input-box">
     <label>
       <input type="checkbox" style="opacity: 0" @click="$emit('update:modelValue', !modelValue)" :checked="modelValue">
-      <span class="yes" style="margin-left: -20px; pointer-events: none"></span>
+      <span class="yes" style="margin-left: -20px"></span>
       {{ content }}
     </label>
   </div>
