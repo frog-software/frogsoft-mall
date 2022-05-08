@@ -6,6 +6,7 @@ export interface ProductSimpleInfo {
     brand: string,
     productName: string,
     price: number,
+    description: string,
     shop: ShopResponseInfo,
     thumb: string,
 }
