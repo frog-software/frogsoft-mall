@@ -1,8 +1,8 @@
 <template>
   <div class="input-box">
     <label>
-      <input type="checkbox" style="visibility: hidden" @click="$emit('update:modelValue', !modelValue)" :checked="modelValue">
-      <span class="yes" style="margin-left: -20px"></span>
+      <input type="checkbox" style="opacity: 0" @click="$emit('update:modelValue', !modelValue)" :checked="modelValue">
+      <span class="yes" style="margin-left: -20px; pointer-events: none"></span>
       {{ content }}
     </label>
   </div>
@@ -13,10 +13,6 @@ export default {
   name: "CheckBox",
   props: {
     content: '',
-    check: {
-      type: Boolean,
-      default: false,
-    },
     modelValue: {
       type: Boolean,
       default: false,
