@@ -1,17 +1,12 @@
 /*
- Navicat Premium Data Transfer
-
  Source Server         : NACOS MySQL
  Source Server Type    : MySQL
  Source Server Version : 80016
- Source Host           : ubuntu-1.charlie0129.top:3306
  Source Schema         : nacos_devtest
 
  Target Server Type    : MySQL
  Target Server Version : 80016
  File Encoding         : 65001
-
- Date: 11/04/2022 19:17:05
 */
 
 SET NAMES utf8mb4;
