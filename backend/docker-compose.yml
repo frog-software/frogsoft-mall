@@ -63,7 +63,7 @@ services:
       - nacos
       - opengauss
 
- # 服务网关
+  # 服务网关
   mall-gateway:
     build:
       context: mall-gateway
@@ -77,8 +77,10 @@ services:
     depends_on:
       - mall-auth
       - mall-user
+      - mall-shop
+      - mall-commodity
 
- # 用户模块
+  # 用户模块
   mall-user:
     build:
       context: mall-user
@@ -91,6 +93,40 @@ services:
     # 仅测试用，可以去除
     ports:
       - "${USER_PORT:-9100}:${USER_PORT:-9100}"
+    depends_on:
+      - nacos
+      - opengauss
+
+  # 商店模块
+  mall-shop:
+    build:
+      context: mall-shop
+    image: frogsoftware/mall-shop:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${SHOP_PORT:-9210}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${SHOP_PORT:-9210}:${SHOP_PORT:-9210}"
+    depends_on:
+      - nacos
+      - opengauss
+
+  # 商品模块
+  mall-commodity:
+    build:
+      context: mall-commodity
+    image: frogsoftware/mall-commodity:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${COMMODITY_PORT:-9200}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${COMMODITY_PORT:-9200}:${COMMODITY_PORT:-9200}"
     depends_on:
       - nacos
       - opengauss
