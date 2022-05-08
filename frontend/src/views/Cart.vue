@@ -76,7 +76,10 @@ getCartDetails('testUser').then(res => {
                   <el-image style="width: 100px; height: 100px" :src="item.product.thumb" fit="fill"/>
                 </el-col>
                 <el-col :span="10" style="text-align: left">
-                  <p style="margin: 0; font-weight: bold">{{ item.product.productName }}</p>
+<!--                  TODO: 这里路由改一改，写成带有商品ID参数的那种-->
+                  <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
+                    <p style="margin: 0">{{ item.product.productName }}</p>
+                  </router-link>
                   <p style="margin: 12px 0 0 0; color: #999999">{{
                       goodsDescriptionFormat(item.product.description)
                     }}</p>
