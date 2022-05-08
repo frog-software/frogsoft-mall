@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import CheckBox from "../components/CheckBox.vue";
+import CheckBox                  from "../components/CheckBox.vue";
 import {
   GoodsFilled,
   Minus,
-  Plus
-} from "@element-plus/icons-vue";
-import { ref } from "vue";
-import { CartResponseInfo } from "../types/cart";
-import { getCartDetails } from "../services/cart";
+  Plus,
+  Delete,
+  More
+}                                from "@element-plus/icons-vue";
+import { onMounted, ref, watch } from "vue";
+import { CartResponseInfo }      from "../types/cart";
+import { getCartDetails }        from "../services/cart";
 
-const e = ref<boolean>(false)
-const f = ref<boolean>(false)
-
-const cartInfo = ref<CartResponseInfo>()
+const cartInfo     = ref<CartResponseInfo>()
+const selectedShop = ref<boolean[]>()
+const selectedItem = ref<boolean[][]>([])
 
 // 商品描述内容过长则需要省略
 const goodsDescriptionFormat = (str: string) => {
@@ -23,9 +24,46 @@ const goodsDescriptionFormat = (str: string) => {
   else return str
 }
 
+// 全选某个商店的商品
+const selectAllShopItems = (shopIndex: number) => {
+  selectedShop.value[shopIndex] = !selectedShop.value[shopIndex]
+
+  for (let i = 0; i < selectedItem.value[shopIndex].length; i++)
+    selectedItem.value[shopIndex][i] = selectedShop.value[shopIndex]
+}
+
+
 getCartDetails('testUser').then(res => {
   cartInfo.value = res
-  console.log(res)
+
+  selectedShop.value = new Array(cartInfo.value?.shops.length).fill(false)
+
+  for (let i = 0; i < cartInfo.value?.shops.length; i++)
+    selectedItem.value?.push(new Array(cartInfo.value?.shops[i].items.length).fill(false))
+
+  // console.log(selectedShop.value)
+})
+
+onMounted(() => {
+  watch(selectedItem.value, (value) => {
+    for (let i = 0; i < value.length; i++) {
+      for (let j = 0; j < value[i].length; j++) {
+        let elem = document.getElementById('card' + i + '-' + j)
+
+        if (!elem) break
+        if (value[i][j] === true) {
+          elem.style.background = 'rgba(246,234,204, 1)'
+          elem.style.boxShadow  = '0 0 30px 4px rgba(246,234,204,0.52)'
+          elem.style.color      = '#222222'
+        } else {
+          elem.style.background = 'transparent'
+          elem.style.boxShadow  = 'none'
+          elem.style.color      = '#ffffff'
+        }
+      }
+    }
+
+  }, {deep: true})
 })
 </script>
 
@@ -56,9 +94,9 @@ getCartDetails('testUser').then(res => {
         <el-divider style="width: 90%"/>
       </div>
 
-      <div v-for="shop in cartInfo?.shops">
+      <div v-for="(shop, shopIndex) in cartInfo?.shops">
         <div style="display: flex; align-items: center; margin-left: 96px; color: #f6eacc">
-          <CheckBox/>
+          <CheckBox @click="selectAllShopItems(shopIndex)" v-model:model-value="selectedShop[shopIndex]"/>
           <el-icon :size="24" style="margin-left: 16px">
             <goods-filled/>
           </el-icon>
@@ -66,20 +104,17 @@ getCartDetails('testUser').then(res => {
         </div>
 
         <div>
-          <div v-for="item in shop.items" style="width: 1140px; margin: 16px 0">
-            <div class="card-item">
-              <el-row style="width: 100%; align-items: center;">
+          <div v-for="(item, itemIndex) in shop.items" style="width: 1140px; margin: 16px 0">
+            <div class="card-item" :id="'card' + shopIndex + '-' + itemIndex">
+              <el-row style="width: 100%; align-items: center; ">
                 <el-col :span="1" style="justify-content: center">
-                  <CheckBox id="card-item-checkbox" style="margin-left: 18px"/>
+                  <CheckBox style="margin-left: 18px" v-model:model-value="selectedItem[shopIndex][itemIndex]"/>
                 </el-col>
                 <el-col :span="3">
                   <el-image style="width: 100px; height: 100px" :src="item.product.thumb" fit="fill"/>
                 </el-col>
                 <el-col :span="10" style="text-align: left">
-<!--                  TODO: 这里路由改一改，写成带有商品ID参数的那种-->
-                  <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
-                    <p style="margin: 0">{{ item.product.productName }}</p>
-                  </router-link>
+                  <p style="margin: 0">{{ item.product.productName }}</p>
                   <p style="margin: 12px 0 0 0; color: #999999">{{
                       goodsDescriptionFormat(item.product.description)
                     }}</p>
@@ -87,14 +122,19 @@ getCartDetails('testUser').then(res => {
                 <el-col :span="3">
                   <p>{{ item.product.price }}</p>
                 </el-col>
-                <el-col :span="4" >
+                <el-col :span="4">
                   <el-button :icon="Minus" class="num-control-button-left" :disabled="item.number === 1"
                              @click="item.number--"/>
                   <input v-model="item.number" class="num-control"/>
                   <el-button :icon="Plus" class="num-control-button-right" @click="item.number++"/>
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="danger" plain>删除</el-button>
+                  <!-- TODO: 这里路由改一改，写成带有商品ID参数的那种 -->
+                  <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
+                    <el-button type="text" :icon="More" style="color: rgb(30, 144, 255)">详情</el-button>
+                  </router-link>
+                  <br/>
+                  <el-button type="text" style="color: rgb(248, 62, 91)" :icon="Delete">删除</el-button>
                 </el-col>
               </el-row>
             </div>
@@ -118,10 +158,8 @@ export default {
   display: flex;
   padding: 12px 0;
   border-radius: 12px;
-}
 
-#card-item-checkbox:checked ~ .card-item {
-  background: #f6eacc;
+  transition: all 0.2s ease-out;
 }
 
 .num-control {
@@ -129,9 +167,9 @@ export default {
   border: none;
   outline: none;
   text-align: center;
+  color: #c1ab85;
   height: 28px;
   background: transparent;
-  color: white;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
   width: 3em;
@@ -140,7 +178,7 @@ export default {
 
 .num-control-button-left,
 .num-control-button-right {
-  background: #010101;
+  background: transparent;
   color: #ffffff;
   border-radius: 0;
 }
