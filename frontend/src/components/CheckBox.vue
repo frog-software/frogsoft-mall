@@ -1,8 +1,8 @@
 <template>
   <div class="input-box">
     <label>
-      <input type="checkbox" style="visibility: collapse" @click="$emit('update:modelValue', !modelValue)" :checked="modelValue">
-      <span class="yes"></span>
+      <input type="checkbox" style="visibility: hidden" @click="$emit('update:modelValue', !modelValue)" :checked="modelValue">
+      <span class="yes" style="margin-left: -20px"></span>
       {{ content }}
     </label>
   </div>
@@ -32,7 +32,6 @@ export default {
   color: #eeeeee;
   width: 20px;
   height: 20px;
-  display: inline-block;
 }
 
 label {
@@ -44,7 +43,6 @@ label {
 .input-box label span {
   position: relative;
   display: inline-block;
-  margin-right: 16px;
 
   width: 20px;
   height: 20px;
@@ -84,6 +82,6 @@ input:checked ~ span.yes::after {
 }
 
 input:checked ~ span.yes {
-  transform: rotate(-45deg) translate(0px, -1px);
+  transform: rotate(-45deg) translate(2px, -6px);
 }
 </style>
