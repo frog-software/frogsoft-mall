@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AddProductRequset implements Serializable {
 
-    private int shopId;
+    private Long shopId;
     private String category;
     private String brand;
     private String productName;

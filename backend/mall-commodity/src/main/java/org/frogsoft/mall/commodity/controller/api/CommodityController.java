@@ -28,6 +28,15 @@ public class CommodityController {
 
     private final CommodityService commodityService;
 
+    // test api
+    @GetMapping("/test/getShop/{id}")
+    public ResponseEntity<?> testGetShop(
+        @PathVariable(value = "id") Long shop_id
+    ){
+        return commodityService.getAShop(shop_id);
+    }
+
+
     // PD01-01
     @PostMapping("/simple")
     public ResponseEntity<?> addProductToShop(
