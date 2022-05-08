@@ -15,7 +15,7 @@ import { ShopResponseInfo }  from "./shop";
 export interface CartShopItemResponseInfo {
   product: ProductSimpleInfo
   addTime: string
-  number: string
+  number: number
   remarks: string
 }
 
