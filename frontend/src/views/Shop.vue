@@ -202,8 +202,8 @@ onUnmounted(() => {
         </el-icon>
       </div>
 
-      <div style="width: 60%; display: flex; justify-content: center; margin-top: 24px">
-        <el-row justify="space-between" gutter="24px">
+      <div style="width: 1150px; display: flex; justify-content: center; margin-top: 24px">
+        <el-row justify="space-between" :gutter="24">
           <el-col :span="6" style="display: flex; justify-content: center; margin-top: 24px" v-for="item in 8">
             <router-link :to="{ path: '/goods' }" style="text-decoration: none; ">
               <GoodsCard/>
