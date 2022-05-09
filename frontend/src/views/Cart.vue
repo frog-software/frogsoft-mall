@@ -15,8 +15,9 @@ const cartInfo     = ref<CartResponseInfo>()
 const selectedShop = ref<boolean[]>()
 const selectedItem = ref<boolean[][]>([])
 
-const sumPrice = ref<number>(0)
+const sumPrice    = ref<number>(0)
 const selectedNum = ref<number>(0)
+const buyNum      = ref<number[][]>([])
 
 // 商品描述内容过长则需要省略
 const goodsDescriptionFormat = (str: string) => {
@@ -40,8 +41,13 @@ getCartDetails('testUser').then(res => {
 
   selectedShop.value = new Array(cartInfo.value?.shops.length).fill(false)
 
-  for (let i = 0; i < cartInfo.value?.shops.length; i++)
+  for (let i = 0; i < cartInfo.value?.shops.length; i++) {
     selectedItem.value?.push(new Array(cartInfo.value?.shops[i].items.length).fill(false))
+    buyNum.value?.push(new Array(cartInfo.value?.shops[i].items.length))
+    for (let j = 0; j < cartInfo.value?.shops[i].items.length; j++) {
+      buyNum.value[i][j] = cartInfo.value?.shops[i].items[j].number
+    }
+  }
 })
 
 onMounted(() => {
@@ -61,27 +67,38 @@ onMounted(() => {
 
         if (!elem || !num || !left || !right) break
         if (value[i][j] === true) {
-          sumPrice.value += cartInfo.value?.shops[i].items[j].product.price * cartInfo.value?.shops[i].items[j].number
+          sumPrice.value += cartInfo.value?.shops[i].items[j].product.price * buyNum.value[i][j]
           selectedNum.value++
 
-          elem.style.background = 'rgba(246,234,204, 1)'
-          elem.style.boxShadow  = '0 0 30px 4px rgba(246,234,204,0.52)'
-          elem.style.color      = '#222222'
-          num.style.borderColor = num.style.color = '#222222'
-          left.style.borderColor = left.style.color = '#222222'
+          elem.style.background   = 'rgba(246,234,204, 1)'
+          elem.style.boxShadow    = '0 0 30px 4px rgba(246,234,204,0.52)'
+          elem.style.color        = '#222222'
+          num.style.borderColor   = num.style.color = '#222222'
+          left.style.borderColor  = left.style.color = '#222222'
           right.style.borderColor = right.style.color = '#222222'
 
         } else {
-          elem.style.background = 'transparent'
-          elem.style.boxShadow  = 'none'
-          elem.style.color      = '#ffffff'
-          num.style.borderColor = num.style.color = '#ffffff'
-          left.style.borderColor = left.style.color = '#ffffff'
+          elem.style.background   = 'transparent'
+          elem.style.boxShadow    = 'none'
+          elem.style.color        = '#ffffff'
+          num.style.borderColor   = num.style.color = '#ffffff'
+          left.style.borderColor  = left.style.color = '#ffffff'
           right.style.borderColor = right.style.color = '#ffffff'
         }
       }
 
       selectedShop.value[i] = allSelected;
+    }
+  }, {deep: true})
+
+  watch(buyNum.value, (value) => {
+    sumPrice.value = 0
+    for (let i = 0; i < value.length; i++) {
+      for (let j = 0; j < value[i].length; j++) {
+        if (selectedItem.value[i][j]) {
+          sumPrice.value += cartInfo.value?.shops[i].items[j].product.price * buyNum.value[i][j]
+        }
+      }
     }
   }, {deep: true})
 })
@@ -149,10 +166,10 @@ onMounted(() => {
                   <p>{{ item.product.price.toFixed(2) }}</p>
                 </el-col>
                 <el-col :span="4">
-                  <el-button :icon="Minus" class="num-control-button-left" :disabled="item.number === 1"
-                             @click="item.number--" :id="'left' + shopIndex + '-' + itemIndex"/>
-                  <input v-model="item.number" class="num-control" :id="'num' + shopIndex + '-' + itemIndex"/>
-                  <el-button :icon="Plus" class="num-control-button-right" @click="item.number++"
+                  <el-button :icon="Minus" class="num-control-button-left" :disabled="buyNum[shopIndex][itemIndex] === 1"
+                             @click="buyNum[shopIndex][itemIndex]--" :id="'left' + shopIndex + '-' + itemIndex"/>
+                  <input v-model="buyNum[shopIndex][itemIndex]" class="num-control" :id="'num' + shopIndex + '-' + itemIndex"/>
+                  <el-button :icon="Plus" class="num-control-button-right" @click="buyNum[shopIndex][itemIndex]++"
                              :id="'right' + shopIndex + '-' + itemIndex"/>
                 </el-col>
                 <el-col :span="3">
@@ -172,7 +189,7 @@ onMounted(() => {
         <el-empty description="购物车空空如也"/>
       </div>
 
-      <div style="justify-content: center; display: flex; margin-top: -12px">
+      <div style="justify-content: center; display: flex">
         <el-divider style="width: 90%"/>
       </div>
 
@@ -267,12 +284,12 @@ export default {
   height: 100%;
   width: 100%;
   background: linear-gradient(to right, #f6eacc, #c1ab85);
-  box-shadow: 0 8px 40px 2px rgba(246,234,204,0.52);
+  box-shadow: 0 8px 40px 2px rgba(246, 234, 204, 0.52);
   color: #222222;
   border: 1px solid #f6eacc;
 }
 
 .buy-button:hover {
-  background: linear-gradient(to right, rgba(246,234,204, 0.8), rgba(193,171,133, 0.8));
+  background: linear-gradient(to right, rgba(246, 234, 204, 0.8), rgba(193, 171, 133, 0.8));
 }
 </style>
