@@ -147,3 +147,26 @@
 | `OPENGAUSS_URL` | openGauss 所在 IP | `localhost` |
 | `OPENGAUSS_PORT` | openGauss 所在端口 | `5432` |
 | `OPENGAUSS_DB` | openGauss 数据库名称 | `postgres` |
+
+## Service Mesh 版启动方法
+
+你需要有：
+
+- kubernetes
+- istio
+- docker-compose
+
+当前仅仅是把微服务的相关模块放在 `Istio` 里，`Nacos`，`MySQL`，`openGauss` 仍然是通过 `docker-compose` 进行开关。
+
+你可以通过 `config` 文件夹下的一些脚本进行便捷的操作。
+
+```shell
+cd ./config
+bash ./StartFromZero.sh
+# Do Something
+bash ./stop.sh
+# Do Something
+bash ./start.sh
+# Do Something
+bash ./StopToZero.sh
+```
