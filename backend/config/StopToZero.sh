@@ -1,3 +1,3 @@
 #!/bin/bash
-bash ./clean.sh
+bash ./stop.sh
 docker-compose --file ../docker-compose.yml rm -sf 
