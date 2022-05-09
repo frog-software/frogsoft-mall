@@ -1,4 +1,4 @@
-interface DetailsAddress {
+export interface DetailsAddress {
     province: string, // 省
     city: string, // 市
     county: string, // 县
