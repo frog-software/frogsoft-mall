@@ -27,8 +27,6 @@ public class ShopController {
     public Shop getShop(@PathVariable(value = "id") Long shop_id){
         return shopService.getSingleShopClient(shop_id);
     }
-
-    // SP01-01
     @GetMapping("/{id}")
     public ResponseEntity<?> getShopSimpleInfo(
         @PathVariable(value = "id") Long shop_id,
@@ -39,6 +37,8 @@ public class ShopController {
             .body(shopService.getSingleShop(shop_id))
             .build();
     }
+    // SP01-01
+
 
     /*// SP01-02
     @PutMapping("/{id}")*/
