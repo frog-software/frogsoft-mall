@@ -4,14 +4,10 @@ import TopSwiper                       from "../components/TopSwiper.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import {
   ArrowDown,
-  ColdDrink
-}                  from '@element-plus/icons-vue'
-import { CDN_URL } from "../consts/urls"
-
-interface goods {
-  name: string,
-  image: string,
-}
+  ColdDrink,
+  ArrowDownBold,
+}                                      from '@element-plus/icons-vue'
+import { CDN_URL }                     from "../consts/urls"
 
 interface shopMainItem {
   image: string,
@@ -20,8 +16,6 @@ interface shopMainItem {
   // goodsList: goods[],
   id: number,
 }
-
-const testGoodsList = ref<goods[]>()
 
 // 特殊展示的商店商品列表
 const shopMainList = ref<shopMainItem[]>([
@@ -87,6 +81,52 @@ const scrollHandler = () => {
   });
 }
 
+const menuIsShow = ref<boolean>(false)
+const showMenu   = () => {
+  menuIsShow.value = !menuIsShow.value
+  for (let i = 0; i < shopMainList.value.length + commandGoodsList.value.length; i++) {
+    let menuItemBar  = document.getElementById('menu-item-bar-' + i)
+    let menuTextItem = document.getElementById('menu-item-name-' + i)
+    let menuButton   = document.getElementById('menu-button')
+
+    if (menuIsShow.value) {
+      menuItemBar.style.transform  = 'translateY(' + (54 + i * 42) + 'px)'
+      menuItemBar.style.opacity    = '1'
+      menuItemBar.style.visibility = 'visible'
+      menuTextItem.classList.remove('menu-item-name-disappear')
+      menuTextItem.classList.add('menu-item-name-appear')
+      menuButton.style.transform = 'rotate(180deg)'
+    } else {
+      menuItemBar.style.transform  = 'translateY(0)'
+      menuItemBar.style.opacity    = '0'
+      menuItemBar.style.visibility = 'hidden'
+      menuTextItem.classList.remove('menu-item-name-appear')
+      menuTextItem.classList.add('menu-item-name-disappear')
+      menuButton.style.transform = 'rotate(0)'
+    }
+  }
+}
+
+const handleRollMenu = (idx: number) => {
+  console.log(idx)
+
+  if (idx < shopMainList.value.length) {
+    let rowList = document.getElementsByName('shop-main-row')
+
+    rowList[idx].scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  } else {
+    let elem = document.getElementById('command-goods-' + (idx - shopMainList.value.length))
+
+    elem.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+}
+
 onMounted(() => {
   window.addEventListener('scroll', scrollHandler, true)
 })
@@ -98,16 +138,32 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
+  <div style="margin-bottom: 36px">
     <div style="height: calc(100vh - 100px)">
       <div style="justify-content: center; display: flex">
         <TopSwiper/>
       </div>
 
-      <div>
+      <div style="position: relative">
         <p class="slogan">
           <span style="color: #c1ab85; font-weight: bold">这个商店</span>，产品都称心，体验更如意。
         </p>
+
+        <div style="position: absolute; right: 24px; top: 0;">
+          <el-affix :offset="64">
+            <el-button type="primary" :icon="ArrowDownBold" class="menu-button" @click="showMenu" id="menu-button"/>
+
+            <div v-for="(i, idx) in shopMainList.length + commandGoodsList.length"
+                 :id="'menu-text-item-' + idx">
+              <p :id="'menu-item-name-' + idx" class="menu-text-item" @click="handleRollMenu(idx)">{{
+                  i > shopMainList.length
+                      ? commandGoodsList[idx - shopMainList.length].name
+                      : shopMainList[idx].title
+                }}</p>
+              <div class="menu-item-bar" :id="'menu-item-bar-' + idx"/>
+            </div>
+          </el-affix>
+        </div>
 
         <div style="display: flex; justify-content: center">
           <div style="cursor: pointer; width: 96px; " @click="startExplore">
@@ -189,13 +245,15 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div style="display: flex; flex-direction: column; align-items: center; padding-top: 84px" v-for="item in commandGoodsList">
-      <div style="font-size: 36px; display: flex; flex-direction: row">
+    <div style="display: flex; flex-direction: column; align-items: center; padding-top: 84px"
+         v-for="(item, idx) in commandGoodsList">
+      <div style="font-size: 36px; display: flex; flex-direction: row" :id="'command-goods-' + idx">
         <el-icon color="#f6eacc" style="transform: rotateY(180deg); margin-top: 14px">
           <cold-drink/>
         </el-icon>
 
-        <p style="font-size: 48px; margin: 0 12px; font-family: 微軟正黑體; font-weight: normal; color: #f6eacc; user-select: none">{{ item.name }}</p>
+        <p style="font-size: 48px; margin: 0 12px; font-family: 微軟正黑體; font-weight: normal; color: #f6eacc; user-select: none">
+          {{ item.name }}</p>
 
         <el-icon color="#f6eacc" style="margin-top: 14px">
           <cold-drink/>
@@ -213,8 +271,6 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script lang="ts">
@@ -304,5 +360,90 @@ export default {
   }
 }
 
+.menu-button {
+  height: 48px;
+  width: 48px;
+  font-size: 30px;
+  margin: auto;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  border: none;
+  z-index: 10;
+  transition: all 0.3s ease-out;
+}
 
+.menu-button:hover {
+  color: white;
+}
+
+.menu-item-name-appear {
+  opacity: 0;
+  animation-name: menu-item-name-left-in;
+  animation-iteration-count: 1;
+  animation-delay: 0.2s;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.menu-item-name-disappear {
+  opacity: 1;
+  animation-name: menu-item-name-right-out;
+  animation-iteration-count: 1;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes menu-item-name-left-in {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-48px);
+  }
+}
+
+@keyframes menu-item-name-right-out {
+  0% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-48px);
+  }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+
+.menu-item-bar {
+  position: absolute;
+  top: 12px;
+  right: 30px;
+  height: 1.5em;
+  width: 4px;
+  background: linear-gradient(to bottom, #f6eacc, #c1ab85);
+  opacity: 0;
+  visibility: hidden;
+
+  transition: all 0.2s ease-in;
+}
+
+.menu-text-item {
+  width: max-content;
+  visibility: hidden;
+  color: #999999;
+  font-size: 18px;
+  /*font-weight: bold;*/
+  cursor: pointer;
+}
+
+.menu-text-item:hover {
+  color: #ffffff;
+}
 </style>

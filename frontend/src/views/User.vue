@@ -79,7 +79,7 @@ watch(onEdit, (newVal) => {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center">
+  <div style="display: flex; justify-content: center; margin-bottom: 36px">
     <div style="width: 1000px; font-family: 微軟正黑體; color: #222222">
       <p style="text-align: left; color: #ffffff; font-size: 36px; margin-top: 0">{{ userInfo?.nickname }}，你好</p>
 
