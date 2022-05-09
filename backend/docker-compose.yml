@@ -47,7 +47,7 @@ services:
       - ./opengauss/db_data:/var/lib/opengauss
 
   # 授权认证模块
-  mall-auth:
+  mall-auth-service:
     build:
       context: mall-auth
     image: frogsoftware/mall-auth:0.0.1
@@ -75,13 +75,13 @@ services:
     ports:
       - "${GATEWAY_PORT:-8080}:${GATEWAY_PORT:-8080}"
     depends_on:
-      - mall-auth
-      - mall-user
-      - mall-shop
-      - mall-commodity
+      - mall-auth-service
+      - mall-user-service
+      - mall-shop-service
+      - mall-commodity-service
 
   # 用户模块
-  mall-user:
+  mall-user-service:
     build:
       context: mall-user
     image: frogsoftware/mall-user:0.0.1
@@ -98,7 +98,7 @@ services:
       - opengauss
 
   # 商店模块
-  mall-shop:
+  mall-shop-service:
     build:
       context: mall-shop
     image: frogsoftware/mall-shop:0.0.1
@@ -115,7 +115,7 @@ services:
       - opengauss
 
   # 商品模块
-  mall-commodity:
+  mall-commodity-service:
     build:
       context: mall-commodity
     image: frogsoftware/mall-commodity:0.0.1

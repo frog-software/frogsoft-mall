@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 // 需要commodity模块调用shop模块，于是使用feign注册一个client类，实现跨模块服务调用
 
 // 使用url进行服务发现
-@FeignClient(url = "http://mall-shop:9210", path = "/shops", value = "mall-shop")
+@FeignClient(url = "http://mall-shop-service:9210", path = "/shops", value = "mall-shop")
 @Component
 public interface ShopClient {
     // 后端内部调用SP01-01的api接口
