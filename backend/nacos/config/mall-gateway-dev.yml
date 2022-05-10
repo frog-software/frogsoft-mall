@@ -24,3 +24,17 @@ spring:
             - Path=/v1/users/**
           filters:
             - StripPrefix=2
+        # 商店模块
+        - id: mall-shop
+          uri: lb://mall-shop
+          predicates:
+            - Path=/shops/**
+          filters:
+            - StripPrefix=1
+        # 商品模块
+        - id: mall-commodity
+          uri: lb://mall-commodity
+          predicates:
+            - Path=/commodities/**
+          filters:
+            - StripPrefix=1

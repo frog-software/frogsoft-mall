@@ -15,6 +15,6 @@ public class UserDtoMapper {
         .setRoles(user.getRoles())
         .setAvatar(user.getAvatar())
         .setPhone(user.getPhone())
-        .setRealName(user.getRealName());
+        .setRealName(user.getNickname());
   }
 }

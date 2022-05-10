@@ -1,4 +1,4 @@
-package org.frogsoft.mall.auth.security;
+package org.frogsoft.mall.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

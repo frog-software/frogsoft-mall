@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  # NACOS
+  # Nacos
   nacos:
     image: ustc-edu-cn.mirror.aliyuncs.com/nacos/nacos-server
     restart: unless-stopped
@@ -18,12 +18,15 @@ services:
     depends_on:
       - mysql
 
-  # NACOS 数据库
+  # Nacos 数据库
   mysql:
     image: ustc-edu-cn.mirror.aliyuncs.com/nacos/nacos-mysql:8.0.16
     restart: unless-stopped
     env_file:
       - ./nacos/mysql.env
+    # 仅测试用，可以去除
+    ports:
+      - "13306:3306"
     volumes:
       - ./nacos/mysql:/var/lib/mysql
       - ./nacos/db-dump:/docker-entrypoint-initdb.d/
@@ -44,47 +47,86 @@ services:
       - ./opengauss/db_data:/var/lib/opengauss
 
   # 授权认证模块
-  mall-auth:
+  mall-auth-service:
     build:
       context: mall-auth
     image: frogsoftware/mall-auth:0.0.1
     restart: unless-stopped
     environment:
+      PORT: ${AUTH_PORT:-9000}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
     # 仅测试用，可以去除
     ports:
-      - "9000:9000"
+      - "${AUTH_PORT:-9000}:${AUTH_PORT:-9000}"
     depends_on:
       - nacos
       - opengauss
 
- # 服务网关
+  # 服务网关
   mall-gateway:
     build:
       context: mall-gateway
     image: frogsoftware/mall-gateway:0.0.1
     restart: unless-stopped
     environment:
+      PORT: ${GATEWAY_PORT:-8080}
       NACOS_URL: nacos
     ports:
-      - "8080:8080"
+      - "${GATEWAY_PORT:-8080}:${GATEWAY_PORT:-8080}"
     depends_on:
-      - mall-auth
-      - mall-user
+      - mall-auth-service
+      - mall-user-service
+      - mall-shop-service
+      - mall-commodity-service
 
- # 用户模块
-  mall-user:
+  # 用户模块
+  mall-user-service:
     build:
       context: mall-user
     image: frogsoftware/mall-user:0.0.1
     restart: unless-stopped
     environment:
+      PORT: ${USER_PORT:-9100}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
     # 仅测试用，可以去除
     ports:
-      - "9100:9100"
+      - "${USER_PORT:-9100}:${USER_PORT:-9100}"
+    depends_on:
+      - nacos
+      - opengauss
+
+  # 商店模块
+  mall-shop-service:
+    build:
+      context: mall-shop
+    image: frogsoftware/mall-shop:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${SHOP_PORT:-9210}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${SHOP_PORT:-9210}:${SHOP_PORT:-9210}"
+    depends_on:
+      - nacos
+      - opengauss
+
+  # 商品模块
+  mall-commodity-service:
+    build:
+      context: mall-commodity
+    image: frogsoftware/mall-commodity:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${COMMODITY_PORT:-9200}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${COMMODITY_PORT:-9200}:${COMMODITY_PORT:-9200}"
     depends_on:
       - nacos
       - opengauss

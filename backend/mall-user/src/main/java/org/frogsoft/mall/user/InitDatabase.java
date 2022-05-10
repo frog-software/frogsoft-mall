@@ -7,16 +7,10 @@ import org.frogsoft.mall.user.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class InitDatabase {
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-  }
 
   @Bean
   CommandLineRunner init(
@@ -32,7 +26,7 @@ public class InitDatabase {
             .setUsername("admin")
             .setRoles(Arrays.asList("ROLE_ADMIN"))
             .setAvatar("")
-            .setRealName(("管理员"))
+            .setNickname(("管理员"))
             .setPhone("18888888888")
         );
       }

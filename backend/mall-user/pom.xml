@@ -50,6 +50,11 @@
     </dependency>
 
     <dependency>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <dependency>
       <artifactId>spring-boot-starter-validation</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
@@ -79,6 +84,11 @@
       <artifactId>postgresql</artifactId>
       <groupId>org.postgresql</groupId>
       <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
     </dependency>
 
     <dependency>

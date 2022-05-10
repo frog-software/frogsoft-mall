@@ -47,15 +47,15 @@
 
 要成功运行后端，你需要运行这几类程序：
 
-1. 数据库 * 1 ( `openGauss` )
-2. 注册/配置中心 * 1 ( `nacos` + `mysql` )
+1. 数据库 * 1 (openGauss)
+2. 注册/配置中心 * 1 (Nacos + MySQL)
 3. 微服务模块 * n
 
 我们会逐一启动他们。
 
 ### 运行数据库
 
-在 `backend` 目录下运行命令 `docker-compose up opengauss -d` 即可启动并初始化数据库。
+在 `backend` 目录下运行命令 `docker-compose up -d opengauss` 即可启动并初始化数据库。
 
 > 第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
 >
@@ -63,7 +63,7 @@
 
 ### 运行注册/配置中心
 
-在 `backend` 目录下运行命令 `docker-compose up nacos -d` 即可启动注册/配置中心。
+在 `backend` 目录下运行命令 `docker-compose up -d nacos` 即可启动注册/配置中心。
 
 > 同样，第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
 >
@@ -107,7 +107,7 @@
 
 
 
-## 有关 NACOS： 如何修改/新建配置
+## 有关 Nacos: 如何修改/新建配置
 
 > 一般来说不需要修改配置
 
@@ -133,7 +133,40 @@
 
 ## 环境变量说明
 
+每个微服务模块都可以自定义这些环境变量
+
+> 例如：虽然每个模块（例如用户模块、认证模块）的 Tomcat 默认在的端口不同，但是同一个模块启动多个实例时（例如启动 10 个用户模块），默认端口都一样就冲突了，这时可以利用 `PORT` 指定不同的实例在不同的端口
+
 | 变量名称    | 说明                 | 默认值      |
 | ----------- | -------------------- | ----------- |
 | `NACOS_URL` | NACOS Server 所在 IP | `127.0.0.1` |
-| `NACOS_PORT` | NACOS Server 所在端口 | ` 8848` |
+| `NACOS_PORT` | NACOS Server 所在端口 | `8848` |
+| `PORT` | Tomcat 所在端口 | - |
+| `OPENGAUSS_USERNAME` | openGauss 用户名 | `gaussdb` |
+| `OPENGAUSS_PASSWORD` | openGauss 密码 | `Secretpassword@123` |
+| `OPENGAUSS_URL` | openGauss 所在 IP | `localhost` |
+| `OPENGAUSS_PORT` | openGauss 所在端口 | `5432` |
+| `OPENGAUSS_DB` | openGauss 数据库名称 | `postgres` |
+
+## Service Mesh 版启动方法
+
+你需要有：
+
+- kubernetes
+- istio
+- docker-compose
+
+当前仅仅是把微服务的相关模块放在 `Istio` 里，`Nacos`，`MySQL`，`openGauss` 仍然是通过 `docker-compose` 进行开关。
+
+你可以通过 `config` 文件夹下的一些脚本进行便捷的操作。
+
+```shell
+cd ./config
+bash ./StartFromZero.sh
+# Do Something
+bash ./stop.sh
+# Do Something
+bash ./start.sh
+# Do Something
+bash ./StopToZero.sh
+```

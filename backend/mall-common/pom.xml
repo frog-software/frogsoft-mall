@@ -10,13 +10,11 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
 
-
     <!-- SpringCloud Alibaba Nacos Config -->
     <dependency>
       <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
       <groupId>com.alibaba.cloud</groupId>
     </dependency>
-
 
     <!-- SpringBoot Actuator -->
     <dependency>
@@ -60,12 +58,6 @@
     </dependency>
 
     <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.postgresql</groupId>
       <scope>runtime</scope>
@@ -80,6 +72,11 @@
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.39</version>
     </dependency>
 
   </dependencies>

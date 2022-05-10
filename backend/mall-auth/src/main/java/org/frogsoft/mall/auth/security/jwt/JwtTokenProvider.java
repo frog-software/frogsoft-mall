@@ -15,9 +15,9 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.auth.repository.user.UserRepository;
-import org.frogsoft.mall.auth.security.SecurityConstants;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -84,7 +84,7 @@ public class JwtTokenProvider {
             : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
 
     try {
-      User principal = new User()
+      UserDetail principal = new UserDetail()
           .setId(Long.parseLong(claims.getId()))
           .setUsername(claims.getSubject())
           .setRoles(authorities
