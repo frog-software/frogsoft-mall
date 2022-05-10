@@ -28,13 +28,13 @@ public class CommodityController {
 
     private final CommodityService commodityService;
 
-    // test api
+    /*// test api
     @GetMapping("/test/getShop/{id}")
     public ResponseEntity<?> testGetShop(
         @PathVariable(value = "id") Long shop_id
     ){
         return commodityService.getAShop(shop_id);
-    }
+    }*/
 
 
     // PD01-01
@@ -55,20 +55,39 @@ public class CommodityController {
     public ResponseEntity<?> getOneProduct(
         @PathVariable(value = "id") Long product_id
     ) {
-
         return new ResponseBodyWrapper<ProductDto>()
             .status(HttpStatus.OK)
             .body(commodityService.getSingleProduct(product_id))
             .build();
     }
 
-/*    // PD01-03
+    // PD01-03
     @PutMapping("/{id}/simple")
+    public ResponseEntity<?> putOneProduct(
+        @PathVariable(value = "id") Long product_id,
+        @RequestBody AddProductRequset putProductRequset,
+        @AuthenticationPrincipal User authenticatedUser
+    )
+    {
+        return new ResponseBodyWrapper<ProductDto>()
+            .status(HttpStatus.CREATED)
+            .body(commodityService.editProduct(product_id, putProductRequset, authenticatedUser))
+            .build();
+    }
 
     // PD01-04
-    @DeleteMapping("/{id}/simple")*/
+    @DeleteMapping("/{id}/simple")
+    public ResponseEntity<?> deleteOneProduct(
+        @PathVariable(value = "id") Long product_id,
+        @AuthenticationPrincipal User authenticatedUser
+    )
+    {
+        commodityService.deleteProduct(product_id, authenticatedUser);
+        return ResponseEntity.noContent().build();
+    }
 
     // PD01-05
+    // TODO：分页
     @GetMapping("/all")
     public ResponseEntity<?> getAllProducts() {
         return new ResponseBodyWrapper<ArrayList<ProductDto>>()

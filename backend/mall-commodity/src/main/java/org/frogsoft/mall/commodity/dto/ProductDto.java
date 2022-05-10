@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class ProductDto {
-
+  private Long productId;
   private String productName;
   private String category;
   private String brand;
   private String description;
-  // private String shopName;
+  private String shopName;
   private BigDecimal price;
 }

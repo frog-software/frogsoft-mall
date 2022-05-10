@@ -12,11 +12,7 @@ import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
-import org.frogsoft.mall.common.util.ResponseBodyWrapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @Service
@@ -28,14 +24,31 @@ public class CommodityService {
   // 通过feign client跨模块调用shop的服务
   private final ShopClient shopClient;
 
-  // 测试用
+ /* // 测试用
   public ResponseEntity<?> getAShop(Long shopId){
     return new ResponseBodyWrapper<Shop>()
         .status(HttpStatus.OK)
         .body(shopClient.getShop(shopId))
         .build();
+  }*/
+
+  // 修改商品信息
+  public ProductDto editProduct(Long id, AddProductRequset addProductRequset, User authenticatedUser){
+    Product currProduct = productRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Product not Found"));
+    Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
+    Product newProduct = productRepository.save(currProduct
+        .setProductName(addProductRequset.getProductName())
+        .setCategory(addProductRequset.getCategory())
+        .setBrand(addProductRequset.getBrand())
+        .setPrice(addProductRequset.getPrice())
+        .setDescription(addProductRequset.getDescription())
+        .setShop(productInShop)
+    );
+    return productDtoMapper.toProductDto(newProduct);
   }
 
+  // 新建商品
   public ProductDto saveProduct(AddProductRequset addProductRequset, User authenticatedUser){
     // TODO：验证用户的店铺与商品信息上的店铺是否一致
     Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
@@ -52,6 +65,16 @@ public class CommodityService {
     return productDtoMapper.toProductDto(newProduct);
   }
 
+  // 删除商品
+  public void deleteProduct(Long id, User authenticateUser){
+    Product currProduct = productRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Product not Found"));
+    currProduct.setShop(null);
+    // TODO：级联删除评论（如果不能自动的话）
+    currProduct.setCommentList(null);
+    Product savedProduct = productRepository.save(currProduct);
+    productRepository.delete(savedProduct);
+  }
 
   public ArrayList<ProductDto> getAllProducts() {
     return productRepository
