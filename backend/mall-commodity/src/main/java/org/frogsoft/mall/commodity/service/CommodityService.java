@@ -9,6 +9,7 @@ import org.frogsoft.mall.commodity.dto.ProductDto;
 import org.frogsoft.mall.commodity.dto.ProductDtoMapper;
 import org.frogsoft.mall.commodity.repository.ProductRepository;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
+import org.frogsoft.mall.common.model.comment.Comment;
 import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
@@ -44,6 +45,7 @@ public class CommodityService {
         .setPrice(addProductRequset.getPrice())
         .setDescription(addProductRequset.getDescription())
         .setShop(productInShop)
+        .setImageList(addProductRequset.getImageList())
     );
     return productDtoMapper.toProductDto(newProduct);
   }
@@ -60,6 +62,8 @@ public class CommodityService {
         .setPrice(addProductRequset.getPrice())
         .setDescription(addProductRequset.getDescription())
         .setShop(productInShop)
+        .setImageList(addProductRequset.getImageList())
+        .setCommentList(new ArrayList<Comment>())
     );
 
     return productDtoMapper.toProductDto(newProduct);

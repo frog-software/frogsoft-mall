@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/commodities")
+@RequestMapping("/")
 public class CommodityController {
 
     private final CommodityService commodityService;
@@ -38,12 +38,22 @@ public class CommodityController {
 
 
     // PD01-01
-    @PostMapping("/simple")
+    /*@PostMapping("/simple")
     public ResponseEntity<?> addProductToShop(
         @RequestBody AddProductRequset addProductRequset,
         @AuthenticationPrincipal User authenticatedUser
     ){
         ProductDto savedProduct = commodityService.saveProduct(addProductRequset, authenticatedUser);
+        return new ResponseBodyWrapper<ProductDto>()
+            .status(HttpStatus.CREATED)
+            .body(savedProduct)
+            .build();
+    }*/
+    @PostMapping("/simple")
+    public ResponseEntity<?> addProductToShop(
+        @RequestBody AddProductRequset addProductRequset
+    ){
+        ProductDto savedProduct = commodityService.saveProduct(addProductRequset,null);
         return new ResponseBodyWrapper<ProductDto>()
             .status(HttpStatus.CREATED)
             .body(savedProduct)

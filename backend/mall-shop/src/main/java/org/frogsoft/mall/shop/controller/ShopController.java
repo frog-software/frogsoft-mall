@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/shops")
+@RequestMapping("/")
 public class ShopController {
     private final ShopService shopService;
     // TODO：跨模块调用

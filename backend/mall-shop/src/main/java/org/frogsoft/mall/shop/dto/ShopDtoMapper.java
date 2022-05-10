@@ -12,7 +12,7 @@ public class ShopDtoMapper {
             .setShopName(shop.getShopName())
             .setRate(shop.getRate())
             .setTradeQuantity(shop.getTradeQuantity())
-            .setOwnerName(shop.getOwner().getRealName());
+            .setOwnerName(shop.getOwner().getNickname());
 
     }
 }

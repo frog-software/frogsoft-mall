@@ -19,7 +19,7 @@ public class InitDatabase {
             Optional<Shop> shop = shopRepository.findByShopName("test_shop");
             if (shop.isEmpty()) {
                 shopRepository.save(new Shop()
-                    .setShopName("严林无痛人流")
+                    .setShopName("test_shop")
                     .setRate(5.0f)
                     .setTradeQuantity(0)
                 );
