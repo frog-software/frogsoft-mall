@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.user.repository.UserRepository;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.user.User;
@@ -83,7 +84,7 @@ public class JwtTokenProvider {
             : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
 
     try {
-      User principal = new User()
+      UserDetail principal = new UserDetail()
           .setId(Long.parseLong(claims.getId()))
           .setUsername(claims.getSubject())
           .setRoles(authorities
