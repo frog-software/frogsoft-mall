@@ -1,0 +1,17 @@
+.gitignore
+docker-compose.yml
+mvnw
+mvnw.cmd
+pom.xml
+README.md
+readme-assets
+opengauss
+nacos
+mall-common
+.mvn
+.idea
+.vscode
+src
+pom.xml
+target/
+!target/*.jar

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-auth-deployment
+  namespace: frogsoft-mall
+  labels:
+    app: mall-auth
+spec:
+  selector:
+    matchLabels:
+      app: mall-auth
+  template:
+    metadata:
+      labels:
+        app: mall-auth
+    spec:
+      containers:
+        - name: mall-auth
+          image: frogsoftware/mall-auth:0.0.1
+          ports:
+            - containerPort: 9000
+          env:
+          - name: NACOS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: frogsoft-mall-config
+                key: NACOS_URL
+          - name: OPENGAUSS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: frogsoft-mall-config
+                key: OPENGAUSS_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-auth-service
+  namespace: frogsoft-mall
+  labels:
+    app: mall-auth
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+  selector:
+    app: mall-auth
+  type: NodePort

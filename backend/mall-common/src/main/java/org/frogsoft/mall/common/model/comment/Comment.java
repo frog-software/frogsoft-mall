@@ -34,7 +34,7 @@ public class Comment {
 
     private int type;
 
-    private int parentId;
+    private Long parentId;
 
     private LocalDateTime commentTime;
 

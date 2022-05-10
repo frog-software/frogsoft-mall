@@ -1,5 +1,6 @@
 package org.frogsoft.mall.commodity;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 import org.frogsoft.mall.commodity.repository.ProductRepository;
@@ -25,7 +26,7 @@ public class InitDatabase {
             .setBrand("Frogsoft")
             .setCategory("Food")
             .setDescription("你是一个一个一个商品啊")
-            .setPrize(114.514f)
+            .setPrice(BigDecimal.ONE)
         );
       }
 

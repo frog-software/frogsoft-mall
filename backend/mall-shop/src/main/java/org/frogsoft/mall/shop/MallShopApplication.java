@@ -1,4 +1,4 @@
-package org.frogsoft.mall.commodity;
+package org.frogsoft.mall.shop;
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,13 +19,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableCaching
 @EnableJpaRepositories(basePackages = {"org.frogsoft.mall.common.model",
-    "org.frogsoft.mall.commodity.repository"})
-@ComponentScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.commodity"})
-@EntityScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.commodity.repository"})
-@EnableFeignClients // 增加Feign服务
-public class MallCommodityApplication {
-
+    "org.frogsoft.mall.shop.repository"})
+@ComponentScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.shop"})
+@EntityScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.shop.repository"})
+@EnableFeignClients
+public class MallShopApplication {
   public static void main(String[] args) {
-    org.springframework.boot.SpringApplication.run(MallCommodityApplication.class, args);
+    org.springframework.boot.SpringApplication.run(MallShopApplication.class, args);
   }
 }
