@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
-import org.frogsoft.mall.commodity.repository.UserRepository;
+import org.frogsoft.mall.shop.repository.UserRepository;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.common.model.user.UserDetail;

@@ -52,6 +52,7 @@ public class User implements UserDetails {
   private List<String> roles = new ArrayList<>();
 
   @Override
+  @JsonBackReference
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return this.roles
         .stream()
