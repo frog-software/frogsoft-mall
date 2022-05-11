@@ -10,4 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     ArrayList<Comment> findAllBy();
 
+    // 查找同一商品的所有评论
+    ArrayList<Comment> findAllByProduct(Product product);
+
 }

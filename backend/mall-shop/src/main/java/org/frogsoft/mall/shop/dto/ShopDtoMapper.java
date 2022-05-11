@@ -12,7 +12,8 @@ public class ShopDtoMapper {
             .setShopName(shop.getShopName())
             .setRate(shop.getRate())
             .setTradeQuantity(shop.getTradeQuantity())
-            .setOwnerName(shop.getOwner().getNickname());
+            .setOwnerName("Null") // TODO：接入用户模块
+            .setShopImage(shop.getShopImage());
 
     }
 }

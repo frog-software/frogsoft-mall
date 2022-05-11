@@ -43,14 +43,6 @@ public class CommentService {
             .setProduct(targetProduct)
         );
 
-        // 相应商品的评论列表外键更新
-        List<Comment> currCommentList = targetProduct.getCommentList();
-        if(currCommentList != null)
-            currCommentList.add(newComment);
-        else
-            throw new NullPointerException("comment list not initialize!");
-        productRepository.save(targetProduct.setCommentList(currCommentList));
-
         return commentDtoMapper.toCommentDto(newComment);
     }
 
@@ -58,8 +50,10 @@ public class CommentService {
     public ArrayList<CommentDto> getAllCommentsOfProduct(Long product_id){
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
+
+        ArrayList<Comment> commentList = commentRepository.findAllByProduct(targetProduct);
         // TODO：分页
-        return targetProduct.getCommentList()
+        return commentList
             .stream()
             .map(commentDtoMapper::toCommentDto)
             .collect(Collectors.toCollection(ArrayList::new));
@@ -70,7 +64,8 @@ public class CommentService {
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
         try {
-            Comment targetComment = targetProduct.getCommentList().get(index);
+            ArrayList<Comment> commentList = commentRepository.findAllByProduct(targetProduct);
+            Comment targetComment = commentList.get(index);
             return commentDtoMapper.toCommentDto(targetComment);
         }
         catch (IndexOutOfBoundsException e){
@@ -83,7 +78,8 @@ public class CommentService {
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
         try {
-            Comment targetComment = targetProduct.getCommentList().get(index);
+            ArrayList<Comment> commentList = commentRepository.findAllByProduct(targetProduct);
+            Comment targetComment = commentList.get(index);
             // TODO：比对user是否有修改权限
             Comment savedComment = commentRepository.save(targetComment
                 .setContent(addCommentRequest.getContent())
@@ -101,16 +97,12 @@ public class CommentService {
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
         try {
-            List<Comment> commentList = targetProduct.getCommentList();
-
+            ArrayList<Comment> commentList = commentRepository.findAllByProduct(targetProduct);
             Comment targetComment = commentList.get(index);
+
             targetComment.setCustomer(null);
             targetComment.setProduct(null);
             Comment savedComment = commentRepository.save(targetComment);
-
-            commentList.remove(index);
-            productRepository.save(targetProduct.setCommentList(commentList));
-
             commentRepository.delete(savedComment);
         }
         catch (IndexOutOfBoundsException e){

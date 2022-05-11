@@ -25,14 +25,6 @@ public class CommodityService {
   // 通过feign client跨模块调用shop的服务
   private final ShopClient shopClient;
 
- /* // 测试用
-  public ResponseEntity<?> getAShop(Long shopId){
-    return new ResponseBodyWrapper<Shop>()
-        .status(HttpStatus.OK)
-        .body(shopClient.getShop(shopId))
-        .build();
-  }*/
-
   // 修改商品信息
   public ProductDto editProduct(Long id, AddProductRequset addProductRequset, User authenticatedUser){
     Product currProduct = productRepository.findById(id)
@@ -63,7 +55,6 @@ public class CommodityService {
         .setDescription(addProductRequset.getDescription())
         .setShop(productInShop)
         .setImageList(addProductRequset.getImageList())
-        .setCommentList(new ArrayList<Comment>())
     );
 
     return productDtoMapper.toProductDto(newProduct);
@@ -75,7 +66,7 @@ public class CommodityService {
         .orElseThrow(() -> new NotFoundException("Product not Found"));
     currProduct.setShop(null);
     // TODO：级联删除评论（如果不能自动的话）
-    currProduct.setCommentList(null);
+
     Product savedProduct = productRepository.save(currProduct);
     productRepository.delete(savedProduct);
   }
@@ -83,6 +74,25 @@ public class CommodityService {
   public ArrayList<ProductDto> getAllProducts() {
     return productRepository
         .findAllBy()
+        .stream()
+        .map(productDtoMapper::toProductDto)
+        .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  // 通过shop查找商品
+  public ArrayList<ProductDto> getAllProductsInShop(Long shop_id){
+    Shop shop = shopClient.getShop(shop_id);
+
+    return productRepository.findAllByShop(shop)
+        .stream()
+        .map(productDtoMapper::toProductDto)
+        .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  // 通过关键词查找商品
+  public ArrayList<ProductDto> getAllProductsInNameKeyword(String keyword){
+
+    return productRepository.findAllByProductNameContains(keyword)
         .stream()
         .map(productDtoMapper::toProductDto)
         .collect(Collectors.toCollection(ArrayList::new));

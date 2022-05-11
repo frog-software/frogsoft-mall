@@ -20,7 +20,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableJpaRepositories(basePackages = {"org.frogsoft.mall.common.model",
     "org.frogsoft.mall.shop.repository"})
-@ComponentScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.shop"})
+@ComponentScan(basePackages = {"org.frogsoft.mall.common", "org.frogsoft.mall.shop"})
 @EntityScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.shop.repository"})
 @EnableFeignClients
 public class MallShopApplication {

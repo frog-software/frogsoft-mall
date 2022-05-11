@@ -3,8 +3,8 @@ package org.frogsoft.mall.commodity.controller.api;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.commodity.controller.request.AddProductRequset;
+import org.frogsoft.mall.common.request.ClientGetProductsRequest;
 import org.frogsoft.mall.commodity.dto.ProductDto;
-import org.frogsoft.mall.common.exception.basic.forbidden.ForbiddenException;
 import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.commodity.service.CommodityService;
 import org.frogsoft.mall.common.model.user.User;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,18 +38,7 @@ public class CommodityController {
     }*/
 
 
-    // PD01-01
-    /*@PostMapping("/simple")
-    public ResponseEntity<?> addProductToShop(
-        @RequestBody AddProductRequset addProductRequset,
-        @AuthenticationPrincipal User authenticatedUser
-    ){
-        ProductDto savedProduct = commodityService.saveProduct(addProductRequset, authenticatedUser);
-        return new ResponseBodyWrapper<ProductDto>()
-            .status(HttpStatus.CREATED)
-            .body(savedProduct)
-            .build();
-    }*/
+    // PD01-01 为商店添加商品
     @PostMapping("/simple")
     public ResponseEntity<?> addProductToShop(
         @RequestBody AddProductRequset addProductRequset
@@ -96,15 +86,34 @@ public class CommodityController {
         return ResponseEntity.noContent().build();
     }
 
-    // PD01-05
-    // TODO：分页
+    // PD01-05：查找所有商品
+    // TODO：分页、复合查询和排序？
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts() {
+    public ResponseEntity<?> getAllProducts(
+        @RequestParam(value = "shop_id",required = false) Long shop_id,
+        @RequestParam(value = "keyword",required = false) String keyword,
+        @RequestParam(value = "orderby",required = false) String orderby
+    ) {
+        ArrayList<ProductDto> res_body = null;
+
+        if(shop_id != null){
+            res_body = commodityService.getAllProductsInShop(shop_id);
+        }
+
+        if(keyword != null){
+            res_body = commodityService.getAllProductsInNameKeyword(keyword);
+        }
+
+        if(res_body == null){
+            return ResponseEntity.noContent().build();
+        }
+
         return new ResponseBodyWrapper<ArrayList<ProductDto>>()
             .status(HttpStatus.OK)
-            .body(commodityService.getAllProducts())
+            .body(res_body)
             .build();
     }
+
 
 
 }
