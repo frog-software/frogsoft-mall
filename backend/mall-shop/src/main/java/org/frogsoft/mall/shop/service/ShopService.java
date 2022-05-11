@@ -5,12 +5,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
+import org.frogsoft.mall.common.exception.user.UserNotFoundException;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.shop.controller.request.AddShopRequset;
 import org.frogsoft.mall.shop.dto.ShopDto;
 import org.frogsoft.mall.shop.dto.ShopDtoMapper;
 import org.frogsoft.mall.shop.repository.ShopRepository;
+import org.frogsoft.mall.shop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class ShopService {
 
   private final ShopRepository shopRepository;
   private final ShopDtoMapper shopDtoMapper;
+  private final UserRepository userRepository;
 
   // 获得所有的商店
   public ArrayList<ShopDto> getAllShops() {
@@ -37,12 +41,15 @@ public class ShopService {
   }
 
   // 新建一个商店
-  public ShopDto saveShop(AddShopRequset addShopRequset, User authenticatedUser){
+  public ShopDto saveShop(AddShopRequset addShopRequset, UserDetail authenticatedUser){
+
+    User owner = userRepository.findByUsername(authenticatedUser.getUsername())
+        .orElseThrow(() -> new UserNotFoundException(authenticatedUser.getUsername()));
 
     Shop newShop = shopRepository.save(new Shop()
         .setShopName(addShopRequset.getShopName())
         .setShopImage(addShopRequset.getShopImage())
-        .setOwner(authenticatedUser)
+        .setOwner(owner)
         .setRate(0f)
         .setTradeQuantity(0));
 

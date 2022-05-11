@@ -3,6 +3,7 @@ package org.frogsoft.mall.shop.controller.api;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.frogsoft.mall.shop.controller.request.AddShopRequset;
 import org.frogsoft.mall.shop.dto.ShopDto;
@@ -65,7 +66,7 @@ public class ShopController {
     @PostMapping("/")
     public ResponseEntity<?> addShop(
         @RequestBody AddShopRequset addShopRequset,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     ){
         ShopDto savedShopDto = shopService.saveShop(addShopRequset, authenticatedUser);
         return new ResponseBodyWrapper<ShopDto>()
