@@ -1,6 +1,7 @@
 package org.frogsoft.mall.common.model.customer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,16 +43,15 @@ public class Customer {
     // 定义一对多关系（单向，全部由Customer方进行管理）
     @JoinColumn(name = "customer_id") // 指定生成关系表的名称
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE}) // 指定级联删除策略
-    private List<Address> addressList;
+    private List<Address> addressList = new ArrayList<>();
 
     @JoinColumn(name = "customer_id")
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
-    private List<BankCard> bankAccountList;
+    private List<BankCard> bankAccountList = new ArrayList<>();
 
     @JoinColumn(name = "customer_id")
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
-    private List<CartItem> cart;
-
+    private List<CartItem> cartItemList = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
