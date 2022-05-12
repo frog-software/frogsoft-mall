@@ -136,6 +136,7 @@
     <module>mall-user</module>
     <module>mall-commodity</module>
     <module>mall-shop</module>
+    <module>mall-customer</module>
   </modules>
   <packaging>pom</packaging>
 

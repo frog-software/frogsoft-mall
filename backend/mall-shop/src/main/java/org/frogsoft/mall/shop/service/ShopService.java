@@ -81,7 +81,7 @@ public class ShopService {
   }
 
 
-  /*带有“client”的，为后端专属服务调用，直接返回相应model类型*/
+  /*带有“client”的，为提供给后端其他模块的服务调用，直接返回相应model类型*/
   public Shop getSingleShopClient(Long id){
     Optional<Shop> res = shopRepository.findById(id);
     return res.orElseThrow(() -> new NotFoundException("Shop not found."));

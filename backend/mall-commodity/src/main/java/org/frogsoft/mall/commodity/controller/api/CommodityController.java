@@ -3,6 +3,7 @@ package org.frogsoft.mall.commodity.controller.api;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.commodity.controller.request.AddProductRequset;
+import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.request.ClientGetProductsRequest;
 import org.frogsoft.mall.commodity.dto.ProductDto;
 import org.frogsoft.mall.common.model.product.Product;
@@ -29,15 +30,14 @@ public class CommodityController {
 
     private final CommodityService commodityService;
 
-    /*// test api
-    @GetMapping("/test/getShop/{id}")
-    public ResponseEntity<?> testGetShop(
-        @PathVariable(value = "id") Long shop_id
-    ){
-        return commodityService.getAShop(shop_id);
-    }*/
+    /* 路由中带有“client”的，为后端专属服务调用接口，直接返回model类型 */
+    // Client api for Mall-Customer
+    @GetMapping("/client/{id}")
+    public Product getProduct(@PathVariable(value = "id") Long product_id){
+        return commodityService.getSingleProductClient(product_id);
+    }
 
-
+    // api for web app
     // PD01-01 为商店添加商品
     @PostMapping("/simple")
     public ResponseEntity<?> addProductToShop(

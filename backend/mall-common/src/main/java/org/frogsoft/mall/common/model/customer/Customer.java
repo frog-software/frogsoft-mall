@@ -53,6 +53,8 @@ public class Customer {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<CartItem> cartItemList = new ArrayList<>();
 
+    // TODO:历史浏览记录信息
+
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;

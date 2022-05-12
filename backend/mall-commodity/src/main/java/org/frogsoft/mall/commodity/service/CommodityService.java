@@ -1,6 +1,7 @@
 package org.frogsoft.mall.commodity.service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.commodity.controller.client.ShopClient;
@@ -104,5 +105,10 @@ public class CommodityService {
         .orElseThrow(() -> new NotFoundException("Product not found.")));
   }
 
+  /*带有“client”的，为提供给后端其他模块的服务调用，直接返回相应model类型*/
+  public Product getSingleProductClient(Long product_id) {
+    Optional<Product> res = productRepository.findById(product_id);
+    return res.orElseThrow(() -> new NotFoundException("Product not found."));
+  }
 
 }
