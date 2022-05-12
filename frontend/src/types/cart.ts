@@ -10,21 +10,22 @@
 //
 //--------------------------------------------------------------------------
 import { ProductSimpleInfo } from "./product";
-import { ShopResponseInfo }  from "./shop";
 
-export interface CartShopItemResponseInfo {
-  product: ProductSimpleInfo
-  addTime: string
-  number: number
+export interface CartItemPostInfo {
+  productID: string
+  amount: number
   remarks: string
 }
 
-export interface  CartShopResponseInfo {
-  shop: ShopResponseInfo
-  items: CartShopItemResponseInfo[]
+export interface CartItemResponseInfo {
+  product: ProductSimpleInfo
+  addTime: string
+  amount: number
+  remarks: string
 }
 
 export interface CartResponseInfo {
-  user: string
-  shops: CartShopResponseInfo[]
+  username: string
+  itemCount: number
+  cartItems: CartItemResponseInfo[]
 }
