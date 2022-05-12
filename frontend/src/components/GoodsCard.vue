@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { ref }     from "vue";
+import { ref }                  from "vue";
 import { CDN_URL } from "../consts/urls"
+import {productDescriptionFormat} from "../utils/util";
 
 const image = ref<string>(CDN_URL + '/goodscard-example.webp')
-
-// 商品描述内容过长则需要省略
-const goodsDescriptionFormat = (str: string) => {
-  const MAX_LENGTH = 43;
-
-  if (str.length >= MAX_LENGTH)
-    return str.substring(0, MAX_LENGTH) + "..."
-  else return str
-}
 
 </script>
 
@@ -26,7 +18,9 @@ const goodsDescriptionFormat = (str: string) => {
     <div>
       <div class="goods-detail">
         <p style="font-weight: bold; font-size: 20px; margin: 0">{{ '这是一个商品名' }}</p>
-        <p style="font-size: 12px; color: #666666">{{ goodsDescriptionFormat('这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述') }}</p>
+        <p style="font-size: 12px; color: #666666">{{
+            productDescriptionFormat('这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述这是一个商品描述', 43)
+          }}</p>
 
         <el-row style="display: flex; align-items: center">
           <el-col :span="12">
@@ -64,7 +58,7 @@ export default {
 }
 
 .card:hover {
-  box-shadow: 0px 0px 15px 3px rgba(246,234,204,0.75);
+  box-shadow: 0 0 15px 3px rgba(246,234,204,0.75);
 }
 
 .goods-detail {
