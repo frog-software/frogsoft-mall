@@ -7,8 +7,11 @@ import lombok.Data;
 
 @Data
 public class AddOrderRequest implements Serializable {
+
+    private String customerName;
+    private Long shopId;
     private String remarks;
     private Set<ProductPayingInfo> orderProducts;
-    private int logisticsAddressID;
+    private Long logisticsAddressID;
 }
 

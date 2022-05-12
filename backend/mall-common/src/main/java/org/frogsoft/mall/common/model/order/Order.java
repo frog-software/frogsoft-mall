@@ -21,6 +21,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.frogsoft.mall.common.model.customer.Address;
 import org.frogsoft.mall.common.model.customer.Customer;
+import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
 
 @Getter
@@ -43,7 +44,7 @@ public class Order {
 
     private String account;
 
-    private String status;
+    private int status;
 
     private String logisticsNumber;
 
@@ -51,9 +52,10 @@ public class Order {
     @JoinColumn(name="address_id", referencedColumnName = "id")
     private Address logisticsAddress;
 
+    // 卖家：订单涉及商品所属的商店（注意：同一订单只能包含同一商店的商品）
     @OneToOne
     @JoinColumn(name="seller_id",referencedColumnName = "id")
-    private User seller;
+    private Shop seller;
 
     @OneToOne
     @JoinColumn(name="buyer_id",referencedColumnName = "id")
