@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import CheckBox                   from "../components/CheckBox.vue";
+import CheckBox                              from "../components/CheckBox.vue";
 import {
   GoodsFilled,
   Minus,
   Plus,
   Delete,
-  More
-}                                 from "@element-plus/icons-vue";
-import { ref }                    from "vue";
-import { CartResponseInfo }       from "../types/cart";
-import { getCartDetails }         from "../services/cart";
-import { ShopResponseInfo }         from "../types/shop";
-import { productDescriptionFormat } from "../utils/util";
-import { ProductSimpleInfo }        from "../types/product";
+  More,
+  InfoFilled
+}                                            from "@element-plus/icons-vue";
+import { ref }                               from "vue";
+import { CartResponseInfo }                  from "../types/cart";
+import { getCartDetails, deleteCartProduct } from "../services/cart";
+import { ShopResponseInfo }                  from "../types/shop";
+import { productDescriptionFormat }          from "../utils/util";
+import { ProductSimpleInfo }                 from "../types/product";
 
 interface CartShopItem {
   shopInfo: ShopResponseInfo
@@ -31,7 +32,6 @@ const cartDetail   = ref<CartResponseInfo>([])  // 原数据
 const cartShopList = ref<CartShopItem[]>([])  // 用于页面展示
 const sumPrice     = ref<number>(0)
 const selectedNum  = ref<number>(0)
-
 
 // 全选某个商店的商品
 const selectAllShopItems = (shopName: string) => {
@@ -110,6 +110,20 @@ const calcNumAndSumPrice = () => {
   })
 }
 
+// 删除单个商品
+const deleteProductInCart = (username: string, index: number) => {
+  deleteCartProduct(username, index)
+
+  for (let i = 0; i < cartShopList.value.length; i++) {
+    for (let j = 0; j < cartShopList.value[i].productList.length; j++) {
+      if (cartShopList.value[i].productList[j].index === index) {
+        cartShopList.value[i].productList.splice(j, 1)
+        return
+      }
+    }
+  }
+}
+
 getCartDetails('testUser').then(res => {
   cartDetail.value = res
 
@@ -167,7 +181,8 @@ getCartDetails('testUser').then(res => {
       </div>
 
       <div v-if="cartDetail.itemCount" v-for="shop in cartShopList">
-        <div style="display: flex; align-items: center; margin-left: 96px; color: #f6eacc">
+        <div v-if="shop.productList.length"
+             style="display: flex; align-items: center; margin-left: 96px; color: #f6eacc">
           <CheckBox @click="selectAllShopItems(shop.shopInfo.shopName)" v-model:model-value="shop.isAllSelected"/>
           <el-icon :size="24" style="margin-left: 16px">
             <goods-filled/>
@@ -181,47 +196,49 @@ getCartDetails('testUser').then(res => {
           />
         </div>
 
-        <div>
-          <div v-for="item in shop.productList" style="width: 1140px; margin: 16px 0">
-            <div class="card-item" :id="'card-' + item.index">
-              <el-row style="width: 100%; align-items: center; ">
-                <el-col :span="1" style="justify-content: center">
-                  <CheckBox style="margin-left: 18px" v-model:model-value="item.isSelected"
-                            @click="selectOneShopItem(shop.shopInfo.shopName, item.index, item.isSelected)"/>
-                </el-col>
-                <el-col :span="3">
-                  <el-image style="width: 100px; height: 100px" :src="item.product.thumb" fit="fill"/>
-                </el-col>
-                <el-col :span="10" style="text-align: left">
-                  <p style="margin: 0">{{ item.product.productName }}</p>
-                  <p style="margin: 12px 0 0 0; color: #999999">{{
-                      productDescriptionFormat(item.product.description, 80)
-                    }}</p>
-                </el-col>
-                <el-col :span="3">
-                  <p>{{ item.product.price.toFixed(2) }}</p>
-                </el-col>
-                <el-col :span="4">
-                  <el-button :icon="Minus" class="num-control-button-left" :disabled="item.amount === 1"
-                             @click="item.amount--" :id="'left-' + item.index"/>
-                  <input v-model="item.amount" class="num-control" :id="'num-' + item.index"/>
-                  <el-button :icon="Plus" class="num-control-button-right" @click="item.amount++"
-                             :id="'right-' + item.index"/>
-                </el-col>
-                <el-col :span="3">
-                  <!-- TODO: 这里路由改一改，写成带有商品ID参数的那种 -->
-                  <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
-                    <el-button type="text" :icon="More" style="color: rgb(30, 144, 255)">详情</el-button>
-                  </router-link>
-                  <br/>
-                  <el-popconfirm title="Are you sure to delete this?">
-                    <template #reference>
-                      <el-button type="text" style="color: rgb(248, 62, 91)" :icon="Delete">删除</el-button>
-                    </template>
-                  </el-popconfirm>
-                </el-col>
-              </el-row>
-            </div>
+        <div v-for="item in shop.productList" style="width: 1140px; margin: 16px 0">
+          <div class="card-item" :id="'card-' + item.index">
+            <el-row style="width: 100%; align-items: center; ">
+              <el-col :span="1" style="justify-content: center">
+                <CheckBox style="margin-left: 18px" v-model:model-value="item.isSelected"
+                          @click="selectOneShopItem(shop.shopInfo.shopName, item.index, item.isSelected)"/>
+              </el-col>
+              <el-col :span="3">
+                <el-image style="width: 100px; height: 100px" :src="item.product.thumb" fit="fill"/>
+              </el-col>
+              <el-col :span="10" style="text-align: left">
+                <p style="margin: 0">{{ item.product.productName }}</p>
+                <p style="margin: 12px 0 0 0; color: #999999">{{
+                    productDescriptionFormat(item.product.description, 80)
+                  }}</p>
+              </el-col>
+              <el-col :span="3">
+                <p>{{ item.product.price.toFixed(2) }}</p>
+              </el-col>
+              <el-col :span="4">
+                <el-button :icon="Minus" class="num-control-button-left" :disabled="item.amount === 1"
+                           @click="() => { item.amount--; sumPrice -= item.product.price }" :id="'left-' + item.index"/>
+                <input v-model="item.amount" class="num-control" :id="'num-' + item.index"/>
+                <el-button :icon="Plus" class="num-control-button-right"
+                           @click="() => { item.amount++; sumPrice += item.product.price }"
+                           :id="'right-' + item.index"/>
+              </el-col>
+              <el-col :span="3">
+                <!-- TODO: 这里路由改一改，写成带有商品ID参数的那种 -->
+                <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
+                  <el-button type="text" :icon="More" style="color: rgb(30, 144, 255)">详情</el-button>
+                </router-link>
+
+                <br/>
+
+                <el-popconfirm title="确定要删除吗？" :icon="InfoFilled" confirmButtonText="确定" cancelButtonText="取消"
+                               @confirm="deleteProductInCart(cartDetail.username, item.index)">
+                  <template #reference>
+                    <el-button type="text" style="color: #f83e5b" :icon="Delete">删除</el-button>
+                  </template>
+                </el-popconfirm>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </div>
@@ -252,7 +269,6 @@ getCartDetails('testUser').then(res => {
           </el-row>
         </div>
       </div>
-
     </div>
   </div>
 </template>
