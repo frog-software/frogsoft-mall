@@ -43,7 +43,20 @@ public class CustomerService {
 
     // 跨模块调用访问其他模块的服务类
     private final ProductClient productClient;
+
     /*带有“client”的，为后端专属服务调用，直接返回相应model类型*/
+    public Customer getCustomerClient(String username){
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UserNotFoundException(username));
+
+        return customerRepository.findByUser(user)
+            .orElseThrow(() -> new NotFoundException("Customer not found."));
+    }
+
+    public Customer getCustomerClient(Long id) {
+        return customerRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Customer not found."));
+    }
 
 
     /*提供给本模块Controller的服务*/
