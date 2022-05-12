@@ -2,6 +2,7 @@ package org.frogsoft.mall.customer.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -14,5 +15,5 @@ import org.frogsoft.mall.common.model.customer.Address;
 public class AddressInfoDto {
     private String username;
     private int addressCount;
-    private List<Address> addressItems;
+    private Set<Address> addressItems;
 }

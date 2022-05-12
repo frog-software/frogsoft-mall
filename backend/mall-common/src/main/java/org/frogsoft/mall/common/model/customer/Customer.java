@@ -2,7 +2,9 @@ package org.frogsoft.mall.common.model.customer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,15 +45,16 @@ public class Customer {
     // 定义一对多关系（单向，全部由Customer方进行管理）
     @JoinColumn(name = "customer_id") // 指定生成关系表的名称
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE}) // 指定级联删除策略
-    private List<Address> addressList = new ArrayList<>();
+    // PS: 要使用FetchType.EAGER，就不能使用允许重复元素的列表List，否则JPA会报错
+    private Set<Address> addressList = new HashSet<>();
 
     @JoinColumn(name = "customer_id")
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
-    private List<BankCard> bankAccountList = new ArrayList<>();
+    private Set<BankCard> bankAccountList = new HashSet<>();
 
     @JoinColumn(name = "customer_id")
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
-    private List<CartItem> cartItemList = new ArrayList<>();
+    private Set<CartItem> cartItemList = new HashSet<>();
 
     // TODO:历史浏览记录信息
 

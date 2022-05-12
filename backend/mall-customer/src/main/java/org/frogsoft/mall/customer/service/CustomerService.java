@@ -1,7 +1,7 @@
 package org.frogsoft.mall.customer.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.exception.user.UserNotFoundException;
@@ -17,6 +17,9 @@ import org.frogsoft.mall.customer.dto.BankCardInfoDtoMapper;
 import org.frogsoft.mall.customer.dto.CartDto;
 import org.frogsoft.mall.customer.dto.CartDtoMapper;
 import org.frogsoft.mall.customer.dto.CustomerDtoMapper;
+import org.frogsoft.mall.customer.repository.AddressRepository;
+import org.frogsoft.mall.customer.repository.BankCardRepository;
+import org.frogsoft.mall.customer.repository.CartItemRepository;
 import org.frogsoft.mall.customer.repository.CustomerRepository;
 import org.frogsoft.mall.customer.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,9 @@ public class CustomerService {
     // 索引数据库仓库持久类
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
+    private final CartItemRepository cartItemRepository;
+    private final AddressRepository addressRepository;
+    private final BankCardRepository bankCardRepository;
 
     // 打包Dto类
     private final CustomerDtoMapper customerDtoMapper;
@@ -55,14 +61,15 @@ public class CustomerService {
         Product productInCartItem = productClient.getProduct(addCartItemRequset.getProductID());
 
         // 新建购物车项目
-        CartItem newCartItem = new CartItem()
+        // 购物车项目写入数据库（这一步必须，否则将无法赋予Customer的外键）
+        CartItem newCartItem = cartItemRepository.save(new CartItem()
             .setProduct(productInCartItem)
             .setAddTime(LocalDateTime.now())
             .setAmount(addCartItemRequset.getAmount())
-            .setRemarks(addCartItemRequset.getRemarks());
+            .setRemarks(addCartItemRequset.getRemarks()));
 
         // 购物车项目加入当前Customer的购物车列表
-        List<CartItem> currCart = customer.getCartItemList();
+        Set<CartItem> currCart = customer.getCartItemList();
         currCart.add(newCartItem);
 
         // 数据库保存修改
