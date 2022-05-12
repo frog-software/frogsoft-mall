@@ -1,4 +1,6 @@
 export interface ShopResponseInfo {
-    rate: number,
+    rate: number
     shopName: string
+    ownerName: string
+    shopImage: string
 }
