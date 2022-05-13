@@ -1,10 +1,12 @@
 package org.frogsoft.mall.user.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.badrequest.BadRequestException;
 import org.frogsoft.mall.common.exception.user.UserNotFoundException;
+import org.frogsoft.mall.common.model.customer.Customer;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.user.controller.request.RegisterRequest;
 import org.frogsoft.mall.user.dto.UserDto;
@@ -52,6 +54,12 @@ public class UserService {
         .setPhone(registerRequest.getPhone())
         .setPassword(passwordEncoder.encode(registerRequest.getPassword()))
         .setAvatar(registerRequest.getAvatar());
+
+    // 默认注册用户为买家，为其创建数据对象
+    Customer newCustomer = new Customer()
+        .setUser(newUser)
+        .setBalance(BigDecimal.ZERO)
+        .setGender(0);
 
     return userDtoMapper.toUserDto(userRepository.save(newUser));
   }

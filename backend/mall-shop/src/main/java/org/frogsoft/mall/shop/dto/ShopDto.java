@@ -12,4 +12,5 @@ public class ShopDto {
     private float rate;
     private int tradeQuantity;
     private String ownerName;
+    private String shopImage;
 }

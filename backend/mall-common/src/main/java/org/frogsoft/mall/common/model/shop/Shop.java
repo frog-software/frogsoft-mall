@@ -1,12 +1,10 @@
 package org.frogsoft.mall.common.model.shop;
 
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -14,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.user.User;
 
 @Getter
@@ -35,6 +32,8 @@ public class Shop {
 
     private int tradeQuantity;
 
+    private String shopImage;
+
     /**
      * 单向一对一外键
      * 由shops表持有owner_id，保存users表的id
@@ -44,10 +43,7 @@ public class Shop {
     @JoinColumn(name="owner_id",referencedColumnName = "id")
     private User owner;
 
-    /**
-     * OneToMany和ManyToOne配合使用时，由ManyToOne多方进行关系管理
-     * mappedBy属性是Many方的属性名称
-     */
-    @OneToMany(mappedBy = "shop")
-    private List<Product> productList;
+    //  * 因跨模块服务调用需要避免循环引用，故不再使用双向一对多关系
+    // @OneToMany(mappedBy = "shop")
+    // private List<Product> productList;
 }

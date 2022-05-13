@@ -1,0 +1,115 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>mall-order</artifactId>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!-- openfeign -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+
+    <!-- SpringBoot Web -->
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- SpringCloud Alibaba Nacos -->
+    <dependency>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+    </dependency>
+
+    <!-- SpringCloud Alibaba Nacos Config -->
+    <dependency>
+      <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>jjwt-api</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>jjwt-impl</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jjwt-jackson</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <artifactId>mall-common</artifactId>
+      <groupId>org.frogsoft</groupId>
+      <scope>compile</scope>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+  </dependencies>
+
+  <description>Frogsoft Order 订单模块</description>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>mall</artifactId>
+    <groupId>org.frogsoft</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+</project>

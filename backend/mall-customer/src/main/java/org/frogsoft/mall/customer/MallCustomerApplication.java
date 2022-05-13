@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -19,8 +20,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableJpaRepositories(basePackages = {"org.frogsoft.mall.common.model",
     "org.frogsoft.mall.customer.repository"})
-@ComponentScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.customer"})
+@ComponentScan(basePackages = {"org.frogsoft.mall.common", "org.frogsoft.mall.customer"})
 @EntityScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.customer.repository"})
+@EnableFeignClients
 public class MallCustomerApplication {
 
   public static void main(String[] args) {
