@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/") // nacos中设置根url为“users”
+@RequestMapping("/") // nacos中设置根url为“customers”
 public class CustomerController {
     private final CustomerService customerService;
 

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/") // nacos root: /shops/**
 public class ShopController {
     private final ShopService shopService;
 
