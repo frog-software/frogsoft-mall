@@ -3,7 +3,7 @@ import { Component, ref, markRaw } from "vue";
 import {
   ShoppingCart,
   User,
-}                         from '@element-plus/icons-vue'
+}                                  from '@element-plus/icons-vue'
 
 interface routerLinkItem {
   path: string,
@@ -23,15 +23,31 @@ const routerLinkList = ref<routerLinkItem[]>([
     content: '个人中心',
   },
 ])
+
+const menuItemSwitch = () => {
+  if ((document.getElementById('menu-toggle') as HTMLInputElement).checked) {
+    for (let i = 0; i < routerLinkList.value.length; i++) {
+      let elem = document.getElementById('menu-item-' + i)
+      if (!elem) continue
+      elem.style.transform = 'translateX(' + 60 * (i + 1) + 'px)'
+    }
+  } else {
+    for (let i = 0; i < routerLinkList.value.length; i++) {
+      let elem = document.getElementById('menu-item-' + i)
+      if (!elem) continue
+      elem.style.transform = ''
+    }
+  }
+}
 </script>
 
 <template>
   <div class="menu" style="background: #42b983">
-    <input type="checkbox" class="menu-toggle" id="menu_toggle">
-    <label for="menu_toggle" style="position: absolute; top: 0; bottom: 0"></label>
+    <input type="checkbox" class="menu-toggle" id="menu-toggle" @click="menuItemSwitch">
+    <label for="menu-toggle" style="position: absolute; top: 0; bottom: 0"></label>
 
     <div>
-      <div v-for="item in routerLinkList" class="menu-item">
+      <div v-for="(item, idx) in routerLinkList" class="menu-item" :id="'menu-item-' + idx">
         <router-link :to="{ path: item.path }">
           <el-tooltip :content="item.content" placement="bottom" :hide-after="0" effect="customized">
             <el-button type="primary" :icon="item.icon" size="large" class="button"/>
@@ -39,7 +55,6 @@ const routerLinkList = ref<routerLinkItem[]>([
         </router-link>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -84,7 +99,6 @@ export default {
   cursor: pointer;
   position: absolute;
   top: 24px;
-
 }
 
 /* 上下杠公用 */
@@ -120,9 +134,11 @@ export default {
   background: white;
   transform: rotate(45deg);
 }
+
 .menu-toggle:checked + label {
   background: transparent;
 }
+
 .menu-toggle:checked + label::after {
   background: white;
   transform: rotate(-45deg);
@@ -133,23 +149,17 @@ export default {
   opacity: 0;
   visibility: collapse;
 }
+
 .menu-toggle:checked ~ div .menu-item {
   opacity: 1;
   visibility: visible;
-}
-
-/* 弹出按钮动画 */
-.menu-toggle:checked ~ div .menu-item:nth-child(1) {
-  transform: translateX(60px);
-}
-.menu-toggle:checked ~ div .menu-item:nth-child(2) {
-  transform: translateX(120px);
 }
 
 /* 上下杠位置 */
 .menu-toggle + label::before {
   top: 10px;
 }
+
 .menu-toggle + label::after {
   top: -10px;
 }
