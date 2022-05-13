@@ -134,6 +134,7 @@
     <module>mall-auth</module>
     <module>mall-gateway</module>
     <module>mall-user</module>
+    <module>mall-customer</module>
     <module>mall-commodity</module>
     <module>mall-shop</module>
     <module>mall-customer</module>

@@ -24,6 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EntityScan(basePackages = {"org.frogsoft.mall.common.model", "org.frogsoft.mall.customer.repository"})
 @EnableFeignClients
 public class MallCustomerApplication {
+
   public static void main(String[] args) {
     org.springframework.boot.SpringApplication.run(MallCustomerApplication.class, args);
   }

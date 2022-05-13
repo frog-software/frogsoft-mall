@@ -12,4 +12,5 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
     Optional<Customer> findByUser(User user);
 
     ArrayList<Customer> findAllBy();
+
 }

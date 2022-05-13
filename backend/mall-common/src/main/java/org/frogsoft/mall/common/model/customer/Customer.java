@@ -16,13 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-import org.frogsoft.mall.common.model.cart.CartItem;
-import org.frogsoft.mall.common.model.user.User;
 
 @Getter
 @Setter
@@ -31,6 +24,7 @@ import org.frogsoft.mall.common.model.user.User;
 @Entity
 @Table(name = "customers")
 @ToString
+
 public class Customer {
 
     @Id
@@ -64,3 +58,4 @@ public class Customer {
 
 
 }
+

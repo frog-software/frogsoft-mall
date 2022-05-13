@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
 import org.frogsoft.mall.common.model.customer.Customer;
 import org.frogsoft.mall.common.model.user.User;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,5 +24,6 @@ public class CustomerDtoMapper {
             .setSavedAddressCount(customer.getAddressList().size())
             .setSavedBankAccountCount(customer.getBankAccountList().size())
             .setShopCartItemCount(customer.getCartItemList().size());
+
     }
 }

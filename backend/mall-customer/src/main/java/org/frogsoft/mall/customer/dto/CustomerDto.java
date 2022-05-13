@@ -10,6 +10,7 @@ import org.frogsoft.mall.common.model.user.User;
 @Setter
 @Accessors(chain = true)
 public class CustomerDto {
+
     private User user;
     private int gender;
     private BigDecimal balance;
@@ -20,3 +21,4 @@ public class CustomerDto {
     private int shopCartItemCount;
 
 }
+
