@@ -3,42 +3,34 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'Homepage',
-    component: () => import('../views/Homepage.vue'),
+    name: 'HomePage',
+    component: () => import('../views/HomePage.vue'),
   },
   {
-    path: '/main',
-    name: 'Main',
-    component: () => import('../views/Main.vue'),
-    children: [
-      {
-        path: '/main',
-        redirect: '/main/shop',
-      },
-      {
-        path: 'shop',
-        component: () => import('../views/Shop.vue'),
-      },
-      {
-        path: 'test1',
-        component: () => import('../views/Home.vue'),
-      },
-    ]
+    path: '/shop',
+    name: 'ShopPage',
+    component: () => import('../views/ShopPage.vue'),
   },
   {
-    path: '/goods',
-    name: 'Goods',
-    component: () => import('../views/GoodsDetail.vue'),
+    path: '/productDetail/:id',
+    name: 'ProductDetailsPage',
+    component: () => import('../views/ProductDetailsPage.vue'),
+    props: true,
   },
   {
     path: '/cart',
-    name: 'Cart',
-    component: () => import('../views/Cart.vue'),
+    name: 'CartPage',
+    component: () => import('../views/CartPage.vue'),
   },
   {
     path: '/user',
-    name: 'User',
-    component: () => import('../views/User.vue'),
+    name: 'UserPage',
+    component: () => import('../views/UserPage.vue'),
+  },
+  {
+    path: '/about',
+    name: 'AboutPage',
+    component: () => import('../views/Home.vue')
   },
 ]
 

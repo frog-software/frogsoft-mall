@@ -5,19 +5,19 @@ import { useRouter }             from "vue-router";
 
 interface RouterLinkItem {
   content: string,
-  path: string,
+  pathName: string,
   name: string,
 }
 
 const routerLinkList = ref<RouterLinkItem[]>([
   {
     content: '首页',
-    path: '/main/shop',
+    pathName: 'ShopPage',
     name: 'first',
   },
   {
     content: '关于我们',
-    path: '/main/test1',
+    pathName: 'AboutPage',
     name: 'second',
   },
 ])
@@ -77,7 +77,7 @@ const routerCheck = () => {
     <div class="router-group" v-for="(i, idx) in routerLinkList">
       <input type="radio" name="dot" :id="i.name" class="input-dot" disabled/>
       <el-col style="display: flex; flex-direction: column; align-items: center">
-        <router-link :to="{path: i.path}" class="router-item" @click.native="switchTab(idx)">{{ i.content }}</router-link>
+        <router-link :to="{ name: i.pathName }" class="router-item" @click.native="switchTab(idx)">{{ i.content }}</router-link>
         <div class="under-point"></div>
       </el-col>
     </div>

@@ -57,7 +57,7 @@ const startExplore = () => {
   })
 }
 
-const handleScrollDown = (id: number) => {
+const autoScrollDown = (id: number) => {
   let rowList = document.getElementsByName('shop-main-row')
 
   rowList[id].scrollIntoView({
@@ -69,6 +69,10 @@ const handleScrollDown = (id: number) => {
 const rowAppear = document.getElementsByName('shop-main-row')
 
 const scrollHandler = () => {
+  // console.log(window.innerHeight)
+
+
+
   rowAppear.forEach((elem) => {
     const vwTop      = window.scrollY;
     const vwBottom   = (window.scrollY + window.innerHeight);
@@ -119,7 +123,7 @@ const handleRollMenu = (idx: number) => {
     })
   } else {
     let elem = document.getElementById('command-goods-' + (idx - shopMainList.value.length))
-
+    if (!elem) return
     elem.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
@@ -205,7 +209,7 @@ onUnmounted(() => {
           </el-row>
 
           <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                   @click="handleScrollDown(item.id)"
+                   @click="autoScrollDown(item.id)"
                    v-if="item.id !== shopMainList.length">
             <arrow-down/>
           </el-icon>
@@ -237,7 +241,7 @@ onUnmounted(() => {
           </el-row>
 
           <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                   @click="handleScrollDown(item.id)"
+                   @click="autoScrollDown(item.id)"
                    v-if="item.id !== shopMainList.length">
             <arrow-down/>
           </el-icon>
@@ -293,16 +297,19 @@ export default {
   color: white;
   font-size: 28px;
   cursor: pointer;
-  animation: icon-floating 1s infinite;
-  animation-timing-function: ease-out;
+  animation: icon-floating 2s infinite;
+  animation-timing-function: ease-in-out;
 }
 
 @keyframes icon-floating {
   0% {
     transform: translateY(-8px);
   }
-  100% {
+  50% {
     transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(-8px);
   }
 }
 
@@ -424,7 +431,7 @@ export default {
 .menu-item-bar {
   position: absolute;
   top: 12px;
-  right: 30px;
+  right: 34px;
   height: 1.5em;
   width: 4px;
   background: linear-gradient(to bottom, #f6eacc, #c1ab85);

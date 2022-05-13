@@ -1,26 +1,46 @@
 <script setup lang="ts">
-import { ref }                               from "vue";
-import { CDN_URL }                           from "../consts/urls";
-import { ProductDetails } from "../types/product";
-import { Minus, Plus }                 from '@element-plus/icons-vue'
-import { getProductDetails }                 from "../services/product";
+import { ref }               from "vue";
+import { CDN_URL }           from "../consts/urls";
+import { ProductDetails }    from "../types/product";
+import { Minus, Plus }       from '@element-plus/icons-vue'
+import { getProductDetails } from "../services/product";
+import { postCartProduct }   from "../services/cart";
+import { ElNotification }    from "element-plus";
+import { getDecimal }        from "../utils/util";
+import { CommentDetails }    from "../types/comment";
+import { getCommentDetails } from "../services/comment";
 
-const buyNum = ref<number>(1)
-const currentImage = ref<number>(0)
+const props = defineProps<{
+  id: string
+}>()
+
+const buyNum         = ref<number>(1)
+const currentImage   = ref<number>(0)
 const commentContent = ref<string>('')
-const currentGoods = ref<ProductDetails>()
+
+const productDetails = ref<ProductDetails>()
+const commentDetails  = ref<CommentDetails[]>([])
 
 const switchImage = (idx: number) => {
   currentImage.value = idx
 }
 
-const getDecimal = (n: number) => {
-  if (!n) return '00'
-  return String(n.toFixed(2)).split('.')[1]
-}
+const addCartProductInGoodsDetail = () => {
+  if (!productDetails.value) return
 
-const addGoodsToCart = () => {
-  console.log('nb')
+  postCartProduct('testUser', {
+    productID: productDetails.value?.id,
+    amount: buyNum.value,
+    remarks: '',
+  }).then(res => {
+    ElNotification({
+      title: '添加成功',
+      message: productDetails.value?.productName + ' 成功添加到购物车中！',
+      type: 'success',
+    })
+  }).catch(res => {
+    //  TODO:错误反馈，比如不允许重复添加
+  })
 }
 
 const submitComment = () => {
@@ -38,37 +58,7 @@ const testGoods = ref<ProductDetails>({
     shopName: 'APPLE',
   },
   description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
-  commentList: [
-    {
-      type: 1,
-      content: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
-      customer: {
-        avatar: '/avataaars.svg',
-        nickname: '这是一个测试名',
-        id: '1',
-      },
-      product: null,
-      commentTime: new Date(),
-      parentId: 123,
-    },
-    {
-      type: 1,
-      content: '你好你好a ',
-      customer: {
-        avatar: '/avataaars.svg',
-        nickname: '这是另一个测试名',
-        id: '2',
-      },
-      product: null,
-      commentTime: new Date(),
-      parentId: 123,
-    },
-  ],
   imageList: [
-    `${CDN_URL}/goodsdetail-example-1.png`,
-    `${CDN_URL}/goodsdetail-example-2.png`,
-    `${CDN_URL}/goodsdetail-example-3.png`,
-    `${CDN_URL}/goodsdetail-example-4.png`,
     `${CDN_URL}/goodsdetail-example-1.png`,
     `${CDN_URL}/goodsdetail-example-2.png`,
     `${CDN_URL}/goodsdetail-example-3.png`,
@@ -77,31 +67,38 @@ const testGoods = ref<ProductDetails>({
   thumb: `${CDN_URL}/goodsdetail-example-1.png`,
 })
 
-getProductDetails(1).then(res => {
-  // currentGoods.value = testGoods.value
-  currentGoods.value = res
+getProductDetails(props.id).then(res => {
+  // productDetails.value = testGoods.value
+  productDetails.value = res
   console.log(res)
 })
 
+getCommentDetails(props.id).then(res => {
+  commentDetails.value = res
 
+  console.log(res)
+})
+
+window.scrollTo(0, 0)
 </script>
 
 <template>
-  <div style="min-width: 1400px; ">
+  <div style="min-width: 1200px; min-height: calc(100vh - 100px)">
     <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 320px;">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>{{ currentGoods?.productName || '商品名未定义' }}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ productDetails?.productName || '商品名未定义' }}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <div style="margin-top: 24px">
       <el-row style="height: 640px">
         <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
           <div>
-            <el-image fit="contain" style="border-radius: 12px; width: 400px; height: 400px" :src="currentGoods?.imageList[currentImage]" alt="商品图片"/>
+            <el-image fit="contain" style="border-radius: 12px; background: transparent; height: 400px; width: auto"
+                      :src="productDetails?.imageList[currentImage]" alt="商品图片"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
               <div style="display: flex; width: 400px; padding: 12px 24px; ">
-                <div v-for="(src, idx) in currentGoods?.imageList" :key="src" @click="switchImage(idx)">
+                <div v-for="(src, idx) in productDetails?.imageList" :key="src" @click="switchImage(idx)">
                   <el-image :src="src" fit="contain" class="image-thumb"/>
                 </div>
               </div>
@@ -111,16 +108,17 @@ getProductDetails(1).then(res => {
 
         <el-col :span="8" :offset="0" style="font-family: 微軟正黑體; color: white; text-align: left; ">
           <div>
-            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">{{ currentGoods?.productName || '商品名未定义'}}</p>
-            <p style="margin-top: 24px; width: 90%">{{ currentGoods?.description || '商品描述未定义' }}</p>
+            <p style="font-size: 52px; margin-bottom: 0; color: #f6eacc;">
+              {{ productDetails?.productName || '商品名未定义' }}</p>
+            <p style="margin-top: 24px; width: 90%">{{ productDetails?.description || '商品描述未定义' }}</p>
           </div>
 
           <div style="margin-top: 56px">
             <el-row>
               <el-col :span="9">
                 <p>
-                  <span style="font-size: 36px">{{ (currentGoods?.price * buyNum || 0).toFixed(0) }}</span>
-                  <span style="font-size: 24px">{{ ' . ' + getDecimal(currentGoods?.price * buyNum) }}</span>
+                  <span style="font-size: 36px">{{ (productDetails?.price * buyNum || 0).toFixed(0) }}</span>
+                  <span style="font-size: 24px">{{ ' . ' + getDecimal(productDetails?.price * buyNum) }}</span>
                   <span style="font-size: 24px"> RMB</span>
                 </p>
               </el-col>
@@ -132,19 +130,19 @@ getProductDetails(1).then(res => {
             </el-row>
 
             <div>
-              <el-button class="cart-button" @click="addGoodsToCart">加入购物车</el-button>
+              <el-button class="cart-button" @click="addCartProductInGoodsDetail">加入购物车</el-button>
               <el-button class="buy-button">立即购买</el-button>
             </div>
           </div>
 
           <div style="width: 90%; margin-top: 56px; border-top: 1px solid #f6eacc; color: white">
             <el-row style="display: flex; align-items: center; ">
-              <el-col :span="4" >
+              <el-col :span="4">
                 <p>商店评分</p>
               </el-col>
-              <el-col :span="4" v-if="currentGoods?.shop.rate">
+              <el-col :span="4" v-if="productDetails?.shop.rate">
                 <el-rate
-                    v-model="currentGoods.shop.rate"
+                    v-model="productDetails.shop.rate"
                     disabled
                     :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
                     disabled-void-color="transparent"
@@ -177,7 +175,7 @@ getProductDetails(1).then(res => {
 
         <div>
           <div style="width: 100%; margin-top: 48px; padding-top: 8px">
-            <div v-if="currentGoods?.commentList" v-for="item in currentGoods?.commentList">
+            <div v-if="commentDetails.length" v-for="item in commentDetails">
               <div style="margin-top: 32px">
                 <el-row>
                   <el-col :span="1" :offset="1">
@@ -189,7 +187,7 @@ getProductDetails(1).then(res => {
                       <p style="color: #999999">{{ item.content }}</p>
 
                       <p style="text-align: right; color: #999999; margin-right: 16px; margin-top: 0">
-                        {{ item.commentTime.getFullYear() + '年 ' + (item.commentTime.getMonth() + 1) + '月' + item.commentTime.getDate() + '日 ' + item.commentTime.getHours() + ':' + (item.commentTime.getMinutes() < 10 ? '0' + item.commentTime.getMinutes() : item.commentTime.getMinutes()) }}
+                        {{ item.commentTime }}
                       </p>
                     </div>
 
@@ -228,7 +226,7 @@ export default {
 }
 
 .image-thumb:hover {
-  box-shadow: 0 0 30px 5px rgba(246,234,204,0.52);
+  box-shadow: 0 0 30px 5px rgba(246, 234, 204, 0.52);
 }
 
 .cart-button,
@@ -238,7 +236,7 @@ export default {
   font-size: 16px;
   font-weight: normal;
   margin: 8px 0 0 0;
-  box-shadow: 0 8px 40px 2px rgba(246,234,204,0.52);
+  box-shadow: 0 8px 40px 2px rgba(246, 234, 204, 0.52);
 }
 
 .cart-button {
@@ -261,7 +259,7 @@ export default {
 }
 
 .buy-button:hover {
-  background: linear-gradient(to right, rgba(246,234,204, 0.8), rgba(193,171,133, 0.8));
+  background: linear-gradient(to right, rgba(246, 234, 204, 0.8), rgba(193, 171, 133, 0.8));
 }
 
 .num-control {

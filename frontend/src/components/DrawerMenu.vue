@@ -6,19 +6,19 @@ import {
 }                                  from '@element-plus/icons-vue'
 
 interface routerLinkItem {
-  path: string,
+  pathName: string,
   icon: Component,
   content: string,
 }
 
 const routerLinkList = ref<routerLinkItem[]>([
   {
-    path: '/cart',
+    pathName: 'CartPage',
     icon: markRaw(ShoppingCart),
     content: '购物车',
   },
   {
-    path: '/user',
+    pathName: 'UserPage',
     icon: markRaw(User),
     content: '个人中心',
   },
@@ -42,13 +42,13 @@ const menuItemSwitch = () => {
 </script>
 
 <template>
-  <div class="menu" style="background: #42b983">
+  <div class="menu">
     <input type="checkbox" class="menu-toggle" id="menu-toggle" @click="menuItemSwitch">
     <label for="menu-toggle" style="position: absolute; top: 0; bottom: 0"></label>
 
     <div>
       <div v-for="(item, idx) in routerLinkList" class="menu-item" :id="'menu-item-' + idx">
-        <router-link :to="{ path: item.path }">
+        <router-link :to="{ name: item.pathName }">
           <el-tooltip :content="item.content" placement="bottom" :hide-after="0" effect="customized">
             <el-button type="primary" :icon="item.icon" size="large" class="button"/>
           </el-tooltip>

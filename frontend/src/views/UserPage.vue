@@ -87,7 +87,7 @@ watch(onEdit, (newVal) => {
           style="background: linear-gradient(to right, #f6eacc, #c1ab85); width: 100%; border-radius: 16px; height: 200px">
         <el-col :span="3" :offset="2" style="padding-top: 40px">
           <!--          <el-avatar :src="userInfo?.avatar || '/avataaars.svg'" style="width: 96px; height: 96px" />-->
-          <el-avatar :src="'/avataaars.svg'" style="width: 96px; height: 96px"/>
+          <el-avatar :src="'/avataaars.svg'" style="width: 96px; height: 96px; background: rgba(255, 255, 255, 0.5)"/>
         </el-col>
         <el-col :span="4" style="text-align: left; color: #010101; padding-top: 56px">
           <div>

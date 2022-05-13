@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import CheckBox                              from "../components/CheckBox.vue";
 import {
   GoodsFilled,
@@ -28,7 +29,7 @@ interface CartShopItem {
   isAllSelected: boolean
 }
 
-const cartDetail   = ref<CartResponseInfo>([])  // 原数据
+const cartDetail   = ref<CartResponseInfo>()  // 原数据
 const cartShopList = ref<CartShopItem[]>([])  // 用于页面展示
 const sumPrice     = ref<number>(0)
 const selectedNum  = ref<number>(0)
@@ -78,6 +79,8 @@ const switchCardStyle = (index: number, isSelected: boolean) => {
   let left  = document.getElementById('left-' + index)
   let right = document.getElementById('right-' + index)
 
+  if (!elem || !num || !left || !right) return
+
   if (isSelected) {
     elem.style.background   = 'rgba(246,234,204, 1)'
     elem.style.boxShadow    = '0 0 30px 4px rgba(246,234,204,0.52)'
@@ -122,10 +125,14 @@ const deleteProductInCart = (username: string, index: number) => {
       }
     }
   }
+
+  calcNumAndSumPrice()
 }
 
 getCartDetails('testUser').then(res => {
   cartDetail.value = res
+
+  console.log(cartDetail.value?.cartItems[0].product.id)
 
   let tempItemList = res.cartItems.map((i, idx) => ({
     ...i,
@@ -133,7 +140,7 @@ getCartDetails('testUser').then(res => {
     isSelected: false,
   }))
 
-  let shopNameList = []
+  let shopNameList: string[] = []
   tempItemList.forEach(item => {
     if (shopNameList.findIndex(i => i === item.product.shop.shopName) === -1) {
       cartShopList.value?.push({
@@ -154,7 +161,7 @@ getCartDetails('testUser').then(res => {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center">
+  <div style="display: flex; justify-content: center; min-height: calc(100vh - 252px)">
     <div style="width: 1200px; color: #ffffff; font-family: 微軟正黑體; font-weight: bold">
       <div>
         <el-row style="align-items: center; font-size: 18px">
@@ -180,7 +187,7 @@ getCartDetails('testUser').then(res => {
         <el-divider style="width: 90%"/>
       </div>
 
-      <div v-if="cartDetail.itemCount" v-for="shop in cartShopList">
+      <div v-if="cartDetail?.itemCount" v-for="shop in cartShopList">
         <div v-if="shop.productList.length"
              style="display: flex; align-items: center; margin-left: 96px; color: #f6eacc">
           <CheckBox @click="selectAllShopItems(shop.shopInfo.shopName)" v-model:model-value="shop.isAllSelected"/>
@@ -217,22 +224,21 @@ getCartDetails('testUser').then(res => {
               </el-col>
               <el-col :span="4">
                 <el-button :icon="Minus" class="num-control-button-left" :disabled="item.amount === 1"
-                           @click="() => { item.amount--; sumPrice -= item.product.price }" :id="'left-' + item.index"/>
+                           @click="() => { item.amount--; if (item.isSelected) sumPrice -= item.product.price }" :id="'left-' + item.index"/>
                 <input v-model="item.amount" class="num-control" :id="'num-' + item.index"/>
                 <el-button :icon="Plus" class="num-control-button-right"
-                           @click="() => { item.amount++; sumPrice += item.product.price }"
+                           @click="() => { item.amount++; if (item.isSelected) sumPrice += item.product.price }"
                            :id="'right-' + item.index"/>
               </el-col>
               <el-col :span="3">
-                <!-- TODO: 这里路由改一改，写成带有商品ID参数的那种 -->
-                <router-link :to="{ path: '/goods' }" style="text-decoration: none; color: #ffffff">
+                <router-link :to="{ name: 'ProductDetailsPage', params: { id: item.product.id } }" style="text-decoration: none; color: #ffffff">
                   <el-button type="text" :icon="More" style="color: rgb(30, 144, 255)">详情</el-button>
                 </router-link>
 
                 <br/>
 
                 <el-popconfirm title="确定要删除吗？" :icon="InfoFilled" confirmButtonText="确定" cancelButtonText="取消"
-                               @confirm="deleteProductInCart(cartDetail.username, item.index)">
+                               @confirm="deleteProductInCart(cartDetail?.username, item.index)">
                   <template #reference>
                     <el-button type="text" style="color: #f83e5b" :icon="Delete">删除</el-button>
                   </template>
