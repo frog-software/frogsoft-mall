@@ -6,10 +6,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.frogsoft.mall.common.model.cart.CartItem;
 import org.frogsoft.mall.common.model.customer.Address;
-import org.frogsoft.mall.common.model.user.UserDetail;
-import org.frogsoft.mall.order.controller.request.ProductPayingInfo;
 
 @Getter
 @Setter
@@ -22,6 +19,7 @@ public class OrderDto {
     private BigDecimal totalPrice;
     private Set<OrderItemDto> products;
     private String remarks;
+    private String payment; // 输出订单信息时，只输出支付方式，从而保护银行卡号等隐私信息
     private int status;
     private String logisticsNumber;
     private Address logisticsAddress;

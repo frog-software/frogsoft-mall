@@ -22,6 +22,7 @@ public class OrderDtoMapper {
             .setRemarks(order.getRemarks())
             .setStatus(order.getStatus())
             .setTotalPrice(order.getTotalPrice())
+            .setPayment(order.getPayment())
             .setLogisticsNumber(order.getLogisticsNumber())
             .setLogisticsAddress(order.getLogisticsAddress())
             .setProducts(order.getOrderItems()

@@ -1,10 +1,12 @@
 package org.frogsoft.mall.order.controller.client;
 
+import java.util.ArrayList;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // 实现跨模块服务调用： Order -> Shop
 
@@ -16,4 +18,7 @@ public interface ShopClient {
     // 后端内部调用SP01-01的api接口
     @GetMapping("/client/{id}")
     public Shop getShop(@PathVariable(value = "id") Long shop_id);
+
+    @GetMapping("/client/allbyOwner")
+    public ArrayList<Shop> getAllShopByOwner(@RequestParam(value = "owner_id",required = true) Long owner_id);
 }

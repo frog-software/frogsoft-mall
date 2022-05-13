@@ -86,4 +86,8 @@ public class ShopService {
     Optional<Shop> res = shopRepository.findById(id);
     return res.orElseThrow(() -> new NotFoundException("Shop not found."));
   }
+
+  public ArrayList<Shop> getAllShopClientByOwnerId(Long owner_id){
+    return shopRepository.findAllByOwner_Id(owner_id);
+  }
 }

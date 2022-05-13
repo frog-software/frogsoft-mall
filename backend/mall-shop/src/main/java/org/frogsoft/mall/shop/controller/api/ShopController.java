@@ -1,5 +1,6 @@
 package org.frogsoft.mall.shop.controller.api;
 
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
@@ -8,7 +9,6 @@ import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.frogsoft.mall.shop.controller.request.AddShopRequset;
 import org.frogsoft.mall.shop.dto.ShopDto;
 import org.frogsoft.mall.shop.service.ShopService;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,6 +33,10 @@ public class ShopController {
     @GetMapping("/client/{id}")
     public Shop getShop(@PathVariable(value = "id") Long shop_id){
         return shopService.getSingleShopClient(shop_id);
+    }
+    @GetMapping("/client/allbyOwner")
+    public ArrayList<Shop> getAllShopByOwner(@RequestParam(value = "owner_id",required = true) Long owner_id){
+        return shopService.getAllShopClientByOwnerId(owner_id);
     }
 
     // api for web app

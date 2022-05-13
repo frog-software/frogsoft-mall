@@ -42,8 +42,11 @@ public class Order {
 
     private String remarks;
 
+    private String payment;
+
     private String account;
 
+    // 1：已提交 2：已支付 3：已发货 4：已收货 -1：已取消
     private int status;
 
     private String logisticsNumber;
