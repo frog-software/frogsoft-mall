@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getOrderDetailsCustomer} from "../services/order";
+import {getOrderDetailsCustomer} from "../services/order/customer";
 import {ref} from "vue";
 import {OrderDetailsInfo} from "../types/order";
 

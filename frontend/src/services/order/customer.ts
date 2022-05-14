@@ -1,14 +1,13 @@
-import request from "./request";
+import request from "../request";
 import {
-    OrderEditPostInfoSeller,
-    OrderItemInfoCustomer, OrderLogPostInfo,
+    OrderItemInfoCustomer,
     OrderPayingPostInfo,
     OrderPostInfoCustomer,
     OrderSimpleInfo
-} from "../types/order";
-import {getShopInfo} from "./shop";
-import {getUserInformation} from "./user";
-import {getProductDetails} from "./product";
+} from "../../types/order";
+import {getShopInfo} from "../shop";
+import {getUserInformation} from "../user";
+import {getProductDetails} from "../product";
 
 // OD01-02 顾客查询单个订单
 export const getOrderSimpleInfoCustomer = async (orderId: string) => {
@@ -61,24 +60,4 @@ export const payOrderCustomer = async (orderId: string, data: OrderPayingPostInf
 // OD01-07 顾客收货
 export const receiveOrderCustomer = async (orderId: string) => {
     return await request.put<OrderSimpleInfo>(`/orders/${orderId}/customer/receiving`);
-}
-
-// OD02-01 商家修改单个订单
-export const updateOrderSeller = async (orderId: string, order: OrderEditPostInfoSeller) => {
-    return await request.put<OrderSimpleInfo>(`/orders/${orderId}/seller`, order);
-}
-
-// OD02-02 商家上传物流单号
-export const uploadLogistics = async (orderId: string, data: OrderLogPostInfo) => {
-    return await request.post<OrderLogPostInfo>(`/orders/${orderId}/seller`, data);
-}
-
-// OD02-03 商家取消单个订单
-export const cancelOrderSeller = async (orderId: string) => {
-    return await request.put<OrderSimpleInfo>(`/orders/${orderId}/seller`);
-}
-
-// OD02-04 商家查询所有订单
-export const getAllOrdersSeller = async (page: number = 1, size: number = 20) => {
-    return await request.get<OrderSimpleInfo[]>(`/orders/seller`, {page, size});
 }
