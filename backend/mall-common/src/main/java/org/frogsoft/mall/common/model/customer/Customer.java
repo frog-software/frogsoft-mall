@@ -1,9 +1,7 @@
 package org.frogsoft.mall.common.model.customer;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+import org.frogsoft.mall.common.model.cart.CartItem;
+import org.frogsoft.mall.common.model.user.User;
 
 @Getter
 @Setter

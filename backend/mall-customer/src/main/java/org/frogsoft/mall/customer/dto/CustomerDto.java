@@ -11,6 +11,7 @@ import org.frogsoft.mall.common.model.user.User;
 @Accessors(chain = true)
 public class CustomerDto {
 
+    private Long customerId;
     private User user;
     private int gender;
     private BigDecimal balance;

@@ -18,6 +18,7 @@ public class CustomerDtoMapper {
         }
 
         return new CustomerDto()
+            .setCustomerId(customer.getId())
             .setGender(customer.getGender())
             .setBalance(customer.getBalance())
             .setUser(customer.getUser())
