@@ -21,18 +21,18 @@ const topSwiper = ref<TopSwiperItem[]>([
   },
 ])
 
-let timer         = ref<any>(null);
-let activeIndex   = ref<number>(0)
+const timer         = ref<number>(0);
+const activeIndex   = ref<number>(0)
 const activeImage = ref<string>(topSwiper.value[activeIndex.value].image)
 
 const stopAutoPlay = () => {
-  if (timer) {
-    clearInterval(timer)
+  if (timer.value) {
+    clearInterval(timer.value)
   }
 }
 
 const startAutoPlay = () => {
-  timer = setInterval(() => {
+  timer.value = setInterval(() => {
     activeIndex.value++
     if (activeIndex.value >= topSwiper.value.length)
       activeIndex.value = 0
@@ -48,6 +48,7 @@ const changeBanner = (idx: number) => {
   startAutoPlay()
 }
 
+startAutoPlay()
 </script>
 
 <template>
@@ -99,7 +100,7 @@ export default {
 
 .banner {
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
   max-width: 1920px;
   background-size: cover;
   background-position: center;
@@ -114,7 +115,7 @@ export default {
   right: 0;
   color: white;
   backdrop-filter: blur(20px);
-  padding-top: 20px;
+  padding-top: 60px;
   margin-right: -1px;
 }
 

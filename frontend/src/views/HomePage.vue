@@ -17,7 +17,7 @@
         <div style="color: #999999; margin-top: 64px; text-align: left" class="text">
           <p>开始你的电商之旅来探索更多内容！</p>
 
-          <router-link :to="{ path: '/main' }" style="text-decoration: none" @click.native="switchTab(0)">
+          <router-link :to="{ name: 'ShopPage' }" style="text-decoration: none">
             <el-button class="start-button" round>
               开始购物
             </el-button>

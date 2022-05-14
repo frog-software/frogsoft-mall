@@ -90,30 +90,30 @@ const showMenu   = () => {
   menuIsShow.value = !menuIsShow.value
   for (let i = 0; i < shopMainList.value.length + commandGoodsList.value.length; i++) {
     let menuItemBar  = document.getElementById('menu-item-bar-' + i)
-    let menuTextItem = document.getElementById('menu-item-name-' + i)
-    let menuButton   = document.getElementById('menu-button')
+    let menuItemText = document.getElementById('menu-item-text-' + i)
+    let menuSwitchButton   = document.getElementById('menu-button')
+
+    if (!menuItemBar || !menuItemText || !menuSwitchButton) return
 
     if (menuIsShow.value) {
       menuItemBar.style.transform  = 'translateY(' + (54 + i * 42) + 'px)'
       menuItemBar.style.opacity    = '1'
       menuItemBar.style.visibility = 'visible'
-      menuTextItem.classList.remove('menu-item-name-disappear')
-      menuTextItem.classList.add('menu-item-name-appear')
-      menuButton.style.transform = 'rotate(180deg)'
+      menuItemText.classList.remove('menu-item-name-disappear')
+      menuItemText.classList.add('menu-item-name-appear')
+      menuSwitchButton.style.transform = 'rotate(180deg)'
     } else {
       menuItemBar.style.transform  = 'translateY(0)'
       menuItemBar.style.opacity    = '0'
       menuItemBar.style.visibility = 'hidden'
-      menuTextItem.classList.remove('menu-item-name-appear')
-      menuTextItem.classList.add('menu-item-name-disappear')
-      menuButton.style.transform = 'rotate(0)'
+      menuItemText.classList.remove('menu-item-name-appear')
+      menuItemText.classList.add('menu-item-name-disappear')
+      menuSwitchButton.style.transform = 'rotate(0)'
     }
   }
 }
 
 const handleRollMenu = (idx: number) => {
-  console.log(idx)
-
   if (idx < shopMainList.value.length) {
     let rowList = document.getElementsByName('shop-main-row')
 
@@ -157,9 +157,8 @@ onUnmounted(() => {
           <el-affix :offset="64">
             <el-button type="primary" :icon="ArrowDownBold" class="menu-button" @click="showMenu" id="menu-button"/>
 
-            <div v-for="(i, idx) in shopMainList.length + commandGoodsList.length"
-                 :id="'menu-text-item-' + idx">
-              <p :id="'menu-item-name-' + idx" class="menu-text-item" @click="handleRollMenu(idx)">{{
+            <div v-for="(i, idx) in shopMainList.length + commandGoodsList.length">
+              <p :id="'menu-item-text-' + idx" class="menu-text-item" @click="handleRollMenu(idx)">{{
                   i > shopMainList.length
                       ? commandGoodsList[idx - shopMainList.length].name
                       : shopMainList[idx].title
@@ -305,7 +304,10 @@ export default {
   0% {
     transform: translateY(-8px);
   }
-  50% {
+  45% {
+    transform: translateY(20px);
+  }
+  55% {
     transform: translateY(20px);
   }
   100% {
