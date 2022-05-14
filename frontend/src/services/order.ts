@@ -15,24 +15,27 @@ export const getOrderSimpleInfoCustomer = async (orderId: string) => {
     return await request.get<OrderSimpleInfo>(`/orders/${orderId}/customer`)
 }
 
-export const getOrderDetailsCustomer = async (orderId: string) => {
-    return getOrderSimpleInfoCustomer(orderId).then(async (order: OrderSimpleInfo) => {
-        const seller = await getShopInfo(order.sellerId);
-        const buyer = await getUserInformation(order.buyerName);
-        const products = await Promise.all(order.products.map(async (product: OrderItemInfoCustomer) => {
-            const details = await getProductDetails(product.id);
-            return {
-                ...product,
-                product: details
-            }
-        }));
+export const getOrderDetailsCustomersBySimple = async (order: OrderSimpleInfo) => {
+    const seller = await getShopInfo(order.sellerId);
+    const buyer = await getUserInformation(order.buyerName);
+    const products = await Promise.all(order.products.map(async (product: OrderItemInfoCustomer) => {
+        const details = await getProductDetails(product.id);
         return {
-            ...order,
-            seller,
-            buyer,
-            products
+            ...product,
+            product: details
         }
-    });
+    }));
+    return {
+        ...order,
+        seller,
+        buyer,
+        products
+    }
+}
+
+export const getOrderDetailsCustomer = async (orderId: string) => {
+    const order = await getOrderSimpleInfoCustomer(orderId)
+    return await getOrderDetailsCustomersBySimple(order)
 }
 
 // OD01-03 顾客修改单个订单
