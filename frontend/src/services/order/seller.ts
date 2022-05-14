@@ -17,6 +17,6 @@ export const cancelOrderSeller = async (orderId: string) => {
 }
 
 // OD02-04 商家查询所有订单
-export const getAllOrdersSeller = async (page: number = 1, size: number = 20) => {
-    return await request.get<OrderSimpleInfo[]>(`/orders/seller`, {page, size});
+export const getAllOrdersSeller = async (data = {page: 1, size: 20}) => {
+    return await request.get<OrderSimpleInfo[]>(`/orders/seller`, data);
 }

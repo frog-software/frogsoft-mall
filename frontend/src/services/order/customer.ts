@@ -48,8 +48,8 @@ export const deleteOrderCustomer = async (orderId: string) => {
 }
 
 // OD01-05 顾客查询所有订单
-export const getAllOrdersCustomer = async (page: number = 1, size: number = 20) => {
-    return await request.get<OrderSimpleInfo[]>(`/orders/customer/all`, {page, size});
+export const getAllOrdersCustomer = async (data = {page: 1, size: 20}) => {
+    return await request.get<OrderSimpleInfo[]>(`/orders/customer/all`, data);
 }
 
 // OD01-06 顾客付款
