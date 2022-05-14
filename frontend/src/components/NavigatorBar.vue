@@ -50,7 +50,7 @@ const switchTab = (index: number) => {
 }
 
 watch(router.currentRoute, (newVal) => {
-  console.log(newVal.fullPath)
+  // console.log(newVal.fullPath)
   switch (newVal.fullPath) {
     case '/':
       switchTab(-1)

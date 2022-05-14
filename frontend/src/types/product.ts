@@ -1,7 +1,7 @@
 import { ShopResponseInfo } from "./shop";
 
 export interface ProductSimpleInfo {
-    id: string
+    id: number
     category: string
     brand: string
     productName: string
@@ -12,7 +12,7 @@ export interface ProductSimpleInfo {
 }
 
 export interface ProductDetails {
-    id: string
+    id: number
     shop: ShopResponseInfo
     category: string
     brand: string

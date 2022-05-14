@@ -140,15 +140,15 @@ getCartDetails('testUser').then(res => {
     isSelected: false,
   }))
 
-  let shopNameList: string[] = []
+  let shopList: number[] = []
   tempItemList.forEach(item => {
-    if (shopNameList.findIndex(i => i === item.product.shop.shopName) === -1) {
+    if (shopList.findIndex(i => i === item.product.shop.id) === -1) {
       cartShopList.value?.push({
         shopInfo: item.product.shop,
         productList: [item],
         isAllSelected: false,
       })
-      shopNameList.push(item.product.shop.shopName)
+      shopList.push(item.product.shop.id)
     } else {
       cartShopList.value?.forEach(shop => {
         if (shop.shopInfo.shopName === item.product.shop.shopName) {

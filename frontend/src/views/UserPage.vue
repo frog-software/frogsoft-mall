@@ -25,7 +25,7 @@ const onEdit   = ref<boolean>(false)
 const form = ref<UserModifyInfo>({
   avatar: '',
   nickname: '',
-  id: '',
+  id: 123,
   phoneNum: '',
   gender: 0,
   addressList: [],
@@ -48,13 +48,15 @@ const cancelEdit = () => {
   delete form.value.shopName
 }
 
-const creditcardFormat = (n: string) => {
+const creditCardFormat = (n: string) => {
   return "*".repeat(n.length - 4).concat(n.substring(n.length - 4))
 }
 
 getUserInformation('test').then(res => {
   userInfo.value = res
   form.value     = JSON.parse(JSON.stringify(userInfo.value))
+  console.log(form.value)
+
   delete form.value.balance
   delete form.value.purchaseHistory
   delete form.value.shopName
@@ -263,7 +265,7 @@ watch(onEdit, (newVal) => {
                     <div style="position: relative">
                       <el-avatar shape="circle" :size="52" style="position: absolute; left: 30px; top: 20px"/>
                       <h3 style="position: absolute; left: 100px; top: 4px">XX银行</h3>
-                      <h1 style="position: absolute; right: 24px; top: 130px">{{ creditcardFormat(i) }}</h1>
+                      <h1 style="position: absolute; right: 24px; top: 130px">{{ creditCardFormat(i) }}</h1>
                     </div>
                   </el-carousel-item>
                 </el-carousel>

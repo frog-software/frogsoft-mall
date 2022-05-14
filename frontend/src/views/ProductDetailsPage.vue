@@ -11,7 +11,7 @@ import { CommentDetails }    from "../types/comment";
 import { getCommentDetails } from "../services/comment";
 
 const props = defineProps<{
-  id: string
+  id: number
 }>()
 
 const buyNum         = ref<number>(1)
@@ -48,7 +48,7 @@ const submitComment = () => {
 }
 
 const testGoods = ref<ProductDetails>({
-  id: 'AAAA',
+  id: 123,
   category: '电子产品',
   brand: 'APPLE',
   productName: 'iPad Pro',
@@ -70,13 +70,13 @@ const testGoods = ref<ProductDetails>({
 getProductDetails(props.id).then(res => {
   // productDetails.value = testGoods.value
   productDetails.value = res
-  console.log(res)
+  // console.log(res)
 })
 
 getCommentDetails(props.id).then(res => {
   commentDetails.value = res
 
-  console.log(res)
+  // console.log(res)
 })
 
 window.scrollTo(0, 0)
@@ -93,13 +93,13 @@ window.scrollTo(0, 0)
       <el-row style="height: 640px">
         <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
           <div>
-            <el-image fit="contain" style="border-radius: 12px; background: transparent; height: 400px; width: auto"
+            <el-image fit="contain" style="border-radius: 12px; background: transparent; height: 400px; max-width: 400px"
                       :src="productDetails?.imageList[currentImage]" alt="商品图片"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
               <div style="display: flex; width: 400px; padding: 12px 24px; ">
-                <div v-for="(src, idx) in productDetails?.imageList" :key="src" @click="switchImage(idx)">
-                  <el-image :src="src" fit="contain" class="image-thumb"/>
+                <div v-for="(src, idx) in productDetails?.imageList" :key="src">
+                  <el-image :src="src" fit="contain" class="image-thumb" @click="switchImage(idx)"/>
                 </div>
               </div>
             </el-scrollbar>
@@ -219,6 +219,7 @@ export default {
 
 .image-thumb {
   width: 72px;
+  max-height: 100px;
   margin-top: 12px;
   margin-right: 20px;
   border-radius: 4px;

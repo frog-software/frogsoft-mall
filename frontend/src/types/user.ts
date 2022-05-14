@@ -3,7 +3,7 @@ import { ProductSimpleInfo } from "./product";
 export interface UserResponseInfo {
     avatar: string,
     nickname: string,
-    id: string,
+    id: number,
     phoneNum: string,
     gender: number,
     addressList: Address[],
@@ -16,13 +16,13 @@ export interface UserResponseInfo {
 export interface CustomerSimpleInfo {
     avatar: string,
     nickname: string,
-    id: string
+    id: number
 }
 
 export interface UserModifyInfo {
     avatar: string,
     nickname: string,
-    id: string,
+    id: number,
     phoneNum: string,
     gender: number,
     addressList: Address[],

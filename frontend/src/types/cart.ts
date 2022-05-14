@@ -12,7 +12,7 @@
 import { ProductSimpleInfo } from "./product";
 
 export interface CartItemPostInfo {
-  productID: string
+  productID: number
   amount: number
   remarks: string
 }
