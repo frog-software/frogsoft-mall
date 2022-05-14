@@ -45,3 +45,13 @@ export interface OrderPayingPostInfo {
     payment: string,
     bankCardId: number,
 }
+
+export interface OrderEditPostInfoSeller {
+    shopId: number,
+    orderProducts: OrderItemInfoCustomer[],
+    remarks: string
+}
+
+export interface OrderLogPostInfo {
+    logisticsNumber: string,
+}
