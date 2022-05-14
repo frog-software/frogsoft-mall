@@ -28,3 +28,12 @@ export interface UserModifyInfo {
     addressList: Address[],
     accountList: string[],
 }
+
+export interface UserRegisterPost {
+    username: string,
+    nickname: string,
+    password: string,
+    phone: string,
+    code: string,
+    avatar: string
+}
