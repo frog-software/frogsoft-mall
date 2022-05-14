@@ -16,6 +16,7 @@ public class ShopDtoMapper {
             ownerName = owner.getUsername();
 
         return new ShopDto()
+            .setId(shop.getId())
             .setShopName(shop.getShopName())
             .setRate(shop.getRate())
             .setTradeQuantity(shop.getTradeQuantity())
