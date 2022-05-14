@@ -1,5 +1,5 @@
-import {UserModifyInfo, UserRegisterPost, UserResponseInfo} from "../types/user";
-import request from "./request";
+import {UserModifyInfo, UserRegisterPost, UserResponseInfo} from "../../types/user";
+import request from "../request";
 
 // US01-01 登录
 export const login = async (username: string, password: string) =>

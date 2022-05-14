@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getUserInformation }               from "../services/user";
-import { UserModifyInfo, UserResponseInfo } from "../types/user";
-import { ref, watch }                       from "vue";
+import {getUserInformation} from "../services/user/user";
+import {UserModifyInfo, UserResponseInfo} from "../types/user";
+import {ref, watch} from "vue";
 import {
   Male,
   Female,

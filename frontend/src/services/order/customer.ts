@@ -6,7 +6,7 @@ import {
     OrderSimpleInfo
 } from "../../types/order";
 import {getShopInfo} from "../shop";
-import {getUserInformation} from "../user";
+import {getUserInformation} from "../user/user";
 import {getProductDetails} from "../product";
 
 // OD01-02 顾客查询单个订单
