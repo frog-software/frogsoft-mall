@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import { useRouter }             from "vue-router";
+import { router } from '../router'
+
 
 
 interface RouterLinkItem {
@@ -47,18 +49,20 @@ const switchTab = (index: number) => {
   }
 }
 
-const routerCheck = () => {
-
-  if ('/' === useRouter().currentRoute?.value.fullPath) {
-    (document.getElementById('Homepage') as HTMLInputElement).checked = true
-    return
+watch(router.currentRoute, (newVal) => {
+  console.log(newVal.fullPath)
+  switch (newVal.fullPath) {
+    case '/':
+      switchTab(-1)
+      break
+    case '/shop':
+      switchTab(0)
+      break
+    case '/about':
+      switchTab(1)
+      break
   }
-
-  routerLinkList.value.forEach(i => {
-    if (i.path === useRouter().currentRoute?.value.fullPath)
-      (document.getElementById(i.name) as HTMLInputElement).checked = true
-  })
-}
+})
 
 </script>
 
