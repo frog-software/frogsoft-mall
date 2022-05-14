@@ -9,6 +9,7 @@ export interface Address {
     phone: string, // 电话
     name: string, // 姓名
     address: DetailsAddress // 地址
+    id: number
 }
 
 export interface LogisticsDetails {

@@ -3,4 +3,5 @@ export interface ShopResponseInfo {
     shopName: string
     ownerName: string
     shopImage: string
+    id: number
 }

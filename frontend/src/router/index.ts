@@ -18,6 +18,12 @@ const routes = [
     props: true,
   },
   {
+    path: '/orders/:id',
+    name: 'OrderDetailsPage',
+    component: () => import('../views/OrderDetailsPage.vue'),
+    props: true,
+  },
+  {
     path: '/cart',
     name: 'CartPage',
     component: () => import('../views/CartPage.vue'),
