@@ -1,9 +1,9 @@
-import { InjectionKey } from "vue";
-import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import {InjectionKey} from "vue";
+import {createStore, useStore as baseUseStore, Store} from 'vuex'
 import request from "../services/request";
-import { ElMessage } from "element-plus";
-import { getUserInformation } from "../services/user"
-import { UserResponseInfo } from "../types/user";
+import {ElMessage} from "element-plus";
+import {getUserInformation} from "../services/user/user"
+import {UserResponseInfo} from "../types/user";
 
 // 为 store state 声明类型
 export interface State {

@@ -9,22 +9,28 @@
 //  History:    5月-03-2022   QQK  Created
 //
 //--------------------------------------------------------------------------
-import request                                from "./request";
-import { CartItemPostInfo, CartResponseInfo } from "../types/cart";
+import request from "./request";
+import {CartItemPostInfo, CartResponseInfo} from "../types/cart";
+import {ProductSimpleInfo} from "../types/product";
 
 // CM03-01 修改购物车商品
-// export const editCartGoods = async (username: string, index: number, item: CartShopItemPostInfo) => {
-//   return await request.put<CartShopItemPostInfo>(`/customers/${username}/cart/${index.toFixed(0)}`, item)
-// }
+export const updateCartItem = async (username: string, index: number, cartItemPostInfo: CartItemPostInfo) => {
+  return await request.post<ProductSimpleInfo>(`/customers/${username}/cart/${index}`, cartItemPostInfo);
+};
+
+// CM03-02 查询购物车商品（单个）
+export const getCartItem = async (username: string, index: number) => {
+  return await request.get<CartResponseInfo>(`/customers/${username}/cart/${index}`);
+};
 
 // CM03-03 从购物车中删除商品
 export const deleteCartProduct = async (username: string, index: number) => {
-  return await request.del(`/customers/${username}/cart/${index.toFixed(0)}`)
+  return await request.del<null>(`/customers/${username}/cart/${index}`)
 }
 
-// cm03-04 添加购物车商品
+// CM03-04 添加购物车商品
 export const postCartProduct = async (username: string, item: CartItemPostInfo) => {
-  return await request.post<CartItemPostInfo>(`/customers/${username}/cart`, item)
+  return await request.post<CartResponseInfo>(`/customers/${username}/cart`, item)
 }
 
 // CM03-05 查询购物车商品
