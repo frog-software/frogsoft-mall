@@ -11,7 +11,7 @@ import { CommentDetails, CommentPostInfo }      from "../types/comment";
 import { getCommentDetailsPaging, postComment } from "../services/comment";
 
 const props = defineProps<{
-  id: number
+  id: string
 }>()
 
 const buyNum         = ref<number>(1)
@@ -19,7 +19,7 @@ const currentImage   = ref<number>(0)
 const currentComment = ref<CommentPostInfo>({
   type: 0,
   content: '',
-  productId: props.id,
+  productId: Number(props.id),
   parentId: 0,
 })
 
@@ -62,7 +62,7 @@ const submitComment = () => {
       type: 'error',
     })
   } else {
-    postComment(props.id, currentComment.value).then(res => {
+    postComment(Number(props.id), currentComment.value).then(res => {
       ElNotification({
         title: '评论成功',
         message: '"' + currentComment.value.content + '"',
@@ -95,14 +95,14 @@ const testGoods = ref<ProductDetails>({
   thumb: `${CDN_URL}/goodsdetail-example-1.png`,
 })
 
-getProductDetails(props.id).then(res => {
+getProductDetails(Number(props.id)).then(res => {
   // productDetails.value = testGoods.value
   productDetails.value = res
 
   // console.log(res)
 })
 
-getCommentDetailsPaging(props.id).then(res => {
+getCommentDetailsPaging(Number(props.id)).then(res => {
   commentDetails.value = res
 
   // console.log(res)
