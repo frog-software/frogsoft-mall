@@ -20,3 +20,8 @@ export const productDescriptionFormat = (str: string, length: number) => {
     return str.substring(0, length) + "..."
   else return str
 }
+
+export const getDecimal = (n: number) => {
+  if (!n) return '00'
+  return String(n.toFixed(2)).split('.')[1]
+}
