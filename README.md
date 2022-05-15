@@ -1,6 +1,6 @@
 # 蛙软商城 Frogsoft Mall
 
-网上购物系统（指定 openGauss 数据库，北京邮电大学面向领域实践大数据与云服务方向）
+网上购物系统（指定 openGauss 数据库，北京邮电大学面向领域实践大数据与云服务方向课程）
 
 ## 技术栈简介
 
@@ -36,9 +36,8 @@
 >
 > These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.
 >
-> <p style="text-align: right">Cloud Native Computing Foundation, CNCF</p>
->
-> <p style="text-align: right">CNCF Cloud Native Definition v1.0</p>
+<p style="text-align: right">Cloud Native Computing Foundation, CNCF</p>
+<p style="text-align: right">CNCF Cloud Native Definition v1.0</p>
 
 从整体来看，我们的后端主要采用了这几种概念：**微服务** + **DevOps** + **容器化** ，下面逐一介绍：
 
