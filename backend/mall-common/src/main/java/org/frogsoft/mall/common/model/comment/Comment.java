@@ -32,7 +32,8 @@ public class Comment {
 
     private String content;
 
-    private int type;
+    // 评论中的评分
+    private float type;
 
     private Long parentId = 0L;
 

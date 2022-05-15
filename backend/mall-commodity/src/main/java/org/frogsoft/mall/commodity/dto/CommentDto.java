@@ -13,7 +13,7 @@ import org.frogsoft.mall.common.model.product.Product;
 // comment details
 public class CommentDto {
     public Long commentId;
-    public int type;
+    public float type;
     public String content;
     public LocalDateTime commentTime;
     // TODO：返回嵌套数据而非id（外链dto）

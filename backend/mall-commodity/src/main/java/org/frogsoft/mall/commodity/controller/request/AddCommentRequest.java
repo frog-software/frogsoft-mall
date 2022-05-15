@@ -9,7 +9,7 @@ import lombok.Data;
 public class AddCommentRequest implements Serializable {
     // private Long productId; 无需prodcutID，因为在path var中已经传入评论对应商品的id
     private String content;
-    private int type;
+    private float type;
     private Long parentId;
 }
 

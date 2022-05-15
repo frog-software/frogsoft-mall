@@ -15,6 +15,7 @@ public class CommentDtoMapper {
             .setCommentId(comment.getId())
             .setCommentTime(comment.getCommentTime())
             .setContent(comment.getContent())
+            .setType(comment.getType())
             .setCustomerId(comment.getCustomer().getId())
             .setParentId(comment.getParentId())
             .setProduct(productDtoMapper.toProductDto(comment.getProduct()));
