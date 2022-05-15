@@ -6,9 +6,9 @@ import { Minus, Plus }       from '@element-plus/icons-vue'
 import { getProductDetails } from "../services/product";
 import { postCartProduct }   from "../services/cart";
 import { ElNotification }    from "element-plus";
-import { getDecimal }        from "../utils/util";
-import { CommentDetails }    from "../types/comment";
-import { getCommentDetails } from "../services/comment";
+import { getDecimal }                      from "../utils/util";
+import { CommentDetails, CommentPostInfo }      from "../types/comment";
+import { getCommentDetailsPaging, postComment } from "../services/comment";
 
 const props = defineProps<{
   id: number
@@ -16,10 +16,15 @@ const props = defineProps<{
 
 const buyNum         = ref<number>(1)
 const currentImage   = ref<number>(0)
-const commentContent = ref<string>('')
+const currentComment = ref<CommentPostInfo>({
+  type: 0,
+  content: '',
+  productId: props.id,
+  parentId: 0,
+})
 
 const productDetails = ref<ProductDetails>()
-const commentDetails  = ref<CommentDetails[]>([])
+const commentDetails = ref<CommentDetails[]>([])
 
 const switchImage = (idx: number) => {
   currentImage.value = idx
@@ -44,7 +49,30 @@ const addCartProductInGoodsDetail = () => {
 }
 
 const submitComment = () => {
-  console.log('nbnb')
+  if (!currentComment.value.content) {
+    ElNotification({
+      title: '评论失败',
+      message: '你还没有输入评论内容！',
+      type: 'error',
+    })
+  } else if (!currentComment.value.type) {
+    ElNotification({
+      title: '评论失败',
+      message: '你还没有选择商品评分！',
+      type: 'error',
+    })
+  } else {
+    postComment(props.id, currentComment.value).then(res => {
+      ElNotification({
+        title: '评论成功',
+        message: '"' + currentComment.value.content + '"',
+        type: 'success',
+      })
+
+      currentComment.value.type = 0
+      currentComment.value.content = ''
+    })
+  }
 }
 
 const testGoods = ref<ProductDetails>({
@@ -70,10 +98,11 @@ const testGoods = ref<ProductDetails>({
 getProductDetails(props.id).then(res => {
   // productDetails.value = testGoods.value
   productDetails.value = res
+
   // console.log(res)
 })
 
-getCommentDetails(props.id).then(res => {
+getCommentDetailsPaging(props.id).then(res => {
   commentDetails.value = res
 
   // console.log(res)
@@ -85,19 +114,20 @@ window.scrollTo(0, 0)
 <template>
   <div style="min-width: 1200px; min-height: calc(100vh - 100px)">
     <el-breadcrumb separator=">" style="font-size: 14px; margin-left: 320px;">
-      <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'ShopPage' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>{{ productDetails?.productName || '商品名未定义' }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <div style="margin-top: 24px">
-      <el-row style="height: 640px">
+    <div style="margin-top: 24px; height: 640px">
+      <el-row>
         <el-col :span="8" :offset="4" style="display: flex; justify-content: center">
           <div>
-            <el-image fit="contain" style="border-radius: 12px; background: transparent; height: 400px; max-width: 400px"
+            <el-image fit="contain"
+                      style="border-radius: 12px; background: transparent; height: 400px; max-width: 400px"
                       :src="productDetails?.imageList[currentImage]" alt="商品图片"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
-              <div style="display: flex; width: 400px; padding: 12px 24px; ">
+              <div style="display: flex; width: 400px; padding: 12px 24px; align-items: center">
                 <div v-for="(src, idx) in productDetails?.imageList" :key="src">
                   <el-image :src="src" fit="contain" class="image-thumb" @click="switchImage(idx)"/>
                 </div>
@@ -136,19 +166,23 @@ window.scrollTo(0, 0)
           </div>
 
           <div style="width: 90%; margin-top: 56px; border-top: 1px solid #f6eacc; color: white">
-            <el-row style="display: flex; align-items: center; ">
-              <el-col :span="4">
-                <p>商店评分</p>
-              </el-col>
-              <el-col :span="4" v-if="productDetails?.shop.rate">
-                <el-rate
-                    v-model="productDetails.shop.rate"
-                    disabled
-                    :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
-                    disabled-void-color="transparent"
-                />
-              </el-col>
-            </el-row>
+            <div style="display: flex; align-items: center; height: 2em; margin-top: 12px">
+              <span style="margin-right: 16px">商店名称</span>
+              <span>{{ productDetails?.shop.shopName || '商店名未定义' }}</span>
+            </div>
+            <div style="display: flex; align-items: center; height: 2em">
+              <span style="margin-right: 16px">商店评分</span>
+              <el-rate
+                  v-if="productDetails?.shop.rate"
+                  :model-value="productDetails?.shop.rate"
+                  disabled
+                  allow-half
+                  :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
+                  disabled-void-color="transparent"
+              />
+              <span v-else>暂未有人评分</span>
+            </div>
+
           </div>
         </el-col>
       </el-row>
@@ -160,7 +194,7 @@ window.scrollTo(0, 0)
 
         <div style="margin: 16px 0">
           <el-input
-              v-model="commentContent"
+              v-model="currentComment.content"
               :rows="4"
               type="textarea"
               placeholder="发一条友善的评论"
@@ -168,15 +202,20 @@ window.scrollTo(0, 0)
               input-style="border-radius: 12px; background: transparent; height: 120px; color: #eeeeee"
           />
 
-          <div>
-            <el-button class="comment-summit" @click="submitComment">发表评论</el-button>
-          </div>
+          <el-rate
+              v-model="currentComment.type"
+              :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
+              allow-half
+              style="display: inline-block; float: left; margin-top: 8px; color: #ffffff"
+          />
+
+          <el-button class="comment-summit-button" @click="submitComment">发表评论</el-button>
         </div>
 
         <div>
           <div style="width: 100%; margin-top: 48px; padding-top: 8px">
-            <div v-if="commentDetails.length" v-for="item in commentDetails">
-              <div style="margin-top: 32px">
+            <div v-if="commentDetails.length" v-for="item in commentDetails" style="margin-top: 16px">
+              <div class="comment-item">
                 <el-row>
                   <el-col :span="1" :offset="1">
                     <el-avatar :src="item.customer.avatar" :size="48"/>
@@ -184,14 +223,24 @@ window.scrollTo(0, 0)
                   <el-col :span="21" :offset="1" style="text-align: left; ">
                     <div style="color: #eeeeee">
                       <p style="margin: 0; font-weight: bold">{{ item.customer.nickname }}</p>
-                      <p style="color: #999999">{{ item.content }}</p>
+                      <p style="color: #999999; margin-bottom: 8px">{{ item.content }}</p>
+                      <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 16px; color: #999999">用户评分</span>
+                        <el-rate
+                            v-if="item.type"
+                            :model-value="item.type"
+                            disabled
+                            allow-half
+                            :colors="['#f6eacc', '#f6eacc', '#f6eacc']"
+                            disabled-void-color="transparent"
+                        />
+                        <span v-else>该用户暂未评分</span>
+                      </div>
 
                       <p style="text-align: right; color: #999999; margin-right: 16px; margin-top: 0">
                         {{ item.commentTime }}
                       </p>
                     </div>
-
-
                   </el-col>
                 </el-row>
               </div>
@@ -204,8 +253,6 @@ window.scrollTo(0, 0)
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -218,7 +265,7 @@ export default {
 <style scoped>
 
 .image-thumb {
-  width: 72px;
+  max-width: 72px;
   max-height: 100px;
   margin-top: 12px;
   margin-right: 20px;
@@ -307,16 +354,22 @@ export default {
   background: rgba(255, 255, 255, 0.3);
 }
 
-.comment-summit {
+.comment-summit-button {
+  font-family: 微軟正黑體;
   background: transparent;
   border: 1px solid #a8abb2;
-  float: right;
   color: #a8abb2;
-  margin: 16px;
+  margin-top: 12px;
+  margin-right: 12px;
+
+  display: inline-block;
+  float: right;
+
+  transition: all 0.2s linear;
 }
 
-.comment-summit:hover {
-  background: linear-gradient(to right, #f6eacc, #c1ab85);
+.comment-summit-button:hover {
+  background: #f6eacc;
   color: #010101;
 }
 </style>

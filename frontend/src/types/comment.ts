@@ -7,7 +7,7 @@ export interface CommentDetails {
     customer: CustomerSimpleInfo
     product: ProductSimpleInfo
     commentTime: string
-    parentId: number
+    parentId?: number
 }
 
 export interface CommentPostInfo {
