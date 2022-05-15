@@ -121,18 +121,15 @@ const deleteProductInCart = (username: string, index: number) => {
     for (let j = 0; j < cartShopList.value[i].productList.length; j++) {
       if (cartShopList.value[i].productList[j].index === index) {
         cartShopList.value[i].productList.splice(j, 1)
+        calcNumAndSumPrice()
         return
       }
     }
   }
-
-  calcNumAndSumPrice()
 }
 
 getCartDetails('testUser').then(res => {
   cartDetail.value = res
-
-  console.log(cartDetail.value?.cartItems[0].product.id)
 
   let tempItemList = res.cartItems.map((i, idx) => ({
     ...i,
@@ -157,6 +154,9 @@ getCartDetails('testUser').then(res => {
       })
     }
   })
+}).catch(res => {
+  // TODO
+  console.log('获取失败')
 })
 </script>
 
