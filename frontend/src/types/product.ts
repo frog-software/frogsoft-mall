@@ -22,3 +22,13 @@ export interface ProductDetails {
     imageList: string[]
     thumb: string
 }
+
+export interface ProductPostInfo {
+    shopId: number,
+    category: string,
+    brand: string,
+    productName: string,
+    price: number,
+    description: string,
+    imageList: string[],
+}
