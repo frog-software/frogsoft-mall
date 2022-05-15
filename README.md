@@ -8,15 +8,17 @@
 
 - 开发相关
 
-  - `Alibaba Nacos`: 注册中心与配置中心
+  - `Alibaba Nacos`: 配置中心、服务的注册与发现
 
-  - `Istio`: 服务网格
+  - `Istio`: 服务网格，提供模块间通信能力
 
   - `Spring Cloud Loadbalancer`: 客户端负载均衡
 
   - `Spring Cloud Gateway`: 服务网关
 
   - `Spring Cloud OpenFeign`: REST 客户端
+
+  - `Spring Boot + Spring Framework`: 提供 Web 服务
 
   - `Spring Data JPA + Hibernate`: 数据库连接与 ORM
 
@@ -29,6 +31,8 @@
   - `Docker`: 容器解决方案
 
   - `containerd`: 容器运行时
+  
+  - `GitHub Actions`: CI/CD 系统
 
 我们在决定后端架构时，就充分考虑到了**云原生**时代的需求，将我们的应用程序架构尽量设计成 ***可扩展*** *scalable* 、 ***低耦合*** *loosely coupled* 、 ***弹性*** *resilient* 、 ***可管理*** *manageable* 和 ***可观测*** *observable* 的。
 
@@ -36,8 +40,7 @@
 >
 > These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.
 >
-<p style="text-align: right">Cloud Native Computing Foundation, CNCF</p>
-<p style="text-align: right">CNCF Cloud Native Definition v1.0</p>
+> *Excerpt From: CNCF Cloud Native Definition v1.0*
 
 从整体来看，我们的后端主要采用了这几种概念：**微服务** + **DevOps** + **容器化** ，下面逐一介绍：
 
@@ -57,15 +60,13 @@
 
 #### 容器化
 
-容器化也是云原生时代的基础，它轻量、可移植，它将软件代码和所需的所有组件打包在一起，这样应用才能够在任何环境和任何基础架构上一致地运行。如果使用传统的部署方案，应用难以移动，开发者需要花费大量的时间适配新的环境，以上所说的微服务与 DevOps 将根本无法推行。可以说，容器化是云原生应用的必然选择，没有容器化就没有云原生。
+容器化也是云原生时代的基础，它轻量、可移植，它将软件代码和所需的所有组件打包在一起，这样应用才能够在任何环境和任何基础架构上一致地运行。它主要使用 Linux Kernel 提供的能力，通过 `namespace` 实现了资源隔离，通过 `cgroups` 实现了资源限制，通过 `UnionFS` 实现了Copy on Write的文件操作。如果使用传统的部署方案，应用难以移动，开发者需要花费大量的时间适配新的环境，以上所说的微服务与 DevOps 将根本无法推行。可以说，容器化是云原生应用的必然选择，没有容器化就没有云原生。
 
-而 Kubernetes 就是管理这些容器的工具，也是目前应用最广泛的容器编排工具。它会自动执行容器的部署、管理和扩展。它采用声名式 API ，只需要指定我希望这些容器最终达成的状态， Kubernetes 就会替我达成并且维持这个状态。
+而 Kubernetes 就是管理这些容器的工具，也是目前应用最广泛的容器编排工具。容器作为一个 IaaS 层的工具，它结合 Kubernetes 提供 PaaS 服务。它会自动执行容器的部署、管理和扩展。它采用声名式 API ，只需要指定我希望这些容器最终达成的状态， Kubernetes 就会替我达成并且维持这个状态。
 
 ### 前端
 
-Vue 3 套件
-
-// TODO
+Vue 3 + Vite
 
 ## 成员 Team members
 
