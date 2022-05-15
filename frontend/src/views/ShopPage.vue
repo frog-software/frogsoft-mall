@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GoodsCard                       from "../components/GoodsCard.vue";
+import ProductCard                     from "../components/ProductCard.vue";
 import TopSwiper                       from "../components/TopSwiper.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import {
@@ -8,72 +8,75 @@ import {
   ArrowDownBold,
 }                                      from '@element-plus/icons-vue'
 import { CDN_URL }                     from "../consts/urls"
+import { ProductSimpleInfo }           from "../types/product";
+import { getProductDetailsPaging }     from "../services/product";
 
-interface shopMainItem {
-  image: string,
-  title: string,
-  description: string,
-  // goodsList: goods[],
-  id: number,
+interface PopularShop {
+  image: string
+  title: string
+  description: string
+  productList: ProductSimpleInfo[]
+  id: number
 }
 
-// 特殊展示的商店商品列表
-const shopMainList = ref<shopMainItem[]>([
+// 热门商店特殊展示
+const popularShopList = ref<PopularShop[]>([
   {
     image: CDN_URL + '/shop-special-example-1.webp',
     title: '大显身手',
     description: '精彩由此开始。',
-    // goodsList: testGoodsList,
+    productList: [],
     id: 1,
   },
   {
     image: CDN_URL + '/shop-special-example-2.webp',
     title: '帮手在此',
     description: '时时待命应你所需。',
-    // goodsList: testGoodsList,
+    productList: [],
     id: 2,
   },
 ])
 
-// 下方一般分类的商品列表
-const commandGoodsList = ref<any>([
+const getPopularShopList = () => {
+  popularShopList.value.forEach(shop => {
+    getProductDetailsPaging({shop_id: shop.id}).then(res => {
+      shop.productList = res
+    })
+  })
+}
+
+interface ProductCategory {
+  categoryName: string
+  productList: ProductSimpleInfo[]
+}
+
+// 一般分类的商品列表
+const categoryList = ref<ProductCategory[]>([
   {
-    name: '新品上市',
-    // goodsList
+    categoryName: '新品上市',
+    productList: [],
   },
   {
-    name: '运动健康',
-    //
+    categoryName: '运动健康',
+    productList: [],
   },
   {
-    name: '智能家居'
+    categoryName: '智能家居',
+    productList: [],
   }
 ])
 
-const startExplore = () => {
-  document.getElementById('shop-main').scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
+const getCategoryList = () => {
+  categoryList.value.forEach(list => {
+    getProductDetailsPaging({category: list.categoryName}).then(res => {
+      list.productList = res
+    })
   })
 }
 
-const autoScrollDown = (id: number) => {
-  let rowList = document.getElementsByName('shop-main-row')
-
-  rowList[id].scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-  })
-}
-
-const rowAppear = document.getElementsByName('shop-main-row')
-
-const scrollHandler = () => {
-  // console.log(window.innerHeight)
-
-
-
-  rowAppear.forEach((elem) => {
+const popularShopOnAppear = document.getElementsByName('popular-shop')
+const scrollHandler       = () => {
+  popularShopOnAppear.forEach((elem) => {
     const vwTop      = window.scrollY;
     const vwBottom   = (window.scrollY + window.innerHeight);
     const elemTop    = elem.offsetTop;
@@ -88,10 +91,10 @@ const scrollHandler = () => {
 const menuIsShow = ref<boolean>(false)
 const showMenu   = () => {
   menuIsShow.value = !menuIsShow.value
-  for (let i = 0; i < shopMainList.value.length + commandGoodsList.value.length; i++) {
-    let menuItemBar  = document.getElementById('menu-item-bar-' + i)
-    let menuItemText = document.getElementById('menu-item-text-' + i)
-    let menuSwitchButton   = document.getElementById('menu-button')
+  for (let i = 0; i < popularShopList.value.length + categoryList.value.length; i++) {
+    let menuItemBar      = document.getElementById('menu-item-bar-' + i)
+    let menuItemText     = document.getElementById('menu-item-text-' + i)
+    let menuSwitchButton = document.getElementById('menu-button')
 
     if (!menuItemBar || !menuItemText || !menuSwitchButton) return
 
@@ -113,22 +116,20 @@ const showMenu   = () => {
   }
 }
 
-const handleRollMenu = (idx: number) => {
-  if (idx < shopMainList.value.length) {
-    let rowList = document.getElementsByName('shop-main-row')
+const positioningMenuElements = (idx: number) => {
+  let elem
 
-    rowList[idx].scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
+  if (idx < popularShopList.value.length) {
+    elem = document.getElementById('popular-shop-' + idx)
   } else {
-    let elem = document.getElementById('command-goods-' + (idx - shopMainList.value.length))
-    if (!elem) return
-    elem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
+    elem = document.getElementById('category-' + (idx - popularShopList.value.length))
   }
+
+  if (!elem) return
+  elem.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  })
 }
 
 onMounted(() => {
@@ -139,6 +140,8 @@ onUnmounted(() => {
   window.removeEventListener('scroll', scrollHandler, true)
 })
 
+getPopularShopList()
+getCategoryList()
 </script>
 
 <template>
@@ -157,11 +160,11 @@ onUnmounted(() => {
           <el-affix :offset="64">
             <el-button type="primary" :icon="ArrowDownBold" class="menu-button" @click="showMenu" id="menu-button"/>
 
-            <div v-for="(i, idx) in shopMainList.length + commandGoodsList.length">
-              <p :id="'menu-item-text-' + idx" class="menu-text-item" @click="handleRollMenu(idx)">{{
-                  i > shopMainList.length
-                      ? commandGoodsList[idx - shopMainList.length].name
-                      : shopMainList[idx].title
+            <div v-for="(i, idx) in popularShopList.length + categoryList.length">
+              <p :id="'menu-item-text-' + idx" class="menu-text-item" @click="positioningMenuElements(idx)">{{
+                  i > popularShopList.length
+                      ? categoryList[idx - popularShopList.length].categoryName
+                      : popularShopList[idx].title
                 }}</p>
               <div class="menu-item-bar" :id="'menu-item-bar-' + idx"/>
             </div>
@@ -169,7 +172,7 @@ onUnmounted(() => {
         </div>
 
         <div style="display: flex; justify-content: center">
-          <div style="cursor: pointer; width: 96px; " @click="startExplore">
+          <div style="cursor: pointer; width: 96px; " @click="positioningMenuElements(0)">
             <p style="color: #999999; margin: 0 0 24px">探索更多</p>
             <el-icon class="start-icon">
               <arrow-down/>
@@ -179,25 +182,25 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div v-for="(item, idx) in shopMainList">
-      <div style="height: 100vh; width: 100%; " id="shop-main">
-        <div v-if="(idx % 2) === 0" :id="item.id" style="height: 100%; overflow: hidden;">
-          <el-row name="shop-main-row" style="overflow-y: auto; padding-top: 6vh; ">
+    <div v-for="(shop, idx) in popularShopList">
+      <div style="height: 100vh; width: 100%">
+        <div v-if="(idx % 2) === 0" style="height: 100%; overflow: hidden">
+          <el-row :id="'popular-shop-' + idx" style="overflow-y: auto; padding-top: 60px" name="popular-shop">
             <el-col :span="6" :offset="4" style="display: flex; flex-direction: column; justify-content: center">
-              <el-image :src="item.image" style="border-radius: 12px"/>
+              <el-image :src="shop.image" style="border-radius: 12px"/>
             </el-col>
 
             <el-col :span="9" :offset="1">
               <div class="goods-content-root-left">
-                <p class="shop-item-title-left">{{ item.title }}</p>
-                <p class="shop-item-description-left">{{ item.description }}</p>
+                <p class="shop-item-title-left">{{ shop.title }}</p>
+                <p class="shop-item-description-left">{{ shop.description }}</p>
 
                 <el-scrollbar style="height: 440px; margin-top: 4vh;" always>
                   <div style="display: flex; padding: 12px">
-                    <div v-for="item in 12" :key="item">
+                    <div v-for="product in shop.productList" :key="product">
                       <div style="margin-right: 24px">
-                        <router-link :to="{ path: '/goods' }" style="text-decoration: none;">
-                          <GoodsCard/>
+                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }" style="text-decoration: none;">
+                          <ProductCard :product="product"/>
                         </router-link>
                       </div>
                     </div>
@@ -208,25 +211,24 @@ onUnmounted(() => {
           </el-row>
 
           <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                   @click="autoScrollDown(item.id)"
-                   v-if="item.id !== shopMainList.length">
+                   @click="positioningMenuElements(idx + 1)">
             <arrow-down/>
           </el-icon>
 
         </div>
-        <div v-else :id="item.id" style="height: 100%; overflow: hidden; ">
-          <el-row name="shop-main-row" style="overflow-y: auto; padding-top: 6vh;">
+        <div v-else style="height: 100%; overflow: hidden">
+          <el-row :id="'popular-shop-' + idx" style="overflow-y: auto; padding-top: 60px" name="popular-shop">
             <el-col :span="10" :offset="3">
               <div class="goods-content-root-right">
-                <p class="shop-item-title-right">{{ item.title }}</p>
-                <p class="shop-item-description-right">{{ item.description }}</p>
+                <p class="shop-item-title-right">{{ shop.title }}</p>
+                <p class="shop-item-description-right">{{ shop.description }}</p>
 
                 <el-scrollbar style="height: 440px; margin-top: 4vh" always>
                   <div style="display: flex; padding: 12px">
-                    <div v-for="item in 12" :key="item">
+                    <div v-for="product in shop.productList" :key="product">
                       <div style="margin-right: 24px">
-                        <router-link :to="{ path: '/goods' }" style="text-decoration: none;">
-                          <GoodsCard/>
+                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }" style="text-decoration: none;">
+                          <ProductCard :product="product"/>
                         </router-link>
                       </div>
                     </div>
@@ -235,13 +237,12 @@ onUnmounted(() => {
               </div>
             </el-col>
             <el-col :span="6" :offset="1" style="display: flex; flex-direction: column; justify-content: center">
-              <el-image :src="item.image" style="border-radius: 12px;"/>
+              <el-image :src="shop.image" style="border-radius: 12px;"/>
             </el-col>
           </el-row>
 
           <el-icon style="color: white; font-size: 28px; cursor: pointer; margin-top: 36px"
-                   @click="autoScrollDown(item.id)"
-                   v-if="item.id !== shopMainList.length">
+                   @click="positioningMenuElements(idx + 1)">
             <arrow-down/>
           </el-icon>
         </div>
@@ -249,28 +250,25 @@ onUnmounted(() => {
     </div>
 
     <div style="display: flex; flex-direction: column; align-items: center; padding-top: 84px"
-         v-for="(item, idx) in commandGoodsList">
-      <div style="font-size: 36px; display: flex; flex-direction: row" :id="'command-goods-' + idx">
+         v-for="(item, idx) in categoryList">
+      <div style="font-size: 36px; display: flex; flex-direction: row" :id="'category-' + idx">
         <el-icon color="#f6eacc" style="transform: rotateY(180deg); margin-top: 14px">
           <cold-drink/>
         </el-icon>
-
         <p style="font-size: 48px; margin: 0 12px; font-family: 微軟正黑體; font-weight: normal; color: #f6eacc; user-select: none">
-          {{ item.name }}</p>
-
+          {{ item.categoryName }}</p>
         <el-icon color="#f6eacc" style="margin-top: 14px">
           <cold-drink/>
         </el-icon>
       </div>
 
-      <div style="width: 1150px; display: flex; justify-content: center; margin-top: 24px">
-        <el-row justify="space-between" :gutter="24">
-          <el-col :span="6" style="display: flex; justify-content: center; margin-top: 24px" v-for="item in 8">
-            <router-link :to="{ path: '/goods' }" style="text-decoration: none; ">
-              <GoodsCard/>
-            </router-link>
-          </el-col>
-        </el-row>
+      <div style="width: 1096px; margin-top: 24px">
+        <div>
+          <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }"
+                       v-for="product in item.productList" style="text-decoration: none">
+            <ProductCard :product="product" style="margin: 12px"/>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
