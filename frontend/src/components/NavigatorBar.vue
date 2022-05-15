@@ -3,24 +3,19 @@ import { onMounted, ref, watch } from "vue";
 import { useRouter }             from "vue-router";
 import { router } from '../router'
 
-
-
 interface RouterLinkItem {
-  content: string,
-  pathName: string,
-  name: string,
+  content: string
+  pathName: string
 }
 
 const routerLinkList = ref<RouterLinkItem[]>([
   {
     content: '首页',
     pathName: 'ShopPage',
-    name: 'first',
   },
   {
     content: '关于我们',
-    pathName: 'AboutPage',
-    name: 'second',
+    pathName: 'AboutPage'
   },
 ])
 
@@ -31,36 +26,27 @@ const switchTab = (index: number) => {
     }
   })
 
-  switch (index) {
-    case -1:
-      (document.getElementById('Homepage') as HTMLInputElement).checked = true
-      break
-    case 0:
-      (document.getElementById('first') as HTMLInputElement).checked = true
-      break
-    case 1:
-      (document.getElementById('second') as HTMLInputElement).checked = true
-      break
-    case 2:
-      (document.getElementById('third')as HTMLInputElement).checked = true
-      break
-    default:
-      break
+  if (index == -2) return
+  else if (index == -1) {
+    (document.getElementById('HomePage') as HTMLInputElement).checked = true
+  } else {
+    (document.getElementById('tab-' + index) as HTMLInputElement).checked = true
   }
 }
 
 watch(router.currentRoute, (newVal) => {
-  // console.log(newVal.fullPath)
-  switch (newVal.fullPath) {
-    case '/':
-      switchTab(-1)
-      break
-    case '/shop':
-      switchTab(0)
-      break
-    case '/about':
-      switchTab(1)
-      break
+  if (newVal.fullPath === '/') switchTab(-1)
+  else {
+    let isTab = ref<boolean>(false)
+
+    routerLinkList.value.forEach((i, idx) => {
+      if (i.pathName === newVal.name) {
+        switchTab(idx)
+        isTab.value = true
+      }
+    })
+
+    if (!isTab.value) switchTab(-2)
   }
 })
 
@@ -69,7 +55,7 @@ watch(router.currentRoute, (newVal) => {
 <template>
   <div style="display: flex; justify-content: right; align-items: center">
     <div style="position: absolute; left: 240px">
-      <input type="radio" name="dot" id="Homepage" class="input-dot" disabled checked/>
+      <input type="radio" name="dot" id="HomePage" class="input-dot" disabled checked/>
       <el-col style="display: flex; flex-direction: column; align-items: center">
         <router-link to="/" class="router-item" @click.native="switchTab(-1)">
           FrogSoft Mall
@@ -79,7 +65,7 @@ watch(router.currentRoute, (newVal) => {
     </div>
 
     <div class="router-group" v-for="(i, idx) in routerLinkList">
-      <input type="radio" name="dot" :id="i.name" class="input-dot" disabled/>
+      <input type="radio" name="dot" :id="'tab-' + idx" class="input-dot" disabled/>
       <el-col style="display: flex; flex-direction: column; align-items: center">
         <router-link :to="{ name: i.pathName }" class="router-item" @click.native="switchTab(idx)">{{ i.content }}</router-link>
         <div class="under-point"></div>
@@ -91,10 +77,7 @@ watch(router.currentRoute, (newVal) => {
 <script lang="ts">
 
 export default {
-  name: "test",
-  setup(){
-
-  }
+  name: "test"
 }
 </script>
 
@@ -133,7 +116,7 @@ export default {
   opacity: 1;
 }
 
-#Homepage ~ .el-col .router-item {
+#HomePage ~ .el-col .router-item {
   font-size: 32px;
   font-family: 'Arial Black';
   color: white;
@@ -143,10 +126,7 @@ export default {
   margin-top: 6px;
 }
 
-#Homepage:checked ~ .el-col .under-point,
-#first:checked ~ .el-col .under-point,
-#second:checked ~ .el-col .under-point,
-#third:checked ~ .el-col .under-point {
+.input-dot:checked ~ .el-col .under-point {
   opacity: 1;
   animation: none;
 }
