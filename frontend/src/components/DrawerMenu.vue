@@ -94,11 +94,13 @@ export default {
   z-index: 1;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.7);
-  transition: transform 0.5s, top 0.5s;
+  /*transition: transform 0.5s, top 0.5s;*/
   margin: auto;
   cursor: pointer;
   position: absolute;
   top: 24px;
+
+  transition: all 0.4s;
 }
 
 /* 上下杠公用 */
