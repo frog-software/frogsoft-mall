@@ -97,7 +97,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-        - name: Build and push (mall-shop)
+      - name: Build and push (mall-shop)
         id: docker_build_backend_mall_shop
         uses: docker/build-push-action@v2.7.0
         with:
