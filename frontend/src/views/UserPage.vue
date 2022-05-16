@@ -25,7 +25,7 @@ const onEdit   = ref<boolean>(false)
 const form = ref<UserModifyInfo>({
   avatar: '',
   nickname: '',
-  id: 123,
+  id: 'undefined',
   phoneNum: '',
   gender: 0,
   addressList: [],
@@ -144,35 +144,64 @@ watch(onEdit, (newVal) => {
       </el-row>
 
       <div style="margin-top: 48px">
-        <p style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">我的订单</p>
+        <div style="text-align: left; margin-bottom: 16px">
+          <span style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">我的订单</span>
+          <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 0 } }" style="text-decoration: none">
+            <el-button type="text" style="color: #999999; margin-left: 12px">查看全部</el-button>
+          </router-link>
+        </div>
         <div
             style="width: 100%; border-radius: 16px; height: 200px; border: 1px solid rgba(255, 255, 255, 0.5); overflow: hidden">
           <el-row style="height: 100%">
             <el-col :span="6" class="order-col">
-              <el-icon :size="64">
-                <credit-card/>
-              </el-icon>
-              <p>待支付</p>
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 1 } }" style="text-decoration: none; color: #ffffff">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
+                  <div>
+                    <el-icon :size="64">
+                      <credit-card/>
+                    </el-icon>
+                    <p>待支付</p>
+                  </div>
+                </div>
+              </router-link>
             </el-col>
             <el-col :span="6" class="order-col">
-              <el-icon :size="64">
-                <box/>
-              </el-icon>
-              <p>待收货</p>
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 2 } }" style="text-decoration: none; color: #ffffff">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
+                  <div>
+                    <el-icon :size="64">
+                      <box/>
+                    </el-icon>
+                    <p>待收货</p>
+                  </div>
+                </div>
+              </router-link>
             </el-col>
             <el-col :span="6" class="order-col">
-              <el-icon :size="64">
-                <chat-dot-round/>
-              </el-icon>
-              <p>待评价</p>
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 3 } }" style="text-decoration: none; color: #ffffff">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
+                  <div>
+                    <el-icon :size="64">
+                      <chat-dot-round/>
+                    </el-icon>
+                    <p>待评价</p>
+                  </div>
+                </div>
+              </router-link>
             </el-col>
-            <el-col :span="6" class="order-col" style="position: relative">
-              <el-icon :size="64">
-                <refresh/>
-              </el-icon>
-              <span
-                  style="position: absolute; top: 63px; left: 117px; font-size: 24px; font-weight: bold; user-select: none">$</span>
-              <p>退换退款</p>
+            <el-col :span="6" class="order-col">
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 4 } }" style="text-decoration: none; color: #ffffff">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
+                  <div style="position: relative">
+                    <el-icon :size="64">
+                      <refresh/>
+                    </el-icon>
+                    <span
+                        style="position: absolute; top: 15px; left: 24px; font-size: 24px; font-weight: bold; user-select: none">$</span>
+                    <p>退换退款</p>
+                  </div>
+                </div>
+              </router-link>
             </el-col>
           </el-row>
         </div>
@@ -302,7 +331,6 @@ export default {
 <style scoped>
 .order-col {
   color: #ffffff;
-  padding-top: 48px;
   height: 100%;
   cursor: pointer;
 }

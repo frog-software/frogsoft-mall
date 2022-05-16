@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref }                      from "vue";
-import { CDN_URL }                  from "../consts/urls"
-import { productDescriptionFormat } from "../utils/util";
-import { ProductSimpleInfo }        from "../types/product";
+import { CDN_URL }           from "../consts/urls"
+import { contentFormat }     from "../utils/util";
+import { ProductSimpleInfo } from "../types/product";
 import { getDecimal }                 from "../utils/util";
 
 const image = ref<string>(CDN_URL + '/goodscard-example.webp')
@@ -28,7 +28,7 @@ const props = defineProps<{
       <div style="padding-top: 16px">
         <p style="font-weight: bold; font-size: 20px; margin: 0">{{ props.product.productName || '商品名未定义' }}</p>
         <p style="font-size: 12px; color: #666666">{{
-            productDescriptionFormat(props.product.description, 60)
+            contentFormat(props.product.description, 60)
           }}</p>
       </div>
 
