@@ -12,9 +12,9 @@ import {
 import { ref }                               from "vue";
 import { CartResponseInfo }                  from "../types/cart";
 import { getCartDetails, deleteCartProduct } from "../services/cart";
-import { ShopResponseInfo }                  from "../types/shop";
-import { productDescriptionFormat }          from "../utils/util";
-import { ProductSimpleInfo }                 from "../types/product";
+import { ShopResponseInfo }  from "../types/shop";
+import { contentFormat }     from "../utils/util";
+import { ProductSimpleInfo } from "../types/product";
 
 interface CartShopItem {
   shopInfo: ShopResponseInfo
@@ -216,7 +216,7 @@ getCartDetails('testUser').then(res => {
               <el-col :span="10" style="text-align: left">
                 <p style="margin: 0">{{ item.product.productName }}</p>
                 <p style="margin: 12px 0 0 0; color: #999999">{{
-                    productDescriptionFormat(item.product.description, 80)
+                    contentFormat(item.product.description, 80)
                   }}</p>
               </el-col>
               <el-col :span="3">
