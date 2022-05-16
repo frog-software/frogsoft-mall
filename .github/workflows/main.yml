@@ -48,6 +48,30 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+      
+      - name: Build and push (mall-commodity)
+        id: docker_build_backend_mall_commodity
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-commodity
+          file: ./backend/mall-commodity/Dockerfile
+          push: true
+          tags: frogsoftware/mall-commodity:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Build and push (mall-customer)
+        id: docker_build_backend_mall_customer
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-customer
+          file: ./backend/mall-customer/Dockerfile
+          push: true
+          tags: frogsoftware/mall-customer:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build and push (mall-gateway)
         id: docker_build_backend_mall_gateway
@@ -57,6 +81,30 @@ jobs:
           file: ./backend/mall-gateway/Dockerfile
           push: true
           tags: frogsoftware/mall-gateway:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Build and push (mall-order)
+        id: docker_build_backend_mall_order
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-order
+          file: ./backend/mall-order/Dockerfile
+          push: true
+          tags: frogsoftware/mall-order:0.0.1
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+        - name: Build and push (mall-shop)
+        id: docker_build_backend_mall_shop
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./backend/mall-shop
+          file: ./backend/mall-shop/Dockerfile
+          push: true
+          tags: frogsoftware/mall-shop:0.0.1
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
@@ -76,8 +124,20 @@ jobs:
       - name: Image digest (mall-auth)
         run: echo ${{ steps.docker_build_backend_mall_auth.outputs.digest }}
 
+      - name: Image digest (mall-commodity)
+        run: echo ${{ steps.docker_build_backend_mall_commodity.outputs.digest }}
+
+      - name: Image digest (mall-customer)
+        run: echo ${{ steps.docker_build_backend_mall_customer.outputs.digest }}
+
       - name: Image digest (mall-gateway)
         run: echo ${{ steps.docker_build_backend_mall_gateway.outputs.digest }}
+
+      - name: Image digest (mall-order)
+        run: echo ${{ steps.docker_build_backend_mall_order.outputs.digest }}
+
+      - name: Image digest (mall-shop)
+        run: echo ${{ steps.docker_build_backend_mall_shop.outputs.digest }}
 
       - name: Image digest (mall-user)
         run: echo ${{ steps.docker_build_backend_mall_user.outputs.digest }}
