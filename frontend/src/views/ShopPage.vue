@@ -99,7 +99,7 @@ const showMenu   = () => {
     if (!menuItemBar || !menuItemText || !menuSwitchButton) return
 
     if (menuIsShow.value) {
-      menuItemBar.style.transform  = 'translateY(' + (54 + i * 42) + 'px)'
+      menuItemBar.style.transform  = 'translateY(' + (56 + i * 37) + 'px)'
       menuItemBar.style.opacity    = '1'
       menuItemBar.style.visibility = 'visible'
       menuItemText.classList.remove('menu-item-name-disappear')
@@ -432,7 +432,7 @@ export default {
   position: absolute;
   top: 12px;
   right: 34px;
-  height: 1.5em;
+  height: 1em;
   width: 4px;
   background: linear-gradient(to bottom, #f6eacc, #c1ab85);
   opacity: 0;
@@ -445,7 +445,7 @@ export default {
   width: max-content;
   visibility: hidden;
   color: #999999;
-  font-size: 18px;
+  font-size: 16px;
   /*font-weight: bold;*/
   cursor: pointer;
 }
