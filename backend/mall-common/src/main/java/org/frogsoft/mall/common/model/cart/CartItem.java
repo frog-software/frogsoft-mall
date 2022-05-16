@@ -37,4 +37,6 @@ public class CartItem {
     private int amount;
 
     private String remarks;
+
+    private String username;
 }
