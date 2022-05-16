@@ -16,7 +16,7 @@ public class CommentDto {
     public float type;
     public String content;
     public LocalDateTime commentTime;
-    // TODO：返回嵌套数据而非id（外链dto）
+
     public Long customerId;
     public ProductDto product;
     public Long parentId;

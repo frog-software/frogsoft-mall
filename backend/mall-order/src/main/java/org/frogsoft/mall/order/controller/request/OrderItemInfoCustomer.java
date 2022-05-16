@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class OrderItemInfoCustomer implements Serializable {
-    private Long productID;
+    private Long id; // 商品id
     private int amount;
     private String remarks;
     // private BigDecimal orderPrice; // 前端下单时无需提交单价

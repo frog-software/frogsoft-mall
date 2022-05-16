@@ -12,8 +12,10 @@ import org.frogsoft.mall.common.model.product.Product;
 @Setter
 @Accessors(chain = true)
 public class OrderItemDto {
-    private Long id;
+    private Long id; // 商品id
     private int amount;
     private BigDecimal orderPrice; // 商品在本订单上的价格(单价)
     private String remarks;
+    private String productName; // 商品名称
+    private String thumb; // 商品缩略图（冗余）
 }

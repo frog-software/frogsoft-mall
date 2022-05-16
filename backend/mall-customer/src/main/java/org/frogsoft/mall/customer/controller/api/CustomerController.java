@@ -28,7 +28,7 @@ public class CustomerController {
     // Client api for Other module
     /* 路由中带有“client”的，为后端专属服务调用接口，直接返回model类型 */
     // 获得顾客对象（查找用户名）
-    @GetMapping("/{username}/client")
+    @GetMapping("/client/{username}")
     public Customer getCustomerByUsername(@PathVariable(value = "username") String username){
         return customerService.getCustomerClient(username);
     }

@@ -58,7 +58,7 @@ public class ShopController {
     public ResponseEntity<?> putSingleShop(
         @PathVariable(value = "id") Long shop_id,
         @RequestBody AddShopRequset addShopRequset,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     )
     {
         return new ResponseBodyWrapper<ShopDto>()
@@ -84,7 +84,7 @@ public class ShopController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteShop(
         @PathVariable(value = "id") Long shop_id,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     )
     {
         shopService.deleteShop(shop_id, authenticatedUser);

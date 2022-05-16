@@ -57,7 +57,7 @@ public class ShopService {
   }
 
   // 修改商店信息
-  public ShopDto editShop(Long id, AddShopRequset addShopRequset, User authenticatedUser){
+  public ShopDto editShop(Long id, AddShopRequset addShopRequset, UserDetail authenticatedUser){
     Shop currShop = shopRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Shop not Found"));
 
@@ -70,7 +70,7 @@ public class ShopService {
   }
 
   // 删除商店
-  public void deleteShop(Long id, User authenticatedUser){
+  public void deleteShop(Long id, UserDetail authenticatedUser){
     Shop currShop = shopRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Shop not Found"));
     currShop.setOwner(null);

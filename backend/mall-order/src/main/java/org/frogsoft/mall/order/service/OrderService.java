@@ -80,7 +80,7 @@ public class OrderService {
         for (var itemPost: addOrderRequest.getOrderProducts()
         ) {
             // 获得商品对象
-            Product productInOrderItem = productClient.getProduct(itemPost.getProductID());
+            Product productInOrderItem = productClient.getProduct(itemPost.getId());
             if(!Objects.equals(productInOrderItem.getShop().getId(), seller.getId()))
                 throw new ForbiddenException("商店id和订单内商品不匹配！"); // TODO：改为自定义异常抛出
             // 保存订单商品对象到列表
@@ -148,7 +148,7 @@ public class OrderService {
         ) {
             boolean isFoundInCurrList = false;
             // 获得传入的商品对象
-            Product productInEditOrderItem = productClient.getProduct(itemToEdit.getProductID());
+            Product productInEditOrderItem = productClient.getProduct(itemToEdit.getId());
             if(!Objects.equals(productInEditOrderItem.getShop().getId(), seller.getId()))
                 throw new ForbiddenException("商店id和订单内商品不匹配！"); // TODO：改为自定义异常抛出
 

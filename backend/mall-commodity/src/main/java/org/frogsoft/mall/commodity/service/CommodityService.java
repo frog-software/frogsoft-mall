@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.UserDatabase;
 import org.frogsoft.mall.commodity.controller.client.ShopClient;
 import org.frogsoft.mall.commodity.controller.request.AddProductRequset;
 import org.frogsoft.mall.commodity.dto.ProductDto;
@@ -14,6 +15,7 @@ import org.frogsoft.mall.common.model.comment.Comment;
 import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class CommodityService {
   private final ShopClient shopClient;
 
   // 修改商品信息
-  public ProductDto editProduct(Long id, AddProductRequset addProductRequset, User authenticatedUser){
+  public ProductDto editProduct(Long id, AddProductRequset addProductRequset, UserDetail authenticatedUser){
     Product currProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Product not Found"));
     Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
@@ -44,9 +46,15 @@ public class CommodityService {
   }
 
   // 新建商品
-  public ProductDto saveProduct(AddProductRequset addProductRequset, User authenticatedUser){
+  public ProductDto saveProduct(AddProductRequset addProductRequset, UserDetail authenticatedUser){
     // TODO：验证用户的店铺与商品信息上的店铺是否一致
     Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
+
+    // 以传入图片列表的第一张图获得头图
+    String trumb = "";
+    if(addProductRequset.getImageList().size() > 0){
+      trumb = addProductRequset.getImageList().get(0);
+    }
 
     Product newProduct = productRepository.save(new Product()
         .setProductName(addProductRequset.getProductName())
@@ -56,17 +64,17 @@ public class CommodityService {
         .setDescription(addProductRequset.getDescription())
         .setShop(productInShop)
         .setImageList(addProductRequset.getImageList())
+        .setThumb(trumb)
     );
 
     return productDtoMapper.toProductDto(newProduct);
   }
 
   // 删除商品
-  public void deleteProduct(Long id, User authenticateUser){
+  public void deleteProduct(Long id, UserDetail authenticateUser){
     Product currProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Product not Found"));
     currProduct.setShop(null);
-    // TODO：级联删除评论（如果不能自动的话）
 
     Product savedProduct = productRepository.save(currProduct);
     productRepository.delete(savedProduct);

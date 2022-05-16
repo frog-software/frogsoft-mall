@@ -12,10 +12,13 @@ import org.frogsoft.mall.commodity.dto.CommentDtoMapper;
 import org.frogsoft.mall.commodity.dto.ProductDtoMapper;
 import org.frogsoft.mall.commodity.repository.CommentRepository;
 import org.frogsoft.mall.commodity.repository.ProductRepository;
+import org.frogsoft.mall.commodity.repository.UserRepository;
 import org.frogsoft.mall.common.exception.basic.notfound.NotFoundException;
+import org.frogsoft.mall.common.exception.user.UserNotFoundException;
 import org.frogsoft.mall.common.model.comment.Comment;
 import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,16 +29,20 @@ public class CommentService {
     private final ProductDtoMapper productDtoMapper;
     private final CommentRepository commentRepository;
     private final CommentDtoMapper commentDtoMapper;
+    private final UserRepository userRepository;
 
     // 新建评论
-    public CommentDto saveComment(Long product_id, AddCommentRequest addCommentRequest, User authenticatedUser){
+    public CommentDto saveComment(Long product_id, AddCommentRequest addCommentRequest, UserDetail authenticatedUser){
         // 获得评论对应的商品
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
 
+        User user = userRepository.findByUsername(authenticatedUser.getUsername())
+            .orElseThrow(() -> new UserNotFoundException(authenticatedUser.getUsername()));
+        
         // 新建商品
         Comment newComment = commentRepository.save(new Comment()
-            .setCustomer(authenticatedUser)
+            .setCustomer(user)
             .setContent(addCommentRequest.getContent())
             .setType(addCommentRequest.getType())
             .setParentId(addCommentRequest.getParentId())

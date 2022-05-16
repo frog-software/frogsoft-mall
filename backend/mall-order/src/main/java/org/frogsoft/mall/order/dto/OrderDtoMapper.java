@@ -12,10 +12,12 @@ import org.springframework.stereotype.Component;
 public class OrderDtoMapper {
 
     public final OrderItemDtoMapper orderItemDtoMapper;
+    public final AddressDtoMapper addressDtoMapper;
 
     public OrderDto toOrderDto(Order order){
 
         return new OrderDto()
+            .setId(order.getId())
             .setOrderTime(order.getOrderTime())
             .setBuyerName(order.getBuyer().getUser().getUsername())
             .setSellerName(order.getSeller().getShopName())
@@ -24,7 +26,7 @@ public class OrderDtoMapper {
             .setTotalPrice(order.getTotalPrice())
             .setPayment(order.getPayment())
             .setLogisticsNumber(order.getLogisticsNumber())
-            .setLogisticsAddress(order.getLogisticsAddress())
+            .setLogisticsAddress(addressDtoMapper.toAddressDto(order.getLogisticsAddress()))
             .setProducts(order.getOrderItems()
                 .stream()
                 .map(orderItemDtoMapper::toOrderItemDto)

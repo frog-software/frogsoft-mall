@@ -6,6 +6,7 @@ import org.frogsoft.mall.commodity.controller.request.AddCommentRequest;
 import org.frogsoft.mall.commodity.dto.CommentDto;
 import org.frogsoft.mall.commodity.service.CommentService;
 import org.frogsoft.mall.common.model.user.User;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.common.util.ResponseBodyWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class CommentController {
     public ResponseEntity<?> addCommentToProduct(
         @RequestBody AddCommentRequest addCommentRequest,
         @PathVariable(value = "id") Long product_id,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     ){
         CommentDto savedComment = commentService.saveComment(product_id, addCommentRequest, authenticatedUser);
         return new ResponseBodyWrapper<CommentDto>()
@@ -45,7 +46,7 @@ public class CommentController {
     public ResponseEntity<?> getSingleCommentOfProduct(
         @PathVariable(value = "id") Long product_id,
         @PathVariable(value = "index") int comment_index,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     ){
         return new ResponseBodyWrapper<CommentDto>()
             .status(HttpStatus.OK)
@@ -59,7 +60,7 @@ public class CommentController {
         @RequestBody AddCommentRequest addCommentRequest,
         @PathVariable(value = "id") Long product_id,
         @PathVariable(value = "index") int comment_index,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     ) {
         CommentDto savedComment = commentService.editSingleCommentOfProduct(product_id, comment_index, addCommentRequest);
         return new ResponseBodyWrapper<CommentDto>()
@@ -73,7 +74,7 @@ public class CommentController {
     public ResponseEntity<?> deleteSingleCommentOfProduct(
         @PathVariable(value = "id") Long product_id,
         @PathVariable(value = "index") int comment_index,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     ){
         commentService.deleteSingleCommentOfProduct(product_id, comment_index);
         return ResponseEntity.noContent().build();

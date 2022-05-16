@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.frogsoft.mall.common.model.shop.Shop;
 
 @Getter
 @Setter
@@ -15,6 +16,8 @@ public class ProductDto {
   private String category;
   private String brand;
   private String description;
-  private String shopName;
+  private ShopDto shop; // 商品对应的商店信息
   private BigDecimal price;
+  private String thumb; // 缩略图，默认返回imageList的第一个
+  private List<String> imageList;
 }

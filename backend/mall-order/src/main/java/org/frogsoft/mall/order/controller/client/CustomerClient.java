@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Component
 public interface CustomerClient {
     // 后端内部调用getCustomer的api接口
-    @GetMapping("/{username}/client")
+    @GetMapping("/client/{username}")
     public Customer getCustomerByUsername(@PathVariable(value = "username") String username);
 
     @GetMapping("/{id}/client")

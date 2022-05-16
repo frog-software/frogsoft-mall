@@ -2,12 +2,14 @@ package org.frogsoft.mall.commodity.dto;
 
 import lombok.AllArgsConstructor;
 import org.frogsoft.mall.common.model.product.Product;
+import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusPushGatewayManager.ShutdownOperation;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
 public class ProductDtoMapper {
 
+  private final ShopDtoMapper shopDtoMapper;
   public ProductDto toProductDto(Product product) {
 
     return new ProductDto()
@@ -16,7 +18,9 @@ public class ProductDtoMapper {
         .setBrand(product.getBrand())
         .setCategory(product.getCategory())
         .setPrice(product.getPrice())
-        .setShopName(product.getShop().getShopName()) // TODO：判断非空
-        .setDescription(product.getDescription());
+        .setShop(shopDtoMapper.toShopDto(product.getShop()))
+        .setDescription(product.getDescription())
+        .setThumb(product.getThumb())
+        .setImageList(product.getImageList());
   }
 }

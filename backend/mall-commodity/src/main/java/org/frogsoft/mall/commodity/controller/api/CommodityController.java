@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.commodity.controller.request.AddProductRequset;
 import org.frogsoft.mall.common.model.shop.Shop;
+import org.frogsoft.mall.common.model.user.UserDetail;
 import org.frogsoft.mall.common.request.ClientGetProductsRequest;
 import org.frogsoft.mall.commodity.dto.ProductDto;
 import org.frogsoft.mall.common.model.product.Product;
@@ -66,7 +67,7 @@ public class CommodityController {
     public ResponseEntity<?> putOneProduct(
         @PathVariable(value = "id") Long product_id,
         @RequestBody AddProductRequset putProductRequset,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     )
     {
         return new ResponseBodyWrapper<ProductDto>()
@@ -79,7 +80,7 @@ public class CommodityController {
     @DeleteMapping("/{id}/simple")
     public ResponseEntity<?> deleteOneProduct(
         @PathVariable(value = "id") Long product_id,
-        @AuthenticationPrincipal User authenticatedUser
+        @AuthenticationPrincipal UserDetail authenticatedUser
     )
     {
         commodityService.deleteProduct(product_id, authenticatedUser);
