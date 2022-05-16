@@ -5,9 +5,8 @@ import NavigatorBar  from "./NavigatorBar.vue";
 import {
   Search,
   CloseBold,
-}                    from '@element-plus/icons-vue'
-import { ref }       from "vue";
-import { translate } from "element-plus";
+}                         from '@element-plus/icons-vue'
+import { ref } from "vue";
 
 const openSearchInput = () => {
   const header = document.getElementById('header-root')
@@ -66,18 +65,12 @@ const goSearchDetail = () => {
         </el-icon>
       </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
 export default {
   name: "Header",
-  data() {
-    return {}
-  },
-
-  methods: {}
 }
 </script>
 
