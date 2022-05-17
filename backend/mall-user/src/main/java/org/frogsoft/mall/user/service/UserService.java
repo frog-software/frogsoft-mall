@@ -11,6 +11,7 @@ import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.user.controller.request.RegisterRequest;
 import org.frogsoft.mall.user.dto.UserDto;
 import org.frogsoft.mall.user.dto.UserDtoMapper;
+import org.frogsoft.mall.user.repository.CustomerRepository;
 import org.frogsoft.mall.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserRepository userRepository;
+  private final CustomerRepository customerRepository;
   private final UserDtoMapper userDtoMapper;
   private final PasswordEncoder passwordEncoder;
 
@@ -60,7 +62,9 @@ public class UserService {
         .setUser(newUser)
         .setBalance(BigDecimal.ZERO)
         .setGender(0);
+    userRepository.save(newUser); // 必须先写入用户，再写入顾客数据库
+    customerRepository.save(newCustomer);
 
-    return userDtoMapper.toUserDto(userRepository.save(newUser));
+    return userDtoMapper.toUserDto(newUser);
   }
 }
