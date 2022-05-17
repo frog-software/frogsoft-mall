@@ -63,6 +63,40 @@ services:
       - nacos
       - opengauss
 
+  # 商品模块
+  mall-commodity-service:
+    build:
+      context: mall-commodity
+    image: frogsoftware/mall-commodity:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${COMMODITY_PORT:-9200}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${COMMODITY_PORT:-9200}:${COMMODITY_PORT:-9200}"
+    depends_on:
+      - nacos
+      - opengauss
+
+  # 客户模块
+  mall-customer-service:
+    build:
+      context: mall-customer
+    image: frogsoftware/mall-customer:0.0.1
+    restart: unless-stopped
+    environment:
+      PORT: ${CUSTOMER_PORT:-9220}
+      NACOS_URL: nacos
+      OPENGAUSS_URL: opengauss
+    # 仅测试用，可以去除
+    ports:
+      - "${COMMODITY_PORT:-9220}:${COMMODITY_PORT:-9220}"
+    depends_on:
+      - nacos
+      - opengauss
+
   # 服务网关
   mall-gateway:
     build:
@@ -80,19 +114,19 @@ services:
       - mall-shop-service
       - mall-commodity-service
 
-  # 用户模块
-  mall-user-service:
+  # 订单模块
+  mall-order-service:
     build:
-      context: mall-user
-    image: frogsoftware/mall-user:0.0.1
+      context: mall-order
+    image: frogsoftware/mall-order:0.0.1
     restart: unless-stopped
     environment:
-      PORT: ${USER_PORT:-9100}
+      PORT: ${ORDER_PORT:-9230}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
     # 仅测试用，可以去除
     ports:
-      - "${USER_PORT:-9100}:${USER_PORT:-9100}"
+      - "${ORDER_PORT:-9230}:${ORDER_PORT:-9230}"
     depends_on:
       - nacos
       - opengauss
@@ -114,19 +148,20 @@ services:
       - nacos
       - opengauss
 
-  # 商品模块
-  mall-commodity-service:
+  # 用户模块
+  mall-user-service:
     build:
-      context: mall-commodity
-    image: frogsoftware/mall-commodity:0.0.1
+      context: mall-user
+    image: frogsoftware/mall-user:0.0.1
     restart: unless-stopped
     environment:
-      PORT: ${COMMODITY_PORT:-9200}
+      PORT: ${USER_PORT:-9100}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
     # 仅测试用，可以去除
     ports:
-      - "${COMMODITY_PORT:-9200}:${COMMODITY_PORT:-9200}"
+      - "${USER_PORT:-9100}:${USER_PORT:-9100}"
     depends_on:
       - nacos
       - opengauss
+
