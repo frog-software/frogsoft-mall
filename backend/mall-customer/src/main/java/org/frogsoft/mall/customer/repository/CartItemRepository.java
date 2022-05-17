@@ -12,8 +12,6 @@ import java.util.Optional;
 public interface CartItemRepository extends JpaRepository<CartItem,Long> {
     ArrayList<CartItem> findAllBy();
 
-    ArrayList<CartItem> findAllByOwner_Id(Long owner_id);
-
     ArrayList<CartItem> findAllByUsername(String username);
 
     Optional<CartItem> findByUsername(String username);
