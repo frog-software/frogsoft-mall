@@ -9,11 +9,11 @@
 //  History:    5月-08-2022   QQK  Created
 //
 //--------------------------------------------------------------------------
-import { DetailsAddress } from "../types/logistics";
+// import { DetailsAddress } from "../types/logistics";
 
-export const addressFormat = (e: DetailsAddress) => {
-  return e?.province + e?.city + e?.county + e?.details.split('。')[0]
-}
+// export const addressFormat = (e: DetailsAddress) => {
+//   return e?.province + e?.city + e?.county + e?.details.split('。')[0]
+// }
 
 export const contentFormat = (str: string, length: number) => {
   if (str.length >= length)

@@ -34,7 +34,7 @@ const addCartProductInGoodsDetail = () => {
   if (!productDetails.value) return
 
   postCartProduct('testUser', {
-    productID: productDetails.value?.id,
+    productID: productDetails.value?.productId,
     amount: buyNum.value,
     remarks: '',
   }).then(res => {
@@ -75,25 +75,25 @@ const submitComment = () => {
   }
 }
 
-const testGoods = ref<ProductDetails>({
-  id: 123,
-  category: '电子产品',
-  brand: 'APPLE',
-  productName: 'iPad Pro',
-  price: 123.456,
-  shop: {
-    rate: 3.7,
-    shopName: 'APPLE',
-  },
-  description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
-  imageList: [
-    `${CDN_URL}/goodsdetail-example-1.png`,
-    `${CDN_URL}/goodsdetail-example-2.png`,
-    `${CDN_URL}/goodsdetail-example-3.png`,
-    `${CDN_URL}/goodsdetail-example-4.png`,
-  ],
-  thumb: `${CDN_URL}/goodsdetail-example-1.png`,
-})
+// const testGoods = ref<ProductDetails>({
+//   productId: 123,
+//   category: '电子产品',
+//   brand: 'APPLE',
+//   productName: 'iPad Pro',
+//   price: 123.456,
+//   shop: {
+//     rate: 3.7,
+//     shopName: 'APPLE',
+//   },
+//   description: '先进的显示屏，两款尺寸各有精彩。11 英寸显示屏灵巧便携，令人沉浸。12.9 英寸 XDR 显示屏宽大绚丽，能尽显 HDR 内容的精彩。',
+//   imageList: [
+//     `${CDN_URL}/goodsdetail-example-1.png`,
+//     `${CDN_URL}/goodsdetail-example-2.png`,
+//     `${CDN_URL}/goodsdetail-example-3.png`,
+//     `${CDN_URL}/goodsdetail-example-4.png`,
+//   ],
+//   thumb: `${CDN_URL}/goodsdetail-example-1.png`,
+// })
 
 getProductDetails(Number(props.id)).then(res => {
   // productDetails.value = testGoods.value

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { OrderSimpleInfo } from "../types/order";
 import {
-  addressFormat,
   contentFormat,
   getDecimal,
   getStatusString,
@@ -57,7 +56,7 @@ const props = defineProps<{
       <span style="position: absolute; bottom: 26px; color: rgba(255, 255, 255, 0.5); font-size: 14px">{{ props.order.id }}</span>
 
       <span style="position: absolute; bottom: 1px; color: #222222; font-size: 14px">{{
-          contentFormat(addressFormat(props.order.logisticsAddress.address), 12)
+          contentFormat(props.order.logisticsAddress.detailAddress, 12)
         }}</span>
 
       <p style="text-align: right; margin: 0; position: absolute; bottom: 0; right: 0; color: #222222; font-size: 12px">

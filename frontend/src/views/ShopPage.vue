@@ -199,7 +199,7 @@ getCategoryList()
                   <div style="display: flex; padding: 12px">
                     <div v-for="product in shop.productList" :key="product">
                       <div style="margin-right: 24px">
-                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }" style="text-decoration: none;">
+                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.productId } }" style="text-decoration: none;">
                           <ProductCard :product="product"/>
                         </router-link>
                       </div>
@@ -227,7 +227,7 @@ getCategoryList()
                   <div style="display: flex; padding: 12px">
                     <div v-for="product in shop.productList" :key="product">
                       <div style="margin-right: 24px">
-                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }" style="text-decoration: none;">
+                        <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.productId } }" style="text-decoration: none;">
                           <ProductCard :product="product"/>
                         </router-link>
                       </div>
@@ -264,7 +264,7 @@ getCategoryList()
 
       <div style="width: 1096px; margin-top: 24px">
         <div>
-          <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.id } }"
+          <router-link :to="{ name: 'ProductDetailsPage', params: { id: product.productId } }"
                        v-for="product in item.productList" style="text-decoration: none">
             <ProductCard :product="product" style="margin: 12px"/>
           </router-link>

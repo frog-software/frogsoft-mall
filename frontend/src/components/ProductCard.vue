@@ -10,8 +10,6 @@ const image = ref<string>(CDN_URL + '/goodscard-example.webp')
 const props = defineProps<{
   product: ProductSimpleInfo
 }>()
-
-// console.log(props.product.)
 </script>
 
 <template>

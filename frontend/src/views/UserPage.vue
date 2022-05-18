@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {getUserInformation} from "../services/user/user";
-import {UserModifyInfo, UserResponseInfo} from "../types/user";
-import {ref, watch} from "vue";
+import { getUserInformation }               from "../services/user/user";
+import { UserModifyInfo, UserResponseInfo } from "../types/user";
+import { ref, watch }                       from "vue";
 import {
   Male,
   Female,
@@ -16,8 +16,6 @@ import {
   LocationFilled,
   Bottom,
 }                                           from "@element-plus/icons-vue";
-import { addressFormat }                    from "../utils/util.ts"
-import { Address }                          from "../types/logistics";
 
 const userInfo = ref<UserResponseInfo>()
 const onEdit   = ref<boolean>(false)
@@ -54,28 +52,31 @@ const creditCardFormat = (n: string) => {
 
 getUserInformation('test').then(res => {
   userInfo.value = res
-  form.value     = JSON.parse(JSON.stringify(userInfo.value))
-  console.log(form.value)
+  console.log(res)
 
-  delete form.value.balance
-  delete form.value.purchaseHistory
-  delete form.value.shopName
+  form.value = JSON.parse(JSON.stringify(userInfo.value))
+
+  // delete form.value.balance
+  // delete form.value.purchaseHistory
+  // delete form.value.shopName
 })
 
 watch(onEdit, (newVal) => {
   let edit   = document.getElementById('edit-button-1')
   let cancel = document.getElementById('edit-button-2')
 
+  if (!edit || !cancel) return
+
   if (newVal) {
     edit.style.transform    = 'translateX(-104px)'
     cancel.style.transform  = 'translateX(-104px)'
     cancel.style.visibility = 'visible'
-    cancel.style.opacity    = 1
+    cancel.style.opacity    = '1'
   } else {
     edit.style.transform    = 'translateX(0)'
     cancel.style.transform  = 'translateX(0)'
     cancel.style.visibility = 'hidden'
-    cancel.style.opacity    = 0
+    cancel.style.opacity    = '0'
   }
 })
 </script>
@@ -145,7 +146,8 @@ watch(onEdit, (newVal) => {
 
       <div style="margin-top: 48px">
         <div style="text-align: left; margin-bottom: 16px">
-          <span style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">我的订单</span>
+          <span
+              style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">我的订单</span>
           <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 0 } }" style="text-decoration: none">
             <el-button type="text" style="color: #999999; margin-left: 12px">查看全部</el-button>
           </router-link>
@@ -154,7 +156,8 @@ watch(onEdit, (newVal) => {
             style="width: 100%; border-radius: 16px; height: 200px; border: 1px solid rgba(255, 255, 255, 0.5); overflow: hidden">
           <el-row style="height: 100%">
             <el-col :span="6" class="order-col">
-              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 1 } }" style="text-decoration: none; color: #ffffff">
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 1 } }"
+                           style="text-decoration: none; color: #ffffff">
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
                   <div>
                     <el-icon :size="64">
@@ -166,7 +169,8 @@ watch(onEdit, (newVal) => {
               </router-link>
             </el-col>
             <el-col :span="6" class="order-col">
-              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 2 } }" style="text-decoration: none; color: #ffffff">
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 2 } }"
+                           style="text-decoration: none; color: #ffffff">
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
                   <div>
                     <el-icon :size="64">
@@ -178,7 +182,8 @@ watch(onEdit, (newVal) => {
               </router-link>
             </el-col>
             <el-col :span="6" class="order-col">
-              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 3 } }" style="text-decoration: none; color: #ffffff">
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 3 } }"
+                           style="text-decoration: none; color: #ffffff">
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
                   <div>
                     <el-icon :size="64">
@@ -190,7 +195,8 @@ watch(onEdit, (newVal) => {
               </router-link>
             </el-col>
             <el-col :span="6" class="order-col">
-              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 4 } }" style="text-decoration: none; color: #ffffff">
+              <router-link :to="{ name: 'OrderDetailsPage', params: { tabIndex: 4 } }"
+                           style="text-decoration: none; color: #ffffff">
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center">
                   <div style="position: relative">
                     <el-icon :size="64">
@@ -267,13 +273,13 @@ watch(onEdit, (newVal) => {
                 <el-form :model="form" label-width="auto" label-position="right">
                   <div v-for="i in form.addressList" class="address-card">
                     <el-form-item label="姓名">
-                      <el-input v-model="i.name" style="width: 240px" :disabled="!onEdit"/>
+                      <el-input v-model="i.receiverName" style="width: 240px" :disabled="!onEdit"/>
                     </el-form-item>
                     <el-form-item label="手机号码">
-                      <el-input v-model="i.phone" style="width: 240px" :disabled="!onEdit"/>
+                      <el-input v-model="i.receiverPhone" style="width: 240px" :disabled="!onEdit"/>
                     </el-form-item>
                     <el-form-item label="详细地址">
-                      <el-input v-model="i.address.details" style="width: 480px" :disabled="!onEdit"/>
+                      <el-input v-model="i.detailAddress" style="width: 480px" :disabled="!onEdit"/>
                     </el-form-item>
                   </div>
                 </el-form>
@@ -304,7 +310,9 @@ watch(onEdit, (newVal) => {
                   <div v-for="(i, idx) in form.accountList">
                     <el-form-item label="银行卡号">
                       <el-input v-model="form.accountList[idx]" style="width: 240px" :disabled="!onEdit"/>
-                      <el-button style="margin-left: 24px" type="danger" @click="() => {form.accountList.splice(idx, 1)}">删除</el-button>
+                      <el-button style="margin-left: 24px" type="danger"
+                                 @click="() => {form.accountList.splice(idx, 1)}">删除
+                      </el-button>
                     </el-form-item>
                   </div>
                   <div style="text-align: left">

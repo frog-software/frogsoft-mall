@@ -231,7 +231,7 @@ getCartDetails('testUser').then(res => {
                            :id="'right-' + item.index"/>
               </el-col>
               <el-col :span="3">
-                <router-link :to="{ name: 'ProductDetailsPage', params: { id: item.product.id } }" style="text-decoration: none; color: #ffffff">
+                <router-link :to="{ name: 'ProductDetailsPage', params: { id: item.product.productId } }" style="text-decoration: none; color: #ffffff">
                   <el-button type="text" :icon="More" style="color: rgb(30, 144, 255)">详情</el-button>
                 </router-link>
 

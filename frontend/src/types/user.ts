@@ -5,7 +5,7 @@ import {ProductSimpleInfo} from "./product";
 export interface UserResponseInfo {
     avatar: string,
     nickname: string,
-    id: number,
+    username: string,
     phoneNum: string,
     gender: number,
     addressList: Address[],

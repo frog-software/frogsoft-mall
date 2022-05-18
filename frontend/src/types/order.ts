@@ -7,7 +7,7 @@ export interface OrderItemInfoCustomer {
 }
 
 export interface OrderSimpleInfo {
-  id: string,
+  id: number,
   orderTime: Date,
   buyerName: string,
   sellerName: string,

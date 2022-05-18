@@ -14,7 +14,6 @@ import {
   getStatusString,
   getStatusColor,
   getDecimal,
-  addressFormat,
   contentFormat
 }                                             from "../utils/util";
 import OrderCard                              from "../components/OrderCard.vue";
@@ -209,7 +208,7 @@ onMounted(() => {
               {{ currentOrderDetail?.remarks }}
             </el-descriptions-item>
             <el-descriptions-item label="目的地址">
-              {{ addressFormat(currentOrderDetail?.logisticsAddress.address) }}
+              {{ currentOrderDetail?.logisticsAddress.detailAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="物流单号">
               {{ currentOrderDetail?.logisticsNumber }}
