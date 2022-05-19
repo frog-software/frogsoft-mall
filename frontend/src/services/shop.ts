@@ -14,7 +14,7 @@ export const updateShopInfo = async (id: number, data: ShopPostInfo) => {
 
 // SP01-03 新增商店
 export const addShop = async (data: ShopPostInfo) => {
-    return await request.post<ShopDetails>('/shops', data);
+    return await request.post<ShopDetails>('/shops/', data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
