@@ -38,6 +38,11 @@ const routes = [
     name: 'AboutPage',
     component: () => import('../views/AboutPage.vue')
   },
+  {
+    path: '/myshop',
+    name: 'MyShopPage',
+    component: () => import('../views/MyShopPage.vue')
+  },
 ]
 
 export const router = createRouter({

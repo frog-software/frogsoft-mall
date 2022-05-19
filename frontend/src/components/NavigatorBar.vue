@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
-import { useRouter }             from "vue-router";
+import { ref, watch } from "vue";
 import { router } from '../router'
 
 interface RouterLinkItem {
@@ -12,6 +11,10 @@ const routerLinkList = ref<RouterLinkItem[]>([
   {
     content: '首页',
     pathName: 'ShopPage',
+  },
+  {
+    content: '我的商店',
+    pathName: 'MyShopPage',
   },
   {
     content: '关于我们',
