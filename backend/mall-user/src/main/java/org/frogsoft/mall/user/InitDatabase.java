@@ -26,11 +26,22 @@ public class InitDatabase {
             .setUsername("admin")
             .setRoles(Arrays.asList("ROLE_ADMIN"))
             .setAvatar("")
-            .setNickname(("管理员"))
+            .setNickname("管理员")
             .setPhone("18888888888")
         );
       }
-
+      // 存储一个测试用管理员用户
+      Optional<User> user = userRepository.findByUsername("user");
+      if (user.isEmpty()) {
+        userRepository.save(new User()
+            .setPassword(passwordEncoder.encode("user"))
+            .setUsername("user")
+            .setRoles(Arrays.asList("ROLE_USER"))
+            .setAvatar("")
+            .setNickname("用户")
+            .setPhone("13333333333")
+        );
+      }
     };
   }
 }

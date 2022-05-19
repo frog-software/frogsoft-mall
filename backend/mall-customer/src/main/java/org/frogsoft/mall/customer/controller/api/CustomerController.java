@@ -12,12 +12,9 @@ import org.frogsoft.mall.customer.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,4 +51,55 @@ public class CustomerController {
             .build();
     }
 
+    //CM03-01：修改购物车商品
+    @PutMapping("/{username}/cart/{index}")
+    public ResponseEntity<?> putSingleCartItem(
+            @PathVariable(value = "username") String username,
+            @PathVariable(value = "index") int cart_index,
+            @RequestBody AddCartItemRequset addCartItemRequset,
+            @AuthenticationPrincipal UserDetail authenticatedUser
+    )
+    {
+        CartDto savedCartDto = customerService.modifyCart(addCartItemRequset, username,cart_index);
+        return new ResponseBodyWrapper<CartDto>()
+                .status(HttpStatus.CREATED)
+                .body(savedCartDto)
+                .build();
+    }
+
+    //CM03-03：删除购物车商品
+    @DeleteMapping("/{username}/cart/{index}")
+    public ResponseEntity<?> deleteSingleCommentOfProduct(
+            @PathVariable(value = "username") String username,
+            @PathVariable(value = "index") int cart_index,
+            @RequestBody AddCartItemRequset addCartItemRequset,
+            @AuthenticationPrincipal UserDetail authenticatedUser
+    ){
+        customerService.deleteCartItem(addCartItemRequset,username, cart_index);
+        return ResponseEntity.noContent().build();
+    }
+
+    //CM03-02：查询购物车商品（单个）
+    @GetMapping("/{username}/cart/{index}")
+    public ResponseEntity<?> getSingleCartItem(
+            @PathVariable(value = "username") String username,
+            @PathVariable(value = "index") int cart_index,
+            @AuthenticationPrincipal UserDetail authenticatedUser
+    ){
+        return new ResponseBodyWrapper<CartDto>()
+                .status(HttpStatus.OK)
+                .body(customerService.getSingleOrder(username, cart_index))
+                .build();
+    }
+
+    //CM03-05：查询购物车商品（批量）
+    @GetMapping("/{username}/cart")
+    public ResponseEntity<?> getAllCartItems(
+            @PathVariable(value = "username") String username
+    ){
+        return new ResponseBodyWrapper<ArrayList<CartDto>>()
+                .status(HttpStatus.OK)
+                .body(customerService.getAllProductsInCartByOwner(username))
+                .build();
+    }
 }
