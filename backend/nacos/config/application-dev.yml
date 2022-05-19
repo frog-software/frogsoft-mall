@@ -26,3 +26,12 @@ spring:
 jwt:
   secret: abcdefghijklmnopqrstuvwxyz
   expiration-delay: 86400
+shopClient:
+  ribbon:
+    listOfServers: ${SHOP_FEIGN_URL:http://localhost:9210}
+productClient:
+  ribbon:
+    listOfServers: ${PRODUCT_FEIGN_URL:http://localhost:9888}
+customerClient:
+  ribbon:
+    listOfServers: ${PRODUCT_FEIGN_URL:http://localhost:9220}

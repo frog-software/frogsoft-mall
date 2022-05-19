@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 // 使用url进行服务发现
 // TODO：url修改为环境变量
-@FeignClient(url = "http://localhost:9220", path = "/", value = "mall-customer")
+@FeignClient(url = "${customerClient.ribbon.listOfServers}", path = "/", value = "mall-customer")
 @Component
 public interface CustomerClient {
     // 后端内部调用getCustomer的api接口
