@@ -56,9 +56,9 @@ getUserInformation('test').then(res => {
 
   form.value = JSON.parse(JSON.stringify(userInfo.value))
 
-  // delete form.value.balance
-  // delete form.value.purchaseHistory
-  // delete form.value.shopName
+  delete form.value.balance
+  delete form.value.purchaseHistory
+  delete form.value.shopName
 })
 
 watch(onEdit, (newVal) => {

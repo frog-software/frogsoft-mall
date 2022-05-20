@@ -50,7 +50,7 @@ const props = defineProps<{
 import { ProductSimpleInfo } from "../types/product";
 
 export default {
-  name: "GoodsCard",
+  name: "ProductCard",
 }
 </script>
 
