@@ -78,7 +78,7 @@ export default {
 <style scoped>
 .order-card {
   width: 480px;
-  min-height: 180px;
+  height: 180px;
   border-radius: 12px;
   background: linear-gradient(150deg, #f6eacc, #c1ab85);
   margin: 12px;

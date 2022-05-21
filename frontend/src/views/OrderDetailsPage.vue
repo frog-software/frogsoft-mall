@@ -318,7 +318,7 @@ export default {
   width: calc(99vw + 2px);
   background: rgba(0, 0, 0, 0.6);
   height: 100vh;
-  z-index: 1;
+  z-index: 2;
   visibility: collapse;
 
   transition: all 0.2s ease-in-out;
