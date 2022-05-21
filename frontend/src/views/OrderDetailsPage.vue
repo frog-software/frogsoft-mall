@@ -136,7 +136,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="min-height: calc(100vh - 252px); display: flex; justify-content: center; max-width: calc(99vw + 2px)">
+  <div style="min-height: calc(100vh - 252px); display: flex; justify-content: center; width: 100%">
     <div style="width: 1200px; color: #ffffff">
       <div v-for="(i, idx) in tabItemList" class="tab-root" @click="switchTabUnderline(idx)" :id="'tab-root-' + idx">
         <div style="display: flex; align-items: center; justify-content: center">
