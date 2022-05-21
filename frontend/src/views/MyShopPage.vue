@@ -1,17 +1,18 @@
 <script setup lang="ts">
 
-import { ref, watch }                             from "vue";
-import { addShop, getShopInfo, updateShopInfo }   from "../services/shop";
-import { ShopPostInfo, ShopResponseInfo }         from "../types/shop";
-import { ElNotification }                         from "element-plus";
-import { deleteProduct, getProductDetailsPaging } from "../services/product";
-import { ProductDetails, ProductPostInfo }        from "../types/product";
-import { getDecimal }                             from "../utils/util";
+import { ref, watch }                                         from "vue";
+import { addShop, getShopInfo, updateShopInfo }               from "../services/shop";
+import { ShopPostInfo, ShopResponseInfo }                     from "../types/shop";
+import { ElNotification }                                                    from "element-plus";
+import { addProduct, deleteProduct, getProductDetailsPaging, updateProduct } from "../services/product";
+import { ProductDetails, ProductPostInfo }                                   from "../types/product";
+import { getDecimal }                                         from "../utils/util";
 import {
   Delete,
   More,
   InfoFilled,
-}                                                 from "@element-plus/icons-vue";
+  Close,
+}                                                             from "@element-plus/icons-vue";
 
 const shopInfoForm = ref<ShopPostInfo>({
   shopName: '',
@@ -139,15 +140,15 @@ const deleteProductInMyShop = (product: ProductDetails) => {
   })
 }
 
-const deleteProductImage = (idx: number) => {
-  if (productForm.value.imageList.length === 1) {
+const deleteProductImage = (imageList: string[], idx: number) => {
+  if (imageList.length === 1) {
     ElNotification({
       title: '删除图片失败',
       message: '商品至少需要一张图片',
       type: 'error',
     })
   } else {
-    productForm.value.imageList.splice(idx, 1)
+    imageList.splice(idx, 1)
   }
 }
 
@@ -173,6 +174,73 @@ const submitProduct = () => {
     return
   } else {
     console.log('yes')
+    addProduct(productForm.value).then(res => {
+      ElNotification({
+        title: '添加成功',
+        message: '"' + productForm.value.productName + '"' + '成功添加到商店中',
+        type: 'success',
+      })
+      clearProductForm()
+    })
+  }
+}
+
+const currentProductId = ref<number>(0)
+const currentProductDetail = ref<ProductPostInfo>({
+  shopId: 0,
+  category: '',
+  brand: '',
+  productName: '',
+  price: 0,
+  description: '',
+  imageList: [''],
+})
+
+const openDrawer = (i: ProductDetails) => {
+  currentProductId.value = i.productId
+
+  currentProductDetail.value.shopId      = i.shop.id
+  currentProductDetail.value.category    = i.category
+  currentProductDetail.value.brand       = i.brand
+  currentProductDetail.value.productName = i.productName
+  currentProductDetail.value.price       = i.price
+  currentProductDetail.value.description = i.description
+  currentProductDetail.value.imageList   = i.imageList
+
+  let overlay = document.getElementById('overlay')
+  let drawer  = document.getElementById('drawer')
+
+  if (!overlay || !drawer) return
+
+  overlay.style.opacity    = drawer.style.opacity = '1'
+  drawer.style.transform   = 'translateX(-200px)'
+  overlay.style.visibility = drawer.style.visibility = 'visible'
+}
+
+const closeDrawer = () => {
+  let overlay = document.getElementById('overlay')
+  let drawer  = document.getElementById('drawer')
+
+  if (!overlay || !drawer) return
+
+  overlay.style.opacity    = drawer.style.opacity = '0'
+  drawer.style.transform   = 'translateX(0)'
+  overlay.style.visibility = drawer.style.visibility = 'collapse'
+}
+
+const onEditProductDetail = ref<boolean>(false)
+
+const editProductDetail = () => {
+  if (onEditProductDetail.value) {
+    // TODO: 表单校验需优化（为空、格式要求）
+
+    updateProduct(currentProductId.value, currentProductDetail.value).then(res => {
+      ElNotification({
+        title: '修改成功',
+        type: 'success',
+      })
+      onEditProductDetail.value = false
+    })
   }
 }
 
@@ -215,10 +283,24 @@ watch(onEdit, (newVal: boolean) => {
     card.style.height           = '200px'
   }
 })
+
+watch(onEditProductDetail, (newVal: boolean) => {
+  let cancelButton = document.getElementById('cancelEditProductDetail')
+
+  if (!cancelButton) return
+
+  if (newVal) {
+    cancelButton.style.opacity    = '1'
+    cancelButton.style.visibility = 'visible'
+  } else {
+    cancelButton.style.opacity    = '0'
+    cancelButton.style.visibility = 'collapse'
+  }
+})
 </script>
 
 <template>
-  <div style="min-height: calc(100vh - 252px)">
+  <div style="min-height: calc(100vh - 252px); width: 100%">
     <div style="display: flex; justify-content: center">
       <div style="width: 1000px">
         <div>
@@ -349,10 +431,12 @@ watch(onEdit, (newVal: boolean) => {
               <el-form-item label="商品图片">
                 <div v-for="(i, idx) in productForm.imageList" style="margin-bottom: 16px">
                   <el-input v-model="productForm.imageList[idx]" style="width: 480px" placeholder="请输入商品图片链接"/>
-                  <el-button style="margin-left: 24px" type="danger" @click="deleteProductImage(idx)">删除</el-button>
+                  <el-button style="margin-left: 24px" type="danger"
+                             @click="deleteProductImage(productForm.imageList, idx)">删除
+                  </el-button>
                 </div>
               </el-form-item>
-              <div style="text-align: left; margin-left: 438px; margin-top: -16px">
+              <div style="text-align: left; margin-left: 428px; margin-top: -16px">
                 <el-button style="width: 120px" type="primary" @click="() => productForm.imageList.push('')">添加图片
                 </el-button>
               </div>
@@ -381,7 +465,8 @@ watch(onEdit, (newVal: boolean) => {
                         <span style="font-size: 14px; margin-left: 4px">{{ product.price.toFixed(0) }}</span>
                         <span style="font-size: 10px">.{{ getDecimal(product.price) }}</span>
                       </p>
-                      <el-button type="text" :icon="More" style="color: rgb(30, 144, 255); margin-left: 4px">详情
+                      <el-button type="text" :icon="More" style="color: rgb(30, 144, 255); margin-left: 4px"
+                                 @click="openDrawer(product)">详情
                       </el-button>
                       <el-popconfirm title="确定要删除吗？" :icon="InfoFilled" confirmButtonText="确定" cancelButtonText="取消"
                                      @confirm="deleteProductInMyShop(product)">
@@ -409,10 +494,78 @@ watch(onEdit, (newVal: boolean) => {
             />
           </div>
         </div>
-
-
       </div>
     </div>
+
+    <el-affix style="position: absolute; left: 0; top: 0">
+      <div class="overlay" id="overlay">
+        <div class="drawer" id="drawer">
+          <el-button :icon="Close" @click="closeDrawer" class="close-drawer-button" circle size="large"/>
+          <p style="color: #222222; text-align: center; font-size: 20px; font-weight: bold">商品详情</p>
+          <el-divider/>
+
+          <el-form :model="currentProductDetail">
+            <el-form-item label="商品名称">
+              <el-input v-model="currentProductDetail.productName" style="width: 240px" placeholder="请输入商品名称"
+                        :disabled="!onEditProductDetail"/>
+            </el-form-item>
+            <el-form-item label="商品类别">
+              <el-select v-model="currentProductDetail.category" filterable style="width: 240px" placeholder="输入或选择商品类别"
+                         :disabled="!onEditProductDetail">
+                <el-option
+                    v-for="item in categoryList"
+                    :key="item.label"
+                    :label="item.label"
+                    :value="item.label"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-input v-model="currentProductDetail.brand" style="width: 240px" placeholder="请输入商品品牌"
+                        :disabled="!onEditProductDetail"/>
+            </el-form-item>
+            <el-form-item label="商品价格">
+              <el-input-number v-model="currentProductDetail.price" :step="1" step-strictly :min="0.01" :precision="2"
+                               style="width: 240px" :disabled="!onEditProductDetail"/>
+            </el-form-item>
+            <el-form-item label="商品图片">
+              <div v-for="(i, idx) in currentProductDetail.imageList" style="margin-bottom: 16px">
+                <el-input v-model="currentProductDetail.imageList[idx]" style="width: 360px" placeholder="请输入商品图片链接"
+                          :disabled="!onEditProductDetail"/>
+                <el-button style="margin-left: 24px" type="danger"
+                           @click="deleteProductImage(currentProductDetail.imageList, idx)"
+                           :disabled="!onEditProductDetail">删除
+                </el-button>
+              </div>
+            </el-form-item>
+            <div style="text-align: left; margin-left: 68px; margin-top: -16px">
+              <el-button style="width: 120px" type="primary" @click="() => currentProductDetail.imageList.push('')"
+                         :disabled="!onEditProductDetail">添加图片
+              </el-button>
+            </div>
+            <el-form-item label="商品描述" style="margin-top: 24px">
+              <el-input
+                  v-model="currentProductDetail.description"
+                  :autosize="{ minRows: 6, maxRows: 6 }"
+                  type="textarea"
+                  placeholder="请输入商品描述"
+                  style="width: 480px"
+                  :disabled="!onEditProductDetail"
+              />
+            </el-form-item>
+          </el-form>
+
+          <div style="text-align: left; margin-left: 68px; margin-bottom: 64px">
+            <el-button @click="() => onEditProductDetail ? editProductDetail() : onEditProductDetail = true"
+                       type="primary">{{ onEditProductDetail ? '保存编辑' : '编辑信息' }}
+            </el-button>
+            <el-button @click="() => onEditProductDetail = false"
+                       style="opacity: 0; visibility: collapse; transition: all 0.3s" id="cancelEditProductDetail">取消编辑
+            </el-button>
+          </div>
+        </div>
+      </div>
+    </el-affix>
   </div>
 </template>
 
@@ -423,5 +576,49 @@ export default {
 </script>
 
 <style scoped>
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(99vw + 2px);
+  background: rgba(0, 0, 0, 0.6);
+  height: 100vh;
+  z-index: 2;
+  visibility: collapse;
 
+  transition: all 0.2s ease-in-out;
+}
+
+.drawer {
+  position: absolute;
+  top: 10vh;
+  right: 0;
+  width: 550px;
+  height: 80vh;
+  padding: 8px 24px;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  background: #ffffff;
+  font-family: 微軟正黑體;
+  overflow-y: scroll;
+
+  visibility: collapse;
+  z-index: 2;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.close-drawer-button {
+  margin: 12px 4px 0 0;
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+  float: right;
+  border: none;
+}
+
+.close-drawer-button:hover {
+  color: #7b7c80;
+  background: rgba(0, 0, 0, 0.1);
+}
 </style>
