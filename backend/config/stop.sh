@@ -24,36 +24,8 @@ fi
 
 echo "using NAMESPACE=${NAMESPACE}"
 
-protos=( destinationrules virtualservices gateways configmap )
-for proto in "${protos[@]}"; do
-  for resource in $(kubectl get -n ${NAMESPACE} "$proto" -o name); do
-    kubectl delete -n ${NAMESPACE} "$resource";
-  done
-done
-
-OUTPUT=$(mktemp)
-export OUTPUT
-echo "Application cleanup may take up to one minute"
-for yaml in *-deployment.yaml
-do
-    kubectl delete -n ${NAMESPACE} -f "$SCRIPTDIR/$yaml" > "${OUTPUT}" 2>&1
-done
-ret=$?
-function cleanup() {
-  rm -f "${OUTPUT}"
-}
-
-trap cleanup EXIT
-
-if [[ ${ret} -eq 0 ]];then
-  cat "${OUTPUT}"
-else
-  # ignore NotFound errors
-  OUT2=$(grep -v NotFound "${OUTPUT}")
-  if [[ -n ${OUT2} ]];then
-    cat "${OUTPUT}"
-    exit ${ret}
-  fi
-fi
+find . -regextype egrep \
+  -regex '.*(gateway|virtualservice|destinationrule|deployment).yaml' \
+  -exec kubectl delete -n "${NAMESPACE}" -f {} \;
 
 echo "Application cleaned up successfully"
