@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: mall-commodity
+          imagePullPolicy: IfNotPresent
           image: frogsoftware/mall-commodity:0.0.1
           ports:
             - containerPort: 9200

@@ -28,6 +28,8 @@ spec:
     - match:
         - uri:
             prefix: /auth/
+      rewrite:
+        uri: /
       route:
         - destination:
             host: mall-auth-service

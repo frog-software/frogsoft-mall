@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: mall-user
+          imagePullPolicy: IfNotPresent
           image: frogsoftware/mall-user:0.0.1
           ports:
             - containerPort: 9100
