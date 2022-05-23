@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: frogsoft-mall-config
 data:
-  NACOS_URL: "${NACOS_URL}"
-  OPENGAUSS_URL: "${OPENGAUSS_URL}"
+  NACOS_URL: "NACOS_IP_ADDRESS"
+  OPENGAUSS_URL: "OPENGAUSS_IP_ADDRESS"

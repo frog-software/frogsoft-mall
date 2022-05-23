@@ -13,25 +13,7 @@ istioctl verify-install > /dev/null 2>&1 || {
   exit 1
 }
 
-# only ask if in interactive mode
-if [[ -t 0 && -z ${NAMESPACE} ]];then
-  echo -n "namespace ? [frogsoft-mall] "
-  read -r NAMESPACE
-fi
-
-# verify if the namespace exists, otherwise use default namespace
-if [[ -n ${NAMESPACE} ]];then
-  ns=$(kubectl get namespace "${NAMESPACE}" --no-headers --output=go-template="{{.metadata.name}}" 2>/dev/null)
-  if [[ -z ${ns} ]];then
-    echo "NAMESPACE ${NAMESPACE} not found."
-    NAMESPACE=frogsoft-mall
-  fi
-fi
-
-# if no namespace is provided, use default namespace
-if [[ -z ${NAMESPACE} ]];then
-  NAMESPACE=frogsoft-mall
-fi
+NAMESPACE=frogsoft-mall
 
 echo "using NAMESPACE=${NAMESPACE}"
 ns=$(kubectl get namespace "${NAMESPACE}" --no-headers --output=go-template="{{.metadata.name}}" 2>/dev/null)
@@ -43,12 +25,12 @@ fi
 istioctl analyze --namespace "${NAMESPACE}"
 
 IP=$(hostname --all-ip-addresses | grep -oE '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$|\w)){4}')
-echo -e "NACOS_URL=$IP" > url.env.local
-echo -e "OPENGAUSS_URL=$IP" >> url.env.local
-kubectl create configmap frogsoft-mall-config --from-env-file=url.env.local -n ${NAMESPACE}
+cp "${SCRIPTDIR}/configmap.yaml.example" "${SCRIPTDIR}/configmap.yaml"
+sed -i "s/NACOS_IP_ADDRESS/${IP}/g" "${SCRIPTDIR}/configmap.yaml"
+sed -i "s/OPENGAUSS_IP_ADDRESS/${IP}/g" "${SCRIPTDIR}/configmap.yaml"
 
 find . -regextype egrep \
-  -regex '.*(gateway|virtualservice|destinationrule|deployment).yaml' \
+  -regex '.*(configmap|gateway|virtualservice|destinationrule|deployment).yaml' \
   -exec kubectl apply -n "${NAMESPACE}" -f {} \;
 
 echo "Application started successfully"
