@@ -73,6 +73,7 @@ services:
       PORT: ${COMMODITY_PORT:-9200}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
+      SHOP_FEIGN_URL: http://mall-shop-service:${SHOP_PORT:-9210}
     # 仅测试用，可以去除
     ports:
       - "${COMMODITY_PORT:-9200}:${COMMODITY_PORT:-9200}"
@@ -90,6 +91,7 @@ services:
       PORT: ${CUSTOMER_PORT:-9220}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
+      COMMODITY_FEIGN_URL: http://mall-commodity-service:${COMMODITY_PORT:-9200}
     # 仅测试用，可以去除
     ports:
       - "${COMMODITY_PORT:-9220}:${COMMODITY_PORT:-9220}"
@@ -110,9 +112,11 @@ services:
       - "${GATEWAY_PORT:-8080}:${GATEWAY_PORT:-8080}"
     depends_on:
       - mall-auth-service
-      - mall-user-service
-      - mall-shop-service
       - mall-commodity-service
+      - mall-customer-service
+      - mall-order-service
+      - mall-shop-service
+      - mall-user-service
 
   # 订单模块
   mall-order-service:
@@ -124,6 +128,9 @@ services:
       PORT: ${ORDER_PORT:-9230}
       NACOS_URL: nacos
       OPENGAUSS_URL: opengauss
+      CUSTOMER_FEIGN_URL: http://mall-customer-service:${CUSTOMER_PORT:-9220}
+      COMMODITY_FEIGN_URL: http://mall-commodity-service:${COMMODITY_PORT:-9200}
+      SHOP_FEIGN_URL: http://mall-shop-service:${SHOP_PORT:-9210}
     # 仅测试用，可以去除
     ports:
       - "${ORDER_PORT:-9230}:${ORDER_PORT:-9230}"
