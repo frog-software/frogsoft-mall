@@ -56,4 +56,4 @@ else
   fi
 fi
 
-echo "Application cleanup successful"
+echo "Application cleaned up successfully"

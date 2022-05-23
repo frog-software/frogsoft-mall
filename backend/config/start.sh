@@ -2,6 +2,17 @@
 
 SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+# istioctl must exist
+if ! which istioctl > /dev/null; then
+  echo "istioctl not found in PATH"
+  exit 1
+fi
+
+istioctl verify-install > /dev/null 2>&1 || {
+  echo "You have not successfully installed istio. Please install instio on your cluster before running this script."
+  exit 1
+}
+
 # only ask if in interactive mode
 if [[ -t 0 && -z ${NAMESPACE} ]];then
   echo -n "namespace ? [frogsoft-mall] "
@@ -49,6 +60,4 @@ for proto in "${protos[@]}"; do
   done
 done
 
-
-
-echo "Applications start successfully"
+echo "Application started successfully"
