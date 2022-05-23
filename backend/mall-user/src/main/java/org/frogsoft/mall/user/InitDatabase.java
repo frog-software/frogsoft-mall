@@ -15,8 +15,7 @@ public class InitDatabase {
   @Bean
   CommandLineRunner init(
       PasswordEncoder passwordEncoder,
-      UserRepository userRepository
-  ) {
+      UserRepository userRepository) {
     return args -> {
       // 存储一个测试用管理员用户
       Optional<User> user = userRepository.findByUsername("admin");
@@ -27,11 +26,10 @@ public class InitDatabase {
             .setRoles(Arrays.asList("ROLE_ADMIN"))
             .setAvatar("")
             .setNickname("管理员")
-            .setPhone("18888888888")
-        );
+            .setPhone("18888888888"));
       }
       // 存储一个测试用管理员用户
-      Optional<User> user = userRepository.findByUsername("user");
+      user = userRepository.findByUsername("user");
       if (user.isEmpty()) {
         userRepository.save(new User()
             .setPassword(passwordEncoder.encode("user"))
@@ -39,8 +37,7 @@ public class InitDatabase {
             .setRoles(Arrays.asList("ROLE_USER"))
             .setAvatar("")
             .setNickname("用户")
-            .setPhone("13333333333")
-        );
+            .setPhone("13333333333"));
       }
     };
   }
