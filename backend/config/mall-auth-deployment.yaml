@@ -20,16 +20,16 @@ spec:
           ports:
             - containerPort: 9000
           env:
-          - name: NACOS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: frogsoft-mall-config
-                key: NACOS_URL
-          - name: OPENGAUSS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: frogsoft-mall-config
-                key: OPENGAUSS_URL
+            - name: NACOS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frogsoft-mall-config
+                  key: NACOS_URL
+            - name: OPENGAUSS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frogsoft-mall-config
+                  key: OPENGAUSS_URL
 ---
 apiVersion: v1
 kind: Service

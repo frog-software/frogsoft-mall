@@ -23,6 +23,13 @@ if [[ -z ${NAMESPACE} ]];then
 fi
 
 echo "using NAMESPACE=${NAMESPACE}"
+ns=$(kubectl get namespace "${NAMESPACE}" --no-headers --output=go-template="{{.metadata.name}}" 2>/dev/null)
+if [[ -z ${ns} ]];then
+  kubectl create ns frogsoft-mall
+  kubectl label namespace frogsoft-mall istio-injection=enabled
+  echo "已经为你自动创建命名空间 frogsoft-mall 并注入 istio"
+fi
+istioctl analyze --namespace "${NAMESPACE}"
 
 IP=$(hostname --all-ip-addresses | grep -oE '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$|\w)){4}')
 echo -e "NACOS_URL=$IP" > url.env.local

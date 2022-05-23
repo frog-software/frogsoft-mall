@@ -27,7 +27,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: /v1/auth/
+            prefix: /auth/
       route:
         - destination:
             host: mall-auth-service
@@ -35,15 +35,9 @@ spec:
               number: 9000
     - match:
         - uri:
-            prefix: /v1/users/
-      route:
-        - destination:
-            host: mall-user-service
-            port:
-              number: 9100
-    - match:
-        - uri:
             prefix: /commodities/
+      rewrite:
+        uri: /
       route:
         - destination:
             host: mall-commodity-service
@@ -51,9 +45,41 @@ spec:
               number: 9200
     - match:
         - uri:
+            prefix: /customers/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-customer-service
+            port:
+              number: 9220
+    - match:
+        - uri:
+            prefix: /orders/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-order-service
+            port:
+              number: 9230
+    - match:
+        - uri:
             prefix: /shops/
+      rewrite:
+        uri: /
       route:
         - destination:
             host: mall-shop-service
             port:
               number: 9210
+    - match:
+        - uri:
+            prefix: /users/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-user-service
+            port:
+              number: 9100
