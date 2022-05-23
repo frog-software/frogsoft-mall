@@ -47,17 +47,8 @@ echo -e "NACOS_URL=$IP" > url.env.local
 echo -e "OPENGAUSS_URL=$IP" >> url.env.local
 kubectl create configmap frogsoft-mall-config --from-env-file=url.env.local -n ${NAMESPACE}
 
-for yaml in *-deployment.yaml
-do
-    kubectl apply -n ${NAMESPACE} -f "$SCRIPTDIR/$yaml" 
-done
-
-protos=( gateway virtualservice destinationrule )
-for proto in "${protos[@]}"; do
-  for yaml in *${proto}.yaml
-  do
-      kubectl apply -n ${NAMESPACE} -f "$SCRIPTDIR/$yaml" 
-  done
-done
+find . -regextype egrep \
+  -regex '.*(gateway|virtualservice|destinationrule|deployment).yaml' \
+  -exec kubectl apply -n "${NAMESPACE}" -f {} \;
 
 echo "Application started successfully"
