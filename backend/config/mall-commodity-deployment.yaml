@@ -21,18 +21,19 @@ spec:
           ports:
             - containerPort: 9200
           env:
-          - name: NACOS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: frogsoft-mall-config
-                key: NACOS_URL
-          - name: OPENGAUSS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: frogsoft-mall-config
-                key: OPENGAUSS_URL
+            - name: NACOS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frogsoft-mall-config
+                  key: NACOS_URL
+            - name: OPENGAUSS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frogsoft-mall-config
+                  key: OPENGAUSS_URL
+            - name: SHOP_FEIGN_URL
+              value: http://mall-shop-service.frogsoft-mall:9210
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

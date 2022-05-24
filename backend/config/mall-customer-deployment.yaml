@@ -31,6 +31,8 @@ spec:
                 configMapKeyRef:
                   name: frogsoft-mall-config
                   key: OPENGAUSS_URL
+            - name: COMMODITY_FEIGN_URL
+              value: http://mall-commodity-service.frogsoft-mall:9200
 ---
 apiVersion: v1
 kind: Service

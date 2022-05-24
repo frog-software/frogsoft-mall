@@ -28,8 +28,23 @@ spec:
     - match:
         - uri:
             prefix: /auth/
+        - uri:
+            exact: /auth
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-auth-service
@@ -38,8 +53,23 @@ spec:
     - match:
         - uri:
             prefix: /commodities/
+        - uri:
+            exact: /commodities
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-commodity-service
@@ -48,8 +78,23 @@ spec:
     - match:
         - uri:
             prefix: /customers/
+        - uri:
+            exact: /customers
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-customer-service
@@ -58,8 +103,23 @@ spec:
     - match:
         - uri:
             prefix: /orders/
+        - uri:
+            exact: /orders
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-order-service
@@ -68,8 +128,23 @@ spec:
     - match:
         - uri:
             prefix: /shops/
+        - uri:
+            exact: /shops
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-shop-service
@@ -78,8 +153,23 @@ spec:
     - match:
         - uri:
             prefix: /users/
+        - uri:
+            exact: /users
       rewrite:
         uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
       route:
         - destination:
             host: mall-user-service
