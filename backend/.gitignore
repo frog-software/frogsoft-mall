@@ -38,3 +38,5 @@ nacos/init.d
 nacos/mysql
 nacos/standalone-logs
 opangauss/db_data
+
+configmap.yaml

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-shop-deployment
+  namespace: frogsoft-mall
+  labels:
+    app: mall-shop
+spec:
+  selector:
+    matchLabels:
+      app: mall-shop
+  template:
+    metadata:
+      labels:
+        app: mall-shop
+    spec:
+      containers:
+        - name: mall-shop
+          imagePullPolicy: IfNotPresent
+          image: frogsoftware/mall-shop:0.0.1
+          ports:
+            - containerPort: 9210
+          env:
+          - name: NACOS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: frogsoft-mall-config
+                key: NACOS_URL
+          - name: OPENGAUSS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: frogsoft-mall-config
+                key: OPENGAUSS_URL
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-shop-service
+  namespace: frogsoft-mall
+  labels:
+    app: mall-shop
+spec:
+  ports:
+    - port: 9210
+      targetPort: 9210
+  selector:
+    app: mall-shop
+  type: NodePort

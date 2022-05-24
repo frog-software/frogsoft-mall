@@ -1,0 +1,87 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: frogsoft-mall-gateway
+  namespace: frogsoft-mall
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: frogsoft-mall
+  namespace: frogsoft-mall
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - frogsoft-mall-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /auth/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-auth-service
+            port:
+              number: 9000
+    - match:
+        - uri:
+            prefix: /commodities/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-commodity-service
+            port:
+              number: 9200
+    - match:
+        - uri:
+            prefix: /customers/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-customer-service
+            port:
+              number: 9220
+    - match:
+        - uri:
+            prefix: /orders/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-order-service
+            port:
+              number: 9230
+    - match:
+        - uri:
+            prefix: /shops/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-shop-service
+            port:
+              number: 9210
+    - match:
+        - uri:
+            prefix: /users/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: mall-user-service
+            port:
+              number: 9100

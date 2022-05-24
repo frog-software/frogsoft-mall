@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frogsoft-mall-config
+data:
+  NACOS_URL: "NACOS_IP_ADDRESS"
+  OPENGAUSS_URL: "OPENGAUSS_IP_ADDRESS"

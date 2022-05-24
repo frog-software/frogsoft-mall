@@ -39,7 +39,7 @@ public class User implements UserDetails {
   // 这里 username 当做学号用就行
   private String username;
 
-  private String realName;
+  private String nickname;
 
   private String phone;
 
@@ -52,6 +52,7 @@ public class User implements UserDetails {
   private List<String> roles = new ArrayList<>();
 
   @Override
+  @JsonBackReference
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return this.roles
         .stream()

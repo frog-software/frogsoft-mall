@@ -3,7 +3,7 @@ spring:
     gateway:
       globalcors:
         corsConfigurations:
-          '[/**]':
+          "[/**]":
             allowedOriginPatterns: "*"
             allowed-methods: "*"
             allowed-headers: "*"
@@ -14,13 +14,41 @@ spring:
         - id: mall-auth
           uri: lb://mall-auth
           predicates:
-            - Path=/v1/auth/**
+            - Path=/auth/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
+        # 商品模块
+        - id: mall-commodity
+          uri: lb://mall-commodity
+          predicates:
+            - Path=/commodities/**
+          filters:
+            - StripPrefix=1
+        # 顾客模块
+        - id: mall-customer
+          uri: lb://mall-customer
+          predicates:
+            - Path=/customers/**
+          filters:
+            - StripPrefix=1
+        # 订单模块
+        - id: mall-order
+          uri: lb://mall-order
+          predicates:
+            - Path=/orders/**
+          filters:
+            - StripPrefix=1
+        # 商店模块
+        - id: mall-shop
+          uri: lb://mall-shop
+          predicates:
+            - Path=/shops/**
+          filters:
+            - StripPrefix=1
         # 用户模块
         - id: mall-user
           uri: lb://mall-user
           predicates:
-            - Path=/v1/users/**
+            - Path=/users/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1

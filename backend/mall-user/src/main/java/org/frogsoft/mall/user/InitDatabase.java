@@ -7,22 +7,15 @@ import org.frogsoft.mall.user.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class InitDatabase {
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-  }
-
-  @Bean
   CommandLineRunner init(
       PasswordEncoder passwordEncoder,
-      UserRepository userRepository
-  ) {
+      UserRepository userRepository) {
     return args -> {
       // 存储一个测试用管理员用户
       Optional<User> user = userRepository.findByUsername("admin");
@@ -32,11 +25,20 @@ public class InitDatabase {
             .setUsername("admin")
             .setRoles(Arrays.asList("ROLE_ADMIN"))
             .setAvatar("")
-            .setRealName(("管理员"))
-            .setPhone("18888888888")
-        );
+            .setNickname("管理员")
+            .setPhone("18888888888"));
       }
-
+      // 存储一个测试用管理员用户
+      user = userRepository.findByUsername("user");
+      if (user.isEmpty()) {
+        userRepository.save(new User()
+            .setPassword(passwordEncoder.encode("user"))
+            .setUsername("user")
+            .setRoles(Arrays.asList("ROLE_USER"))
+            .setAvatar("")
+            .setNickname("用户")
+            .setPhone("13333333333"));
+      }
     };
   }
 }

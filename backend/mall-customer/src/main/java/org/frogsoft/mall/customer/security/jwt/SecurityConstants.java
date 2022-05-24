@@ -1,4 +1,4 @@
-package org.frogsoft.mall.auth.security;
+package org.frogsoft.mall.customer.security.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
