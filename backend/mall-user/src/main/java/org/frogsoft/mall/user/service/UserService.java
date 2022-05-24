@@ -49,6 +49,10 @@ public class UserService {
       throw new BadRequestException("用户名、昵称、手机号和密码不能为空");
     }
 
+    if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+      throw new UserConflictException("用户名已存在");
+    }
+
     User newUser = new User();
     newUser
         .setUsername(registerRequest.getUsername())
