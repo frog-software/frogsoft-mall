@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import CheckBox                              from "../components/CheckBox.vue";
 import {
   GoodsFilled,
@@ -12,9 +11,15 @@ import {
 import { ref }                               from "vue";
 import { CartResponseInfo }                  from "../types/cart";
 import { getCartDetails, deleteCartProduct } from "../services/cart";
-import { ShopResponseInfo }  from "../types/shop";
-import { contentFormat }     from "../utils/util";
-import { ProductSimpleInfo } from "../types/product";
+import { ShopResponseInfo }                  from "../types/shop";
+import { contentFormat }                     from "../utils/util";
+import { ProductSimpleInfo }                 from "../types/product";
+import { useStore }                          from "../store";
+import { ElNotification }                    from "element-plus";
+import { OrderPostInfoCustomer }             from "../types/order";
+import { postOrder }                         from "../services/order/customer";
+
+const store = useStore()
 
 interface CartShopItem {
   shopInfo: ShopResponseInfo
@@ -128,7 +133,61 @@ const deleteProductInCart = (username: string, index: number) => {
   }
 }
 
-getCartDetails('testUser').then(res => {
+const buyProduct = () => {
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
+
+  let promiseArray: any[] = []
+  cartShopList.value.forEach(shop => {
+    let order: OrderPostInfoCustomer = {
+      customerName: store.state.username,
+      shopId: shop.shopInfo.id,
+      orderProducts: [],
+      remarks: '',
+      logisticsAddressID: 0,
+    }
+
+    shop.productList.forEach(item => {
+      if (item.isSelected) {
+        order.orderProducts.push({
+          id: item.product.productId,
+          remarks: '',
+          amount: item.amount,
+        })
+      }
+    })
+
+    promiseArray.push(postOrder(order))
+  })
+
+  Promise.all(promiseArray).then(res => {
+    ElNotification({
+      title: '下单成功',
+      type: 'success',
+    })
+
+    for (let i = 0; i < cartShopList.value.length; i++) {
+      if (cartShopList.value[i].isAllSelected) {
+        cartShopList.value.splice(i, 1)
+        i--
+      } else {
+        for (let j = 0; j < cartShopList.value[i].productList.length; j++) {
+          if (cartShopList.value[i].productList[j].isSelected) {
+            cartShopList.value[i].productList.splice(j, 1)
+            j--
+          }
+        }
+      }
+    }
+  })
+}
+
+getCartDetails(store.state.username).then(res => {
   cartDetail.value = res
 
   let tempItemList = res.cartItems.map((i, idx) => ({
@@ -270,7 +329,7 @@ getCartDetails('testUser').then(res => {
               </div>
             </el-col>
             <el-col :span="5" :offset="1" style="">
-              <el-button class="buy-button">立即结算</el-button>
+              <el-button class="buy-button" @click="buyProduct">立即结算</el-button>
             </el-col>
           </el-row>
         </div>

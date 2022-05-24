@@ -9,6 +9,11 @@ import { getShopInfo }        from "../shop";
 import { getUserInformation } from "../user/user";
 import { getProductDetails }  from "../product";
 
+// OD01-01 用户下单
+export const postOrder = async (order: OrderPostInfoCustomer) => {
+  return await request.post<OrderPostInfoCustomer>(`/orders/customer`, order)
+}
+
 // OD01-02 顾客查询单个订单
 export const getOrderSimpleInfoCustomer = async (orderId: string) => {
   return await request.get<OrderSimpleInfo>(`/orders/${orderId}/customer`)

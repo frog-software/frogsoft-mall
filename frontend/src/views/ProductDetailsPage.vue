@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref }               from "vue";
-import { CDN_URL }           from "../consts/urls";
-import { ProductDetails }    from "../types/product";
-import { Minus, Plus }       from '@element-plus/icons-vue'
-import { getProductDetails } from "../services/product";
-import { postCartProduct }   from "../services/cart";
-import { ElNotification }    from "element-plus";
-import { getDecimal }                      from "../utils/util";
+import { ref }                                  from "vue";
+import { CDN_URL }                              from "../consts/urls";
+import { ProductDetails }                       from "../types/product";
+import { Minus, Plus }                          from '@element-plus/icons-vue'
+import { getProductDetails }                    from "../services/product";
+import { postCartProduct }                      from "../services/cart";
+import { ElNotification }                       from "element-plus";
+import { getDecimal }                           from "../utils/util";
 import { CommentDetails, CommentPostInfo }      from "../types/comment";
 import { getCommentDetailsPaging, postComment } from "../services/comment";
+import { useStore }                             from "../store";
+import { postOrder }                            from "../services/order/customer";
+import { OrderPostInfoCustomer }                from "../types/order";
 
+const store = useStore()
 const props = defineProps<{
   id: string
 }>()
@@ -33,6 +37,14 @@ const switchImage = (idx: number) => {
 const addCartProductInGoodsDetail = () => {
   if (!productDetails.value) return
 
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
+
   postCartProduct('testUser', {
     productID: productDetails.value?.productId,
     amount: buyNum.value,
@@ -49,6 +61,14 @@ const addCartProductInGoodsDetail = () => {
 }
 
 const submitComment = () => {
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
+
   if (!currentComment.value.content) {
     ElNotification({
       title: '评论失败',
@@ -73,6 +93,35 @@ const submitComment = () => {
       currentComment.value.content = ''
     })
   }
+}
+
+const buyProduct = () => {
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
+
+  let order: OrderPostInfoCustomer = {
+    customerName: store.state.username,
+    shopId: productDetails.value?.shop.id || 0,
+    orderProducts: [{
+      id: productDetails.value?.productId || 0,
+      remarks: '',
+      amount: buyNum.value,
+    }],
+    remarks: '',
+    logisticsAddressID: 0,
+  }
+
+  postOrder(order).then(res => {
+    ElNotification({
+      title: '下单成功',
+      type: 'success',
+    })
+  })
 }
 
 // const testGoods = ref<ProductDetails>({
@@ -161,7 +210,7 @@ window.scrollTo(0, 0)
 
             <div>
               <el-button class="cart-button" @click="addCartProductInGoodsDetail">加入购物车</el-button>
-              <el-button class="buy-button">立即购买</el-button>
+              <el-button class="buy-button" @click="buyProduct">立即购买</el-button>
             </div>
           </div>
 
