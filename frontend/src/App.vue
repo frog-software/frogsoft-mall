@@ -1,22 +1,24 @@
 <script setup>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+
 </script>
 
 <template>
-  <el-container style="margin-left: -28px; margin-right: -28px; margin-top: -8px">
-    <el-header>
-      <Header/>
-    </el-header>
+  <div class="root">
+    <el-container class="container">
+      <el-header style="height: 100px">
+        <Header/>
+      </el-header>
 
-    <el-main>
-      <router-view/>
-    </el-main>
 
-    <el-footer>
-      <Footer/>
-    </el-footer>
-  </el-container>
+      <el-main>
+        <router-view/>
+
+        <Footer/>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <style>
@@ -26,6 +28,19 @@ import Footer from "./components/Footer.vue";
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /*margin-top: 60px;*/
 }
+
+.root {
+  width: calc(99vw + 2px);
+  margin-left: -8px;
+  background: #010101;
+}
+
+.container {
+  margin: -8px -16px -48px -8px;
+  width: 100%;
+  min-width: 1400px;
+}
+
+
 </style>
