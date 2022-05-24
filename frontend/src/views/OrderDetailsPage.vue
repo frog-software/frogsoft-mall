@@ -211,7 +211,7 @@ onMounted(() => {
               {{ currentOrderDetail?.logisticsAddress.detailAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="物流单号">
-              {{ currentOrderDetail?.logisticsNumber }}
+              {{ currentOrderDetail?.logisticsNumber || '暂未安排物流' }}
             </el-descriptions-item>
           </el-descriptions>
 

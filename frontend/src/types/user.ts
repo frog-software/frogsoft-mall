@@ -13,6 +13,7 @@ export interface UserResponseInfo {
     balance: number,
     purchaseHistory: ProductSimpleInfo[],
     shopName: string,
+    shopId: number
 }
 
 export interface UserModifyInfo {

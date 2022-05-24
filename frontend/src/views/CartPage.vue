@@ -187,36 +187,49 @@ const buyProduct = () => {
   })
 }
 
-getCartDetails(store.state.username).then(res => {
-  cartDetail.value = res
+// 获取购物车详细信息
+const getCartDetailsInCart = () => {
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
 
-  let tempItemList = res.cartItems.map((i, idx) => ({
-    ...i,
-    index: idx,
-    isSelected: false,
-  }))
+  getCartDetails(store.state.username).then(res => {
+    cartDetail.value = res
 
-  let shopList: number[] = []
-  tempItemList.forEach(item => {
-    if (shopList.findIndex(i => i === item.product.shop.id) === -1) {
-      cartShopList.value?.push({
-        shopInfo: item.product.shop,
-        productList: [item],
-        isAllSelected: false,
-      })
-      shopList.push(item.product.shop.id)
-    } else {
-      cartShopList.value?.forEach(shop => {
-        if (shop.shopInfo.shopName === item.product.shop.shopName) {
-          shop.productList.push(item)
-        }
-      })
-    }
+    let tempItemList = res.cartItems.map((i, idx) => ({
+      ...i,
+      index: idx,
+      isSelected: false,
+    }))
+
+    let shopList: number[] = []
+    tempItemList.forEach(item => {
+      if (shopList.findIndex(i => i === item.product.shop.id) === -1) {
+        cartShopList.value?.push({
+          shopInfo: item.product.shop,
+          productList: [item],
+          isAllSelected: false,
+        })
+        shopList.push(item.product.shop.id)
+      } else {
+        cartShopList.value?.forEach(shop => {
+          if (shop.shopInfo.shopName === item.product.shop.shopName) {
+            shop.productList.push(item)
+          }
+        })
+      }
+    })
+  }).catch(res => {
+    // TODO
+    console.log('获取失败')
   })
-}).catch(res => {
-  // TODO
-  console.log('获取失败')
-})
+}
+
+getCartDetailsInCart()
 </script>
 
 <template>

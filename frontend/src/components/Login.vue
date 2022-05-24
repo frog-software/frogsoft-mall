@@ -7,7 +7,7 @@ const store = useStore();
 const username = ref<string>("");
 const password = ref<string>("");
 
-function login() {
+function userLoginInHeader() {
   if (!username.value) ElMessage.warning("请输入用户名");
   else if (!password.value) ElMessage.warning("请输入密码");
   else store.dispatch("login", { username, password });
@@ -51,7 +51,7 @@ function login() {
           <el-button
             color="#c1ab85"
             style="color: white; margin-top: 36px; width: 100%"
-            @click="login"
+            @click="userLoginInHeader"
           >
             登录
           </el-button>
