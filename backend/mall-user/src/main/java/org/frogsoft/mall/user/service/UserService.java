@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.frogsoft.mall.common.exception.basic.badrequest.BadRequestException;
 import org.frogsoft.mall.common.exception.user.UserNotFoundException;
+import org.frogsoft.mall.common.exception.user.UserConflictException;
 import org.frogsoft.mall.common.model.customer.Customer;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.user.controller.request.RegisterRequest;
