@@ -1,6 +1,6 @@
 //+-------------------------------------------------------------------------
 //
-//  静态资源存储路径
+//  值得铭记的 URL 们
 //
 //  File:       urls.ts
 //
@@ -12,6 +12,11 @@
 
 const CDN_URL = '/static'
 
+const VITE_BACKEND_URL = import.meta.env.DEV
+  ? import.meta.env.VITE_BACKEND_URL as string
+  : 'VITE_BACKEND_URL_RUNTIME_REPLACEMENT';
+
 export {
-  CDN_URL
+  CDN_URL,
+  VITE_BACKEND_URL
 }

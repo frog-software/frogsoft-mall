@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios' //导入 axios 和钩子
 import { ElLoading, ElMessage } from 'element-plus' //导入ElLoading
+import { VITE_BACKEND_URL } from '../consts/urls'
 
 // 初始化loading
 
@@ -10,7 +11,7 @@ class Request {
     public static init() {
         // 创建axios实例
         this.axiosInstance = axios.create({
-            baseURL: 'http://127.0.0.1:4523/mock/760256/', //转接
+            baseURL: VITE_BACKEND_URL, //转接
             timeout: 6000
         })
         // 初始化拦截器
