@@ -1,36 +1,69 @@
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
-import { ref } from "vue";
-import { useStore } from "../store";
+import { ElMessage, ElNotification } from "element-plus";
+import { ref }                       from "vue";
+import { useStore }                  from "../store";
+import { UserRegisterPost } from "../types/user";
+import { login, register }  from "../services/user/user";
 
-const store = useStore();
+const store    = useStore();
 const username = ref<string>("");
 const password = ref<string>("");
+
+const registerDialogOnShow = ref<boolean>(false);
 
 function userLoginInHeader() {
   if (!username.value) ElMessage.warning("请输入用户名");
   else if (!password.value) ElMessage.warning("请输入密码");
-  else store.dispatch("login", { username, password });
+  else store.dispatch("login", {username, password});
+}
+
+const registerForm = ref<UserRegisterPost>({
+  username: '',
+  nickname: '',
+  password: '',
+  phone: '',
+  code: '',
+  avatar: '',
+})
+
+const userRegister = () => {
+  if (!registerForm.value.username || !registerForm.value.nickname || !registerForm.value.password
+      || !registerForm.value.phone || !registerForm.value.code || !registerForm.value.avatar) {
+    ElNotification({
+      title: '注册失败',
+      message: '注册资料填写不完整',
+      type: 'error',
+    })
+    return
+  }
+
+  register(registerForm.value).then(res => {
+    ElNotification({
+      title: '注册成功',
+      type: 'success',
+    })
+
+    registerDialogOnShow.value = false
+
+    username.value = registerForm.value.username
+    password.value = registerForm.value.password
+    userLoginInHeader()
+  })
 }
 </script>
 
 <template>
   <el-tooltip effect="customized" placement="bottom">
-      <el-avatar
-          :size="56"
-          style="
-        /*box-shadow: 0 0 64px #f6eacc;*/
-        border: none;
-        background-color: transparent;
-      "
-          effect="customized"
-          :src="store.state.info?.avatar || '/avataaars.svg'"
-      />
-
+    <el-avatar
+        :size="56"
+        style="border: none; background-color: transparent;"
+        effect="customized"
+        :src="store.state.info?.avatar || '/avataaars.svg'"
+    />
 
     <template #content>
       <div class="loginRoot">
-        <el-row v-if="store.getters.hasLogin" justify="center">
+        <el-row v-if="store.state.username" justify="center">
           <el-button color="#c1ab85" @click="store.commit('logout')" style="color: white">
             退出登录
           </el-button>
@@ -38,27 +71,67 @@ function userLoginInHeader() {
         <div v-else>
           <div class="loginInputData">
             <input type="text" required v-model="username" title=""/>
-            <div class="loginUnderLine" />
+            <div class="loginUnderLine"/>
             <label>你的账户</label>
           </div>
 
           <div class="loginInputData" style="margin-top: 36px">
             <input type="password" required v-model="password" title=""/>
-            <div class="loginUnderLine" />
+            <div class="loginUnderLine"/>
             <label>你的密码</label>
           </div>
 
-          <el-button
-            color="#c1ab85"
-            style="color: white; margin-top: 36px; width: 100%"
-            @click="userLoginInHeader"
-          >
-            登录
+          <el-button color="#c1ab85" class="login-button" @click="userLoginInHeader">登录</el-button>
+          <el-button color="transparent" class="register-button" @click="() => registerDialogOnShow = true">
+            注册
           </el-button>
+
+
         </div>
       </div>
     </template>
   </el-tooltip>
+
+  <el-dialog
+      v-model="registerDialogOnShow"
+      title="用户注册"
+      width="600px"
+  >
+    <div>
+      <el-form :model="registerForm" label-width="auto" label-position="right">
+        <el-form-item label="用户名">
+          <el-input v-model="registerForm.username" style="width: 240px"/>
+        </el-form-item>
+        <el-form-item label="用户昵称">
+          <el-input v-model="registerForm.nickname" style="width: 240px"/>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="registerForm.password" style="width: 240px"/>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="registerForm.phone" style="width: 240px"/>
+          <el-button style="margin-left: 16px">发送验证码</el-button>
+        </el-form-item>
+        <el-form-item label="验证码">
+          <el-input v-model="registerForm.code" style="width: 240px"/>
+        </el-form-item>
+        <el-form-item label="头像">
+          <el-input v-model="registerForm.avatar" style="width: 480px"/>
+        </el-form-item>
+        <el-image :src="registerForm.avatar" style="width: 100px; height: 100px"
+                  :preview-src-list="[registerForm.avatar]"
+        />
+        <el-image :src="registerForm.avatar" style="width: 60px; height: 60px; margin-left: 20px"/>
+        <el-image :src="registerForm.avatar" style="width: 30px; height: 30px; margin-left: 20px"/>
+      </el-form>
+
+      <div style="text-align: left">
+        <el-button type="primary" style="width: 120px; margin-left: 72px; margin-top: 24px" @click="userRegister">注册
+        </el-button>
+      </div>
+    </div>
+
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -136,6 +209,24 @@ input:valid ~ label {
 .loginRoot .loginInputData input:focus ~ .loginUnderLine,
 .loginRoot .loginInputData input:valid ~ .loginUnderLine {
   transform: scaleX(1);
+}
+
+.login-button {
+  color: white;
+  margin: 36px 0 0;
+  width: 50%;
+  border: 1px solid #f6eacc;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+
+.register-button {
+  color: #f6eacc;
+  margin: 36px 0 0;
+  width: 50%;
+  border: 1px solid #f6eacc;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
 }
 </style>
 
