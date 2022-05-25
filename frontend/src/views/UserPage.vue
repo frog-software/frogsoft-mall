@@ -15,8 +15,11 @@ import {
   UserFilled,
   LocationFilled,
   Bottom,
-}                                           from "@element-plus/icons-vue";
+}                         from "@element-plus/icons-vue";
+import { useStore }          from "../store";
+import { ElNotification } from "element-plus";
 
+const store = useStore()
 const userInfo = ref<UserResponseInfo>()
 const onEdit   = ref<boolean>(false)
 
@@ -50,16 +53,27 @@ const creditCardFormat = (n: string) => {
   return "*".repeat(n.length - 4).concat(n.substring(n.length - 4))
 }
 
-getUserInformation('test').then(res => {
-  userInfo.value = res
-  console.log(res)
+const getUserInformationInUser = () => {
+  if (!store.getters.hasLogin) {
+    ElNotification({
+      title: '请先登录',
+      type: 'error',
+    })
+    return
+  }
 
-  form.value = JSON.parse(JSON.stringify(userInfo.value))
+  getUserInformation(store.state.username).then(res => {
+    userInfo.value = res
 
-  delete form.value.balance
-  delete form.value.purchaseHistory
-  delete form.value.shopName
-})
+    form.value = JSON.parse(JSON.stringify(userInfo.value))
+
+    delete form.value.balance
+    delete form.value.purchaseHistory
+    delete form.value.shopName
+  })
+}
+
+getUserInformationInUser()
 
 watch(onEdit, (newVal) => {
   let edit   = document.getElementById('edit-button-1')
@@ -82,9 +96,10 @@ watch(onEdit, (newVal) => {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: center; margin-bottom: 36px">
+  <div style="display: flex; justify-content: center; margin-bottom: 36px; min-height: calc(100vh - 288px)">
     <div style="width: 1000px; font-family: 微軟正黑體; color: #222222">
-      <p style="text-align: left; color: #ffffff; font-size: 36px; margin-top: 0">{{ userInfo?.nickname }}，你好</p>
+      <p style="text-align: left; color: #ffffff; font-size: 36px; margin-top: 0" v-if="userInfo?.nickname">{{ userInfo?.nickname }}，你好</p>
+      <p style="text-align: left; color: #ffffff; font-size: 36px; margin-top: 0" v-else>你好，你还没有登录</p>
 
       <el-row
           style="background: linear-gradient(to right, #f6eacc, #c1ab85); width: 100%; border-radius: 16px; height: 200px">
@@ -94,7 +109,7 @@ watch(onEdit, (newVal) => {
         </el-col>
         <el-col :span="4" style="text-align: left; color: #010101; padding-top: 56px">
           <div>
-            <p style="font-size: 20px; display: inline-block; margin: 0 8px">{{ userInfo?.nickname }}</p>
+            <p style="font-size: 20px; display: inline-block; margin: 0 8px">{{ userInfo?.nickname || '未登录' }}</p>
             <el-icon v-if="userInfo?.gender === 0" style="color: #1e90ff">
               <male/>
             </el-icon>
@@ -144,7 +159,7 @@ watch(onEdit, (newVal) => {
         </el-col>
       </el-row>
 
-      <div style="margin-top: 48px">
+      <div style="margin-top: 48px" v-if="store.state.username">
         <div style="text-align: left; margin-bottom: 16px">
           <span
               style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">我的订单</span>
@@ -213,7 +228,7 @@ watch(onEdit, (newVal) => {
         </div>
       </div>
 
-      <div style="margin-top: 48px">
+      <div style="margin-top: 48px" v-if="store.state.username">
         <p style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">个人信息</p>
         <div
             style="width: 100%; border-radius: 16px; height: auto;

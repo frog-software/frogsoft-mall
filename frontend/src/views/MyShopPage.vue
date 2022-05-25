@@ -2,17 +2,21 @@
 
 import { ref, watch }                                         from "vue";
 import { addShop, getShopInfo, updateShopInfo }               from "../services/shop";
-import { ShopPostInfo, ShopResponseInfo }                     from "../types/shop";
+import { ShopPostInfo, ShopResponseInfo }                                    from "../types/shop";
 import { ElNotification }                                                    from "element-plus";
 import { addProduct, deleteProduct, getProductDetailsPaging, updateProduct } from "../services/product";
 import { ProductDetails, ProductPostInfo }                                   from "../types/product";
-import { getDecimal }                                         from "../utils/util";
+import { getDecimal }                                                        from "../utils/util";
 import {
   Delete,
   More,
   InfoFilled,
   Close,
-}                                                             from "@element-plus/icons-vue";
+}                                                                            from "@element-plus/icons-vue";
+import { useStore }                                                          from "../store";
+import { getUserInformation }                                                from "../services/user/user";
+
+const store = useStore()
 
 const shopInfoForm = ref<ShopPostInfo>({
   shopName: '',
@@ -77,6 +81,16 @@ const postShopInfo = () => {
 }
 
 const registerShop = () => {
+  if (!store.getters.hasLogin) {
+    if (!store.getters.hasLogin) {
+      ElNotification({
+        title: '请先登录',
+        type: 'error',
+      })
+      return
+    }
+  }
+
   if (!shopDetail.value) {
     if (!shopInfoForm.value.shopName || !shopInfoForm.value.shopImage) {
       ElNotification({
@@ -108,6 +122,16 @@ const currentPage = ref<number>(1)
 const pageSize    = ref<number>(16)
 
 const handleCurrentChange = () => {
+  if (!store.getters.hasLogin) {
+    if (!store.getters.hasLogin) {
+      ElNotification({
+        title: '请先登录',
+        type: 'error',
+      })
+      return
+    }
+  }
+
   getProductDetailsPaging({
     shop_id: shopDetail.value?.id,
     page: currentPage.value,
@@ -154,6 +178,16 @@ const deleteProductImage = (imageList: string[], idx: number) => {
 
 // TODO: 表单校验需优化（为空、格式要求）
 const submitProduct = () => {
+  if (!store.getters.hasLogin) {
+    if (!store.getters.hasLogin) {
+      ElNotification({
+        title: '请先登录',
+        type: 'error',
+      })
+      return
+    }
+  }
+
   for (let i = 0; i < productForm.value.imageList.length; i++) {
     if (!productForm.value.imageList[i]) {
       ElNotification({
@@ -244,23 +278,39 @@ const editProductDetail = () => {
   }
 }
 
-getShopInfo(123).then(res => {
-  shopDetail.value = res
+const getShopInfoInMyShop = () => {
+  if (!store.getters.hasLogin) {
+    if (!store.getters.hasLogin) {
+      ElNotification({
+        title: '请先登录',
+        type: 'error',
+      })
+      return
+    }
+  }
 
-  shopInfoForm.value.shopName  = res.shopName
-  shopInfoForm.value.shopImage = res.shopImage
+  getUserInformation(store.state.username).then(res => {
+    getShopInfo(res.shopId).then(resInner => {
+      shopDetail.value = resInner
 
-  getProductDetailsPaging({
-    shop_id: shopDetail.value?.id,
-    page: currentPage.value,
-    size: pageSize.value,
-  }).then(resInner => {
-    productList.value = resInner
-    console.log(resInner)
+      shopInfoForm.value.shopName  = resInner.shopName
+      shopInfoForm.value.shopImage = resInner.shopImage
+
+      getProductDetailsPaging({
+        shop_id: shopDetail.value?.id,
+        page: currentPage.value,
+        size: pageSize.value,
+      }).then(resInnerInner => {
+        productList.value = resInnerInner
+        console.log(resInnerInner)
+      })
+    }).catch(resInner => {
+      console.log(resInner)
+    })
   })
-}).catch(res => {
-  console.log(res)
-})
+}
+
+getShopInfoInMyShop()
 
 watch(onEdit, (newVal: boolean) => {
   let card         = document.getElementById('shopInfoCard')
@@ -300,7 +350,7 @@ watch(onEditProductDetail, (newVal: boolean) => {
 </script>
 
 <template>
-  <div style="min-height: calc(100vh - 252px); width: 100%">
+  <div style="min-height: calc(100vh - 252px)">
     <div style="display: flex; justify-content: center">
       <div style="width: 1000px">
         <div>
@@ -385,7 +435,7 @@ watch(onEditProductDetail, (newVal: boolean) => {
           </div>
         </div>
 
-        <div style="margin-top: 40px">
+        <div style="margin-top: 40px" v-if="shopDetail?.id">
           <p style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">添加商品</p>
           <div style="width: 100%; background: #ffffff; border-radius: 12px; padding: 24px 0">
             <el-row>
@@ -448,7 +498,7 @@ watch(onEditProductDetail, (newVal: boolean) => {
           </div>
         </div>
 
-        <div style="width: 100%; height: 100px; margin-top: 42px">
+        <div style="width: 100%; height: 100px; margin-top: 42px" v-if="shopDetail?.id">
           <p style="text-align: left; color: #ffffff; margin-left: 16px; font-size: 24px; font-weight: bold">商品信息</p>
           <div style="width: 100%; background: #ffffff; border-radius: 12px">
             <el-row v-if="productList.length">
