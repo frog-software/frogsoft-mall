@@ -14,7 +14,7 @@ const registerDialogOnShow = ref<boolean>(false);
 function userLoginInHeader() {
   if (!username.value) ElMessage.warning("请输入用户名");
   else if (!password.value) ElMessage.warning("请输入密码");
-  else store.dispatch("login", {username, password});
+  else store.dispatch("login", { username: username.value, password: password.value });
 }
 
 const registerForm = ref<UserRegisterPost>({
