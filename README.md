@@ -98,7 +98,7 @@
 
 根据“UI 界面设计简约”的原则，我们也对前端页面风格进行初步约定，并制定口号：“知你所爱，寻你所需”，“我们致力于打造一款现代电商，犹如提着油灯在黑暗中闪闪发光前行的探索者”，整体风格呈现为黑金色调。展示效果如下：
 
-<video src="images/frontend-demo-video-compressed.mp4"/>
+https://user-images.githubusercontent.com/20886330/170355067-6410530f-6d0c-4f1e-9645-ed21def33d10.mp4
 
 > 如果视频无法播放，请检查本机能否正确解码 HEVC 编码。
 
