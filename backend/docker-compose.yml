@@ -33,7 +33,7 @@ services:
 
   # openGauss 数据库
   opengauss:
-    image: ustc-edu-cn.mirror.aliyuncs.com/enmotech/opengauss:2.1.0
+    image: enmotech/opengauss:3.0.0
     restart: unless-stopped
     privileged: true
     user: 0:0
@@ -45,6 +45,7 @@ services:
       - "5432:5432"
     volumes:
       - ./opengauss/db_data:/var/lib/opengauss
+      - ./opengauss/db_dump:/docker-entrypoint-initdb.d/
 
   # 授权认证模块
   mall-auth-service:

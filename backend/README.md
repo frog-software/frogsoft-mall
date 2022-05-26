@@ -69,6 +69,14 @@ $ echo "$GATEWAY_URL"
 
 接下来你可以使用这个 URL 来访问后端服务。
 
+> 你可能也需要导入数据库初始数据，请执行以下操作（如果你自定义了数据库用户名密码，请自行替换）：
+> ```bash
+> docker exec -it backend-opengauss-1 /bin/bash
+> su omm
+> # openGauss 的 /docker-entrypoint-initdb.d 脚本执行顺序存在问题，所以我们不得不这么做
+> /usr/local/opengauss/bin/gsql -v ON_ERROR_STOP=1 --username gaussdb --password Secretpassword@123 --dbname postgres -f /docker-entrypoint-initdb.d/gs.sql
+> ```
+
 ## Docker Compose
 
 > 不建议生产环境使用
@@ -92,6 +100,14 @@ $ echo "$GATEWAY_URL"
 > 第一次启动的话，建议再运行 `docker compose logs -f`  来查看日志。
 > 
 > 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
+> 
+> 你可能也需要导入数据库初始数据，请执行以下操作（如果你自定义了数据库用户名密码，请自行替换）：
+> ```bash
+> docker exec -it backend-opengauss-1 /bin/bash
+> su omm
+> # openGauss 的 /docker-entrypoint-initdb.d 脚本执行顺序存在问题，所以我们不得不这么做
+> /usr/local/opengauss/bin/gsql -v ON_ERROR_STOP=1 --username gaussdb --password Secretpassword@123 --dbname postgres -f /docker-entrypoint-initdb.d/gs.sql
+> ```
 
 服务网关监听于 `8080` 端口，你可以参照 Apifox 的文档发送请求测试。
 
@@ -127,9 +143,17 @@ $ echo "$GATEWAY_URL"
 
 在 `backend` 目录下运行命令 `docker-compose up -d opengauss` 即可启动并初始化数据库。
 
-> 第一次启动的话，建议再运行 `docker-compose logs -f`  来查看日志。
->
+> 第一次启动的话，建议再运行 `docker compose logs -f`  来查看日志。
+> 
 > 若几分钟后日志输出停止，而且没看到报错退出，那说明启动成功，按 `ctrl+c` 退出日志追踪。
+> 
+> 你可能也需要导入数据库初始数据，请执行以下操作（如果你自定义了数据库用户名密码，请自行替换）：
+> ```bash
+> docker exec -it backend-opengauss-1 /bin/bash
+> su omm
+> # openGauss 的 /docker-entrypoint-initdb.d 脚本执行顺序存在问题，所以我们不得不这么做
+> /usr/local/opengauss/bin/gsql -v ON_ERROR_STOP=1 --username gaussdb --password Secretpassword@123 --dbname postgres -f /docker-entrypoint-initdb.d/gs.sql
+> ```
 
 ### 运行注册/配置中心
 
