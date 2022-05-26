@@ -102,6 +102,10 @@ https://user-images.githubusercontent.com/20886330/170355067-6410530f-6d0c-4f1e-
 
 > 如果视频无法播放，请检查本机能否正确解码 HEVC 编码。
 
+## 运行指南
+
+请查阅 `backend` 或 `frontend` 目录中的 README
+
 ## 成员 Team members
 
 [Charlie Chiang](https://github.com/charlie0129)
