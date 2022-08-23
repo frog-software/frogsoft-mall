@@ -344,7 +344,9 @@ export default {
 }
 
 .close-drawer-button {
-  margin: 12px 4px 0 0;
+  position: absolute;
+  top: 18px;
+  right: 18px;
   width: 48px;
   height: 48px;
   font-size: 24px;
