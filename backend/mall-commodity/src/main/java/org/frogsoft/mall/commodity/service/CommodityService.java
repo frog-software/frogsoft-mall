@@ -17,6 +17,7 @@ import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.common.model.user.UserDetail;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +30,7 @@ public class CommodityService {
   private final ShopClient shopClient;
 
   // 修改商品信息
+  @Transactional
   public ProductDto editProduct(Long id, AddProductRequset addProductRequset, UserDetail authenticatedUser){
     Product currProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Product not Found"));
@@ -46,6 +48,7 @@ public class CommodityService {
   }
 
   // 新建商品
+  @Transactional
   public ProductDto saveProduct(AddProductRequset addProductRequset, UserDetail authenticatedUser){
     // TODO：验证用户的店铺与商品信息上的店铺是否一致
     Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
