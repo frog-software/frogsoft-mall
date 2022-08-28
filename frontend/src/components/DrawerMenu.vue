@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Component, ref, markRaw } from "vue";
+import { Component, ref, markRaw, nextTick } from "vue";
 import {
   ShoppingCart,
   User,
   Service,
   Close,
   Promotion,
-}                                  from '@element-plus/icons-vue'
+}                                            from '@element-plus/icons-vue'
 import { getRobotResponse }        from "../services/chatRobot";
 import { ElNotification }          from "element-plus";
 
@@ -107,6 +107,11 @@ const sendMessage = () => {
       content: res.chatForNow,
     })
   })
+
+  nextTick(() => {
+    let elem = document.getElementById('messageBox')
+    elem.scrollTop = elem.scrollHeight
+  })
 }
 </script>
 
@@ -133,7 +138,7 @@ const sendMessage = () => {
         <p style="color: #222222; text-align: center; font-size: 20px; font-weight: bold">聊天</p>
         <el-divider/>
 
-        <div style="height: 60%; overflow-y: scroll; overflow-x: hidden">
+        <div style="height: 60%; overflow-y: scroll; overflow-x: hidden; " id="messageBox">
           <div v-for="(i) in messageDisplayList" :class="i.role === 0 ? 'left-message' : 'right-message'">
             <div>
               <p style="width: 100%; margin: 0">{{ i.content }}</p>
