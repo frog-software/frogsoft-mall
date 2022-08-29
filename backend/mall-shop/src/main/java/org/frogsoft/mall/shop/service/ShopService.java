@@ -15,7 +15,6 @@ import org.frogsoft.mall.shop.dto.ShopDtoMapper;
 import org.frogsoft.mall.shop.repository.ShopRepository;
 import org.frogsoft.mall.shop.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -42,7 +41,6 @@ public class ShopService {
   }
 
   // 新建一个商店
-  @Transactional
   public ShopDto saveShop(AddShopRequset addShopRequset, UserDetail authenticatedUser){
 
     User owner = userRepository.findByUsername(authenticatedUser.getUsername())
@@ -59,7 +57,6 @@ public class ShopService {
   }
 
   // 修改商店信息
-  @Transactional
   public ShopDto editShop(Long id, AddShopRequset addShopRequset, UserDetail authenticatedUser){
     Shop currShop = shopRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Shop not Found"));
@@ -73,7 +70,6 @@ public class ShopService {
   }
 
   // 删除商店
-  @Transactional
   public void deleteShop(Long id, UserDetail authenticatedUser){
     Shop currShop = shopRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Shop not Found"));

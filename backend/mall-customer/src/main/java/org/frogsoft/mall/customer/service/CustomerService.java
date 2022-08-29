@@ -24,7 +24,6 @@ import org.frogsoft.mall.customer.dto.CustomerDtoMapper;
 import org.frogsoft.mall.customer.repository.*;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -64,7 +63,6 @@ public class CustomerService {
 
     /*提供给本模块Controller的服务*/
     // 示例：新建购物车项目
-    @Transactional
     public CartDto saveNewCartItem(AddCartItemRequset addCartItemRequset, String username){
 
         // 通过用户名查找User
@@ -96,7 +94,6 @@ public class CustomerService {
     }
 
     //删除购物车中商品
-    @Transactional
     public void deleteCartItem(AddCartItemRequset addCartItemRequset, String username,int index){
         // 通过用户名查找User
         User user = userRepository.findByUsername(username)
@@ -121,7 +118,6 @@ public class CustomerService {
     }
 
     //删除购物车
-    @Transactional
     public void deleteCart(String username, UserDetail authenticateUser){
         CartItem currCart = cartItemRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("Cart not Found"));
@@ -132,7 +128,6 @@ public class CustomerService {
     }
 
     //修改购物车中商品
-    @Transactional
     public CartDto modifyCart(AddCartItemRequset addCartItemRequset, String username,int index){
         // 通过用户名查找User
         User user = userRepository.findByUsername(username)

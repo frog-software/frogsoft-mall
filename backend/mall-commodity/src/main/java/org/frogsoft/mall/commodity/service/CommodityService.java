@@ -16,12 +16,7 @@ import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.common.model.user.UserDetail;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +29,6 @@ public class CommodityService {
   private final ShopClient shopClient;
 
   // 修改商品信息
-  @Transactional
   public ProductDto editProduct(Long id, AddProductRequset addProductRequset, UserDetail authenticatedUser){
     Product currProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Product not Found"));
@@ -52,7 +46,6 @@ public class CommodityService {
   }
 
   // 新建商品
-  @Transactional
   public ProductDto saveProduct(AddProductRequset addProductRequset, UserDetail authenticatedUser){
     // TODO：验证用户的店铺与商品信息上的店铺是否一致
     Shop productInShop = shopClient.getShop(addProductRequset.getShopId());
@@ -114,19 +107,10 @@ public class CommodityService {
         .collect(Collectors.toCollection(ArrayList::new));
   }
 
-  // 使用复合条件查找商品（分页返回）
   public ProductDto getSingleProduct(Long id) {
     return productDtoMapper.toProductDto(productRepository
         .findById(id)
         .orElseThrow(() -> new NotFoundException("Product not found.")));
-  }
-
-  public ArrayList<ProductDto> getAllProducts(Specification<Product> spec, Pageable pageable) {
-    return productRepository
-        .findAll(spec,pageable)
-        .stream()
-        .map(productDtoMapper::toProductDto)
-        .collect(Collectors.toCollection(ArrayList::new));
   }
 
   /*带有“client”的，为提供给后端其他模块的服务调用，直接返回相应model类型*/
@@ -134,6 +118,5 @@ public class CommodityService {
     Optional<Product> res = productRepository.findById(product_id);
     return res.orElseThrow(() -> new NotFoundException("Product not found."));
   }
-
 
 }
