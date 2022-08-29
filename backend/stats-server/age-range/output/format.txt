@@ -1,0 +1,1 @@
+gender(0=female, 1=male, 2=unknown), age_range(1=[0,18), 2=[18,24], 3=[25,29], 4=[30,34], 5=[35,39], 6=[40,49], 7=[50,+∞), 0||null=unknown), count
