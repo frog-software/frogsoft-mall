@@ -5,20 +5,27 @@ import { router } from '../router'
 interface RouterLinkItem {
   content: string
   pathName: string
+  callBack: Function
 }
 
 const routerLinkList = ref<RouterLinkItem[]>([
   {
     content: '首页',
     pathName: 'ShopPage',
+    callBack: () => {
+      let data = sessionStorage.getItem('TopSwiperBlurLoading')
+      if (!data) sessionStorage.setItem('TopSwiperBlurLoading', 'false')
+    },
   },
   {
     content: '我的商店',
     pathName: 'MyShopPage',
+    callBack: () => {},
   },
   {
     content: '关于我们',
-    pathName: 'AboutPage'
+    pathName: 'AboutPage',
+    callBack: () => {},
   },
 ])
 
@@ -34,6 +41,7 @@ const switchTab = (index: number) => {
     (document.getElementById('HomePage') as HTMLInputElement).checked = true
   } else {
     (document.getElementById('tab-' + index) as HTMLInputElement).checked = true
+    routerLinkList.value[index].callBack()
   }
 }
 

@@ -187,7 +187,7 @@ getCategoryList()
         <div v-if="(idx % 2) === 0" style="height: 100%; overflow: hidden">
           <el-row :id="'popular-shop-' + idx" style="overflow-y: auto; padding-top: 60px" name="popular-shop">
             <el-col :span="6" :offset="4" style="display: flex; flex-direction: column; justify-content: center">
-              <el-image :src="shop.image" style="border-radius: 12px"/>
+              <el-image :src="shop.image" style="border-radius: 12px" lazy />
             </el-col>
 
             <el-col :span="9" :offset="1">
