@@ -11,8 +11,8 @@ import { getRobotResponse }        from "../services/chatRobot";
 import { ElNotification }          from "element-plus";
 
 const openDrawer = () => {
-  let overlay = document.getElementById('overlay')
-  let drawer  = document.getElementById('drawer')
+  let overlay = document.getElementById('robot-overlay')
+  let drawer  = document.getElementById('robot-drawer')
 
   if (!overlay || !drawer) return
 
@@ -22,8 +22,8 @@ const openDrawer = () => {
 }
 
 const closeDrawer = () => {
-  let overlay = document.getElementById('overlay')
-  let drawer  = document.getElementById('drawer')
+  let overlay = document.getElementById('robot-overlay')
+  let drawer  = document.getElementById('robot-drawer')
 
   if (!overlay || !drawer) return
 
@@ -132,8 +132,8 @@ const sendMessage = () => {
   </div>
 
   <el-affix style="position: absolute; left: -12px; top: 0">
-    <div class="overlay" id="overlay">
-      <div class="drawer" id="drawer">
+    <div class="robot-overlay" id="robot-overlay">
+      <div class="robot-drawer" id="robot-drawer">
         <el-button :icon="Close" @click="closeDrawer" class="close-drawer-button" circle size="large"/>
         <p style="color: #222222; text-align: center; font-size: 20px; font-weight: bold">聊天</p>
         <el-divider/>
@@ -303,7 +303,7 @@ export default {
   color: white;
 }
 
-.overlay {
+.robot-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -316,7 +316,7 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 
-.drawer {
+.robot-drawer {
   position: absolute;
   top: 10vh;
   right: 0;
