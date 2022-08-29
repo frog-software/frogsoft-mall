@@ -20,6 +20,7 @@ import org.frogsoft.mall.common.model.product.Product;
 import org.frogsoft.mall.common.model.user.User;
 import org.frogsoft.mall.common.model.user.UserDetail;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +33,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     // 新建评论
+    @Transactional
     public CommentDto saveComment(Long product_id, AddCommentRequest addCommentRequest, UserDetail authenticatedUser){
         // 获得评论对应的商品
         Product targetProduct = productRepository.findById(product_id)
@@ -81,6 +83,7 @@ public class CommentService {
     }
 
     // 通过商品中的外键列表索引index修改评论
+    @Transactional
     public CommentDto editSingleCommentOfProduct(Long product_id, int index, AddCommentRequest addCommentRequest){
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));
@@ -100,6 +103,7 @@ public class CommentService {
     }
 
     // 通过商品中的外键列表索引index删除评论
+    @Transactional
     public void deleteSingleCommentOfProduct(Long product_id, int index){
         Product targetProduct = productRepository.findById(product_id)
             .orElseThrow(() -> new NotFoundException("product not found."));

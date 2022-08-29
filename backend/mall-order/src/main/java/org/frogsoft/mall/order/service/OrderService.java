@@ -36,6 +36,7 @@ import org.frogsoft.mall.order.repository.OrderItemRepository;
 import org.frogsoft.mall.order.repository.OrderRepository;
 import org.frogsoft.mall.order.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -63,6 +64,7 @@ public class OrderService {
     /*提供给本模块Controller的服务*/
 
     // 顾客提交订单（无支付信息、物流单号信息）
+    @Transactional
     public OrderDto saveOrder(AddOrderRequest addOrderRequest){
 
         // 初始化订单买家和地址
@@ -110,6 +112,7 @@ public class OrderService {
     }
 
     // 顾客修改订单（仍使用AddOrderRequest，但仅允许修改地址、订单备注）
+    @Transactional
     public OrderDto editOrderCustomer(Long id, AddOrderRequest addOrderRequest){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
@@ -127,6 +130,7 @@ public class OrderService {
     }
 
     // 商家修改订单（仍使用AddOrderRequest，仅允许修改商品信息）
+    @Transactional
     public OrderDto editOrderSeller(Long id, EditOrderRequestSeller editOrderRequestSeller, UserDetail authenticatedUser){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
@@ -192,6 +196,7 @@ public class OrderService {
     }
 
     // 顾客支付订单（在支付成功后，上传支付信息）
+    @Transactional
     public OrderDto editOrderPaymentCustomer(Long id, OrderPayingRequest orderPayingRequest){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
@@ -222,6 +227,7 @@ public class OrderService {
     }
 
     // 商家修改订单（上传物流单号）
+    @Transactional
     public OrderDto editOrderLogisticsSeller(Long id, OrderLogInfoRequest orderLogInfoRequest){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
@@ -238,6 +244,7 @@ public class OrderService {
     }
 
     // 顾客确认收货
+    @Transactional
     public OrderDto editOrderReceivingCustomer(Long id){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
@@ -252,6 +259,7 @@ public class OrderService {
     }
 
     // 商家取消订单：将订单标记为已取消，而不会实际删除订单
+    @Transactional
     public OrderDto closeOrderSeller(Long id, UserDetail authenticatedUser){
 
         Order currOrder = orderRepository.findById(id)
@@ -272,6 +280,7 @@ public class OrderService {
 
 
     // 顾客删除订单：对已下单但未付款的订单、以及已收货，不存在售后问题的订单，允许删除订单
+    @Transactional
     public void deleteOrderCustomer(Long id, UserDetail authenticatedUser){
         Order currOrder = orderRepository.findById(id)
             .orElseThrow(()-> new NotFoundException("Order not found."));
