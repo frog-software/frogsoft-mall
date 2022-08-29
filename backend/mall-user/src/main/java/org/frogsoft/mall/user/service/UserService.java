@@ -21,6 +21,7 @@ import org.frogsoft.mall.user.repository.ShopRepository;
 import org.frogsoft.mall.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -60,6 +61,8 @@ public class UserService {
     return userDtoMapper.toUserDto(user, customer, shop);
   }
 
+  // 使用事务
+  @Transactional
   public UserDto registerUser(RegisterRequest registerRequest) {
     // 检查空输入
     if (registerRequest.getUsername().isEmpty()
