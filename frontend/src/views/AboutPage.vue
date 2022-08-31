@@ -3,8 +3,8 @@
 <template>
   <div style="min-height: calc(100vh - 252px)">
     <el-row justify="center">
-      <el-col :span="20">
-        <div style="color: white; text-align: center">
+      <el-col :span="20" :offset="2">
+        <div style="color: white; text-align: left">
           <h1 id="蛙软商城-frogsoft-mall">蛙软商城 Frogsoft Mall</h1>
           <p>
             网上购物系统（指定 openGauss
