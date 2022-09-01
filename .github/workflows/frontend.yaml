@@ -1,4 +1,4 @@
-name: CI to Docker Hub
+name: CI to Docker Hub (Frontend)
 on:
   workflow_dispatch:
 jobs:

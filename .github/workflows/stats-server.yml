@@ -1,4 +1,4 @@
-name: CI to Docker Hub
+name: Build stat-server
 on:
   # only run manually
   workflow_dispatch:
