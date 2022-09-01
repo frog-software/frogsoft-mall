@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stats-server-deployment
+  namespace: frogsoft-mall
+  labels:
+    app: stats-server
+spec:
+  selector:
+    matchLabels:
+      app: stats-server
+  template:
+    metadata:
+      labels:
+        app: stats-server
+    spec:
+      containers:
+        - name: stats-server
+          imagePullPolicy: IfNotPresent
+          image: frogsoftware/mall-stats-server:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stats-server-service
+  namespace: frogsoft-mall
+  labels:
+    app: stats-server
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: stats-server
+  type: NodePort
