@@ -114,13 +114,14 @@ public class CommodityService {
         .collect(Collectors.toCollection(ArrayList::new));
   }
 
-  // 使用复合条件查找商品（分页返回）
+  // 查找一个商品
   public ProductDto getSingleProduct(Long id) {
     return productDtoMapper.toProductDto(productRepository
         .findById(id)
         .orElseThrow(() -> new NotFoundException("Product not found.")));
   }
 
+  // 使用复合条件查找商品（分页返回）
   public ArrayList<ProductDto> getAllProducts(Specification<Product> spec, Pageable pageable) {
     return productRepository
         .findAll(spec,pageable)
