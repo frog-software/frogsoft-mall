@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { CDN_URL } from "../consts/urls"
+import { onMounted, ref } from "vue";
+import { CDN_URL }        from "../consts/urls"
 
 interface TopSwiperItem {
   title: string,
@@ -49,11 +49,21 @@ const changeBanner = (idx: number) => {
 }
 
 startAutoPlay()
+
+onMounted(() => {
+  let data = sessionStorage.getItem('TopSwiperBlurLoading')
+
+  if (data == 'false') {
+    let elem = document.getElementsByClassName('banner')[0]
+    elem.classList.add('banner-blur-show')
+    sessionStorage.setItem('TopSwiperBlurLoading', 'true')
+  }
+})
 </script>
 
 <template>
   <div class="container">
-    <el-image class="banner" :src="activeImage" fit="cover"/>
+    <el-image class="banner" :src="activeImage" fit="cover" lazy/>
     <div class="title-box">
       <div :class="['title', idx === activeIndex ? 'active' : '']" v-for="(i, idx) in topSwiper" @mouseover="changeBanner(idx)">
         {{ i.title }}
@@ -104,6 +114,27 @@ export default {
   max-width: 1920px;
   background-size: cover;
   background-position: center;
+}
+
+.banner-blur-show {
+  filter: blur(20px);
+  animation: blur-show 1.4s ease-in-out 1 forwards;
+}
+
+.banner-blur-show:before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: #42b983;
+}
+
+@keyframes blur-show {
+  0% {
+    filter: blur(20px);
+  }
+  100% {
+    filter: none;
+  }
 }
 
 .title-box {

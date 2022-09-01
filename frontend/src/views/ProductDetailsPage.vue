@@ -173,7 +173,10 @@ window.scrollTo(0, 0)
           <div>
             <el-image fit="contain"
                       style="border-radius: 12px; background: transparent; height: 400px; max-width: 400px"
-                      :src="productDetails?.imageList[currentImage]" alt="商品图片"/>
+                      :src="productDetails?.imageList[currentImage]
+                        ? productDetails?.imageList[currentImage]
+                        : productDetails?.thumb"
+                      alt="商品图片" lazy :preview-src-list="productDetails?.imageList" :initial-index="currentImage"/>
 
             <el-scrollbar style="height: 150px; margin-top: 4px; overflow: hidden" always>
               <div style="display: flex; width: 400px; padding: 12px 24px; align-items: center">
