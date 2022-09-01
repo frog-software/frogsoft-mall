@@ -43,6 +43,11 @@ const routes = [
     name: 'MyShopPage',
     component: () => import('../views/MyShopPage.vue')
   },
+  {
+    path: '/statistics',
+    name: 'StatisticsPage',
+    component: () => import('../views/StatisticsPage.vue')
+  },
 ]
 
 export const router = createRouter({

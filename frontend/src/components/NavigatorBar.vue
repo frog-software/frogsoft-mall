@@ -23,6 +23,11 @@ const routerLinkList = ref<RouterLinkItem[]>([
     callBack: () => {},
   },
   {
+    content: '数据统计',
+    pathName: 'StatisticsPage',
+    callBack: () => {},
+  },
+  {
     content: '关于我们',
     pathName: 'AboutPage',
     callBack: () => {},
