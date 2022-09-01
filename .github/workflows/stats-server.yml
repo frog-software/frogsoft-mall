@@ -1,0 +1,17 @@
+name: CI to Docker Hub
+on:
+  # only run manually
+  workflow_dispatch:
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+      - name: Build apiserver and MapReduce Jobs
+        run: cd backend/stats-server && make package
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: backend/stats-server/dist.tar.gz

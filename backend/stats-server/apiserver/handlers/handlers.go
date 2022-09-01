@@ -3,9 +3,20 @@ package handlers
 import (
 	"apiserver/readers"
 	"apiserver/runners"
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
+
+type Wrapper struct {
+	Data interface{} `json:"data"`
+}
+
+func wrap(in interface{}) Wrapper {
+	return Wrapper{
+		Data: in,
+	}
+}
 
 func GenderHandler(c *gin.Context) {
 	res, err := readers.GenderReader()
@@ -16,7 +27,7 @@ func GenderHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
 
 func GenderRunHandler(c *gin.Context) {
@@ -28,7 +39,7 @@ func GenderRunHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, wrap(nil))
 }
 
 func AgeHandler(c *gin.Context) {
@@ -40,7 +51,7 @@ func AgeHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
 
 func AgeRunHandler(c *gin.Context) {
@@ -52,7 +63,7 @@ func AgeRunHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, wrap(nil))
 }
 
 func ProvinceHandler(c *gin.Context) {
@@ -64,7 +75,7 @@ func ProvinceHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
 
 func ProvinceRunHandler(c *gin.Context) {
@@ -76,7 +87,7 @@ func ProvinceRunHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, wrap(nil))
 }
 
 func ActionHandler(c *gin.Context) {
@@ -88,7 +99,7 @@ func ActionHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
 
 func ActionRunHandler(c *gin.Context) {
@@ -100,7 +111,7 @@ func ActionRunHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, wrap(nil))
 }
 
 func CategoryHandler(c *gin.Context) {
@@ -112,7 +123,7 @@ func CategoryHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
 
 func CategoryRunHandler(c *gin.Context) {
@@ -124,7 +135,7 @@ func CategoryRunHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, wrap(nil))
 }
 
 func PredictionHandler(c *gin.Context) {
@@ -151,5 +162,5 @@ func PredictionHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, res)
+	c.JSON(200, wrap(res))
 }
