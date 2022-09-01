@@ -200,3 +200,28 @@ spec:
             host: stats-server-service
             port:
               number: 8080
+    - match:
+        - uri:
+            prefix: /robot/
+        - uri:
+            exact: /robot
+      rewrite:
+        uri: /
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
+      route:
+        - destination:
+            host: chatbot-service
+            port:
+              number: 8000

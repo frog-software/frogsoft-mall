@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-deployment
+  namespace: frogsoft-mall
+  labels:
+    app: chatbot
+spec:
+  selector:
+    matchLabels:
+      app: chatbot
+  template:
+    metadata:
+      labels:
+        app: chatbot
+    spec:
+      containers:
+        - name: chatbot
+          imagePullPolicy: IfNotPresent
+          image: frogsoftware/mall-chatbot:latest
+          ports:
+            - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot-service
+  namespace: frogsoft-mall
+  labels:
+    app: chatbot
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: chatbot
+  type: NodePort
