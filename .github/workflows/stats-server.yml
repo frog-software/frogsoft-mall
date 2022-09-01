@@ -9,6 +9,17 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v3
 
+      - name: Cache Go and Maven
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+            ~/.m2
+          key: ${{ runner.os }}-golang-mvn-${{ hashFiles('**/go.sum') }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-golang-mvn
+
       - name: Build apiserver and MapReduce Jobs
         run: cd backend/stats-server && make package
 
