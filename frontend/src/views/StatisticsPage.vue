@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import {
   getActionAnalysis,
   getAgeAnalysis,
@@ -7,9 +7,9 @@ import {
   getGenderAnalysis, getPredictionAnalysis,
   getProvinceAnalysis,
   changePrefix,
-  runActionAnalysis
-}                          from "../services/statistics";
-import * as echarts        from 'echarts';
+  runActionAnalysis, runAgeAnalysis, runCategoryAnalysis, runGenderAnalysis, runProvinceAnalysis
+}                                          from "../services/statistics";
+import * as echarts                        from 'echarts';
 import themeJSON           from '../consts/frogsoft-mall-theme.project.json'
 import { convertData }     from "../consts/geoCoordMap";
 import 'echarts/extension-src/bmap/bmap'
@@ -178,7 +178,7 @@ const initProvinceChart = () => {
       },
       tooltip: {},
       bmap: {
-        center: [120.31, -6],
+        center: [120.31, -17],
         // roam: true,
         mapStyle: {
           styleJson: [
@@ -307,6 +307,50 @@ onMounted(() => {
   initGenderChart()
   initProvinceChart()
 });
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById('actionChart') as HTMLElement)
+  echarts.dispose(document.getElementById('ageChart') as HTMLElement)
+  echarts.dispose(document.getElementById('categoryChart') as HTMLElement)
+  echarts.dispose(document.getElementById('genderChart') as HTMLElement)
+  echarts.dispose(document.getElementById('provinceChart') as HTMLElement)
+})
+
+const restartActionAnalysis = async (id: string) => {
+  let elem = document.getElementById(id)
+  if (elem) {
+    elem.style.background = '#73717C'
+    elem.style.color = '#cccccc'
+  }
+
+  switch (id) {
+    case 'restart-action':
+      await runActionAnalysis()
+      initActionChart()
+      break
+    case 'restart-age':
+      await runAgeAnalysis()
+      initAgeChart()
+      break
+    case 'restart-category':
+      await runCategoryAnalysis()
+      initCategoryChart()
+      break
+    case 'restart-gender':
+      await runGenderAnalysis()
+      initGenderChart()
+      break
+    case 'restart-province':
+      await runProvinceAnalysis()
+      // initProvinceChart()
+      break
+  }
+
+  if (elem) {
+    elem.style.background = '#DCD6F7'
+    elem.style.color = '#444444'
+  }
+}
 </script>
 
 <template>
@@ -315,22 +359,30 @@ onMounted(() => {
       <el-row justify="center">
         <el-col :span="10">
           <div id="actionChart" style="width: 600px; height: 400px"/>
-          <el-button style="background: linear-gradient(to right, #DCD6F733, #7474B944); width: 180px; height: 48px;
-              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #888888"
-              @click="runActionAnalysis()">重新预测</el-button> 
-              <!-- gai zhe li de dai ma -->
+          <el-button style="background: #DCD6F7; width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444; transition: all 0.3s"
+              @click="restartActionAnalysis('restart-action')" id="restart-action">重新预测</el-button>
         </el-col>
         <el-col :span="10" :offset="2">
           <div id="ageChart" style="width: 660px; height: 400px"/>
+          <el-button style="background: #DCD6F7; width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444; transition: all 0.3s"
+                     @click="restartActionAnalysis('restart-age')" id="restart-age">重新预测</el-button>
         </el-col>
       </el-row>
 
       <el-row justify="center" style="margin-top: 64px">
         <el-col :span="10">
           <div id="categoryChart" style="width: 600px; height: 400px"/>
+          <el-button style="background: #DCD6F7; width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444; transition: all 0.3s; margin-top: 32px"
+                     @click="restartActionAnalysis('restart-category')" id="restart-category">重新预测</el-button>
         </el-col>
         <el-col :span="10" :offset="2">
           <div id="genderChart" style="width: 600px; height: 400px"/>
+          <el-button style="background: #DCD6F7; width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444; transition: all 0.3s; margin-top: 32px"
+                     @click="restartActionAnalysis('restart-gender')" id="restart-gender">重新预测</el-button>
         </el-col>
       </el-row>
 
@@ -348,7 +400,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="6">
             <div style="height: 100%; display: flex; align-items: center">
-              <el-button style="background: linear-gradient(to right, #DCD6F7, #7474B9); width: 180px; height: 48px;
+              <el-button style="background: linear-gradient(120deg, #DCD6F7, #7474B9); width: 180px; height: 48px;
               border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #eeeeee"
               @click="predict({ user_id: user_id, merchant_id: merchant_id})">预测</el-button>
             </div>
@@ -358,6 +410,9 @@ onMounted(() => {
 
       <div id="provinceChart" style="width: 100%; height: 800px; border-radius: 24px;
       overflow: hidden; margin-top: 96px; margin-bottom: 48px"/>
+      <el-button style="background: #DCD6F7; width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444; transition: all 0.3s"
+                 @click="restartActionAnalysis('restart-province')" id="restart-province">重新预测</el-button>
       <el-button style="background: #FFFFFF11; width: 20px; height: 30px;
               border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444"
               @click="changePrefix();initActionChart();initAgeChart();initCategoryChart();initGenderChart();initProvinceChart()"></el-button>

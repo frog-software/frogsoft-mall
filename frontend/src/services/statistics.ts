@@ -86,12 +86,6 @@ export const runGenderAnalysis = async () => {
   })
 }
 
-export const runPredictionAnalysis = async () => {
-  return await fetch(VITE_BACKEND_URL + PREFIX + "/prediction/run", {
-    method: "POST"
-  })
-}
-
 export const runProvinceAnalysis = async () => {
   return await fetch(VITE_BACKEND_URL + PREFIX + "/province/run", {
     method: "POST"
