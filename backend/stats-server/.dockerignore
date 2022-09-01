@@ -1,2 +1,5 @@
 *
 !dist
+dist/run.sh
+dist/user_log_100k.csv
+dist/*.jar
