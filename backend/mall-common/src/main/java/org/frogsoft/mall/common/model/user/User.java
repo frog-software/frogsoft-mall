@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +30,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Accessors(chain = true)
 @Entity
 @Table(name = "users")
+@Cacheable
+@Cache(region = "user", usage = CacheConcurrencyStrategy.READ_WRITE )
 @ToString
 public class User implements UserDetails {
 
@@ -48,7 +53,7 @@ public class User implements UserDetails {
 
   private String avatar;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   private List<String> roles = new ArrayList<>();
 
   @Override

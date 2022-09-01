@@ -61,6 +61,12 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-loadbalancer</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jcache</artifactId>
+      <version>6.1.2.Final</version>
+      <scope>compile</scope>
+    </dependency>
 
 
   </dependencies>
