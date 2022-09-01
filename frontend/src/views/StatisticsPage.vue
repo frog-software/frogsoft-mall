@@ -5,7 +5,9 @@ import {
   getAgeAnalysis,
   getCategoryAnalysis,
   getGenderAnalysis, getPredictionAnalysis,
-  getProvinceAnalysis
+  getProvinceAnalysis,
+  changePrefix,
+  runActionAnalysis
 }                          from "../services/statistics";
 import * as echarts        from 'echarts';
 import themeJSON           from '../consts/frogsoft-mall-theme.project.json'
@@ -313,6 +315,10 @@ onMounted(() => {
       <el-row justify="center">
         <el-col :span="10">
           <div id="actionChart" style="width: 600px; height: 400px"/>
+          <el-button style="background: linear-gradient(to right, #DCD6F733, #7474B944); width: 180px; height: 48px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #888888"
+              @click="runActionAnalysis()">重新预测</el-button> 
+              <!-- gai zhe li de dai ma -->
         </el-col>
         <el-col :span="10" :offset="2">
           <div id="ageChart" style="width: 660px; height: 400px"/>
@@ -333,7 +339,7 @@ onMounted(() => {
           <el-col :span="12">
             <div>
               <span style="font-family: 微軟正黑體; font-weight: bold; font-size: 18px; margin-right: 32px">用户ID</span>
-              <el-input v-model="user_id" placeholder="请输入用户ID" style="width: 480px"/>
+              <el-input v-model="user_id" placeholder="请输入用户ID" style=" width: 480px"/>
             </div>
             <div style="margin-top: 12px">
               <span style="font-family: 微軟正黑體; font-weight: bold; font-size: 18px; margin-right: 32px">商家ID</span>
@@ -352,6 +358,9 @@ onMounted(() => {
 
       <div id="provinceChart" style="width: 100%; height: 800px; border-radius: 24px;
       overflow: hidden; margin-top: 96px; margin-bottom: 48px"/>
+      <el-button style="background: #FFFFFF11; width: 20px; height: 30px;
+              border: none; font-size: 18px; font-family: 微軟正黑體; font-weight: bold; color: #444444"
+              @click="changePrefix();initActionChart();initAgeChart();initCategoryChart();initGenderChart();initProvinceChart()"></el-button>
     </div>
   </div>
 </template>
