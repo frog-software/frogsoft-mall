@@ -241,3 +241,23 @@ $ echo "$GATEWAY_URL"
 | `OPENGAUSS_URL` | openGauss 所在 IP | `localhost` |
 | `OPENGAUSS_PORT` | openGauss 所在端口 | `5432` |
 | `OPENGAUSS_DB` | openGauss 数据库名称 | `postgres` |
+
+
+## 数据库备份步骤
+1、 使用docker命令访问数据库容器shell控制台：
+```shell
+docker exec -it backend_opengauss_1 /bin/sh
+```
+2、使用omm账户登录
+```shell
+su omm
+```
+3、使用gs_dump命令导出数据库（请先创建对应路径的.sql文件）
+```shell
+gs_dump -f /home/omm/backup/openguass_backup.sql -p 5432 postgres -F p
+```
+4、退出shell，然后使用docker cp命令可将备份文件拷贝到本地操作系统
+```shell
+docker cp -a backend_opengauss_1:/home/omm/backup/openguass_backup.sql /usr/local/
+```
+> 改进方案：在docker镜像上增加挂载点，使用bash脚本对数据库进行定时备份，然后挂载备份文件到安全的本地存储。

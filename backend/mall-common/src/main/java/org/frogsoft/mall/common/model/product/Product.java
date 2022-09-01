@@ -17,6 +17,9 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.frogsoft.mall.common.model.shop.Shop;
 import org.frogsoft.mall.common.util.JpaConverterListJson;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 @Getter
 @Setter
@@ -24,6 +27,8 @@ import org.frogsoft.mall.common.util.JpaConverterListJson;
 @Accessors(chain = true)
 @Entity
 @Table(name = "products")
+@Cacheable
+@Cache(region = "product", usage = CacheConcurrencyStrategy.READ_WRITE )
 @ToString
 public class Product {
 

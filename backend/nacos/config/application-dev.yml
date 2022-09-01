@@ -21,8 +21,25 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   jpa:
-    hibernate:
-      ddl-auto: update
+    show-sql: true # 打开Hibernate sql语句输出
+    # 以下属性可以定义在文件hibernate.properties中，然后引用在配置文件中
+    properties:
+      hibernate:
+        ddl-auto: update
+        # 要打开缓存操作详情输出，则设置为true
+        generate_statistics: false
+        javax:
+          cache:
+            missing_cache_strategy: create
+        cache:
+          format_sql: true
+          use_second_level_cache: true # 开启二级缓存
+          use_query_cache: true # 开启查询缓存
+          region:
+            # 使用jCache作为缓存工厂类
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+          use_structured_entries: true
+          provider_configuration_file_resource_path: ehcache.xml
 jwt:
   secret: abcdefghijklmnopqrstuvwxyz
   expiration-delay: 86400
