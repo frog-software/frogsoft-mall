@@ -13,6 +13,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.frogsoft.mall.common.model.user.User;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 @Getter
 @Setter
@@ -20,6 +23,8 @@ import org.frogsoft.mall.common.model.user.User;
 @Accessors(chain = true)
 @Entity
 @Table(name = "shops")
+@Cacheable
+@Cache(region = "shop", usage = CacheConcurrencyStrategy.READ_WRITE )
 @ToString
 public class Shop {
     @Id

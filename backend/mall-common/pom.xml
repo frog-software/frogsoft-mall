@@ -84,6 +84,10 @@
       <version>6.1.2.Final</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>javax.persistence-api</artifactId>
+    </dependency>
 
   </dependencies>
 
