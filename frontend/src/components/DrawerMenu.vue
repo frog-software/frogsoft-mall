@@ -19,6 +19,13 @@ const openDrawer = () => {
   overlay.style.opacity    = drawer.style.opacity = '1'
   drawer.style.transform   = 'translateX(-200px)'
   overlay.style.visibility = drawer.style.visibility = 'visible'
+
+  if (!messageDisplayList.value.length) {
+    messageDisplayList.value.push({
+      role: 0,
+      content: '您好，有什么可以帮助您',
+    })
+  }
 }
 
 const closeDrawer = () => {
@@ -79,7 +86,7 @@ const menuItemSwitch = () => {
 }
 
 const text = ref<string>('')
-const messageList = ref<string[]>([])
+const messageList = ref<string[]>(["您好，有什么可以帮助您"])
 const messageDisplayList = ref<{ role: number, content: string }[]>([])
 
 const sendMessage = () => {
@@ -106,11 +113,11 @@ const sendMessage = () => {
       role: 0,
       content: res.chatForNow,
     })
-  })
 
-  nextTick(() => {
-    let elem = document.getElementById('messageBox')
-    elem.scrollTop = elem.scrollHeight
+    nextTick(() => {
+      let elem = document.getElementById('messageBox')
+      if (elem) elem.scrollTop = elem.scrollHeight
+    })
   })
 }
 </script>
