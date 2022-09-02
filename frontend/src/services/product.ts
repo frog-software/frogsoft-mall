@@ -23,5 +23,6 @@ export const deleteProduct = (productID: number) => {
 
 // PD01-05 查找商品信息（分页返回）
 export const getProductDetailsPaging = async (param: any) => {
-    return await request.get<ProductDetails[]>(`/commodities/all`, param)
+    // TODO 目前这是强行分页，后端已实现，但前端还未实现
+    return await request.get<ProductDetails[]>(`/commodities/all`, { ...param, page: 0, size: 20 })
 }
