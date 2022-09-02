@@ -14,4 +14,5 @@ import { RobotResponse } from "../types/robot";
 
 // RO01-01 回复消息
 export const getRobotResponse = async (chatRecord: string[]) => {
+  return await request.post<RobotResponse>(`/robot`, { chatRecord: chatRecord })
 }
