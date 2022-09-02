@@ -26,14 +26,14 @@ const popularShopList = ref<PopularShop[]>([
     title: '大显身手',
     description: '精彩由此开始。',
     productList: [],
-    id: 1,
+    id: 4,
   },
   {
     image: CDN_URL + '/shop-special-example-2.webp',
     title: '帮手在此',
     description: '时时待命应你所需。',
     productList: [],
-    id: 2,
+    id: 5,
   },
 ])
 
