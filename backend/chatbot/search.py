@@ -3,11 +3,11 @@ import jieba
 import pickle
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
 class Query(BaseModel):
-    chatRecord:list
-
+    chatRecord: list
 
 # path
 # 数据保存路径
@@ -21,12 +21,20 @@ qa = json.load(open(qa_path))
 tv = pickle.load(open(tv_path, 'rb'))
 cp = pickle.load(open(cp_path, 'rb'))
 
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=['*'],
+        allow_headers=['*']
+    )
+]
 
-app = FastAPI()
-
+app = FastAPI(middleware=middleware)
 
 @app.post("/")
-def read_root(query:Query):
+def read_root(query: Query):
     # get the question
     # 获取用户的提问
     question = query.chatRecord[len(query.chatRecord)-1]
@@ -43,15 +51,14 @@ def read_root(query:Query):
 
     # search from cp, k is the number of matched qa that you need
     # 搜索数据，会获取到前 k 个匹配的 QA
-    result_array = cp.search(search_tfidf, k=2, k_clusters=2, return_distance=False)
-    ans="暂时不能理解您的问题呢~"
+    result_array = cp.search(
+        search_tfidf, k=2, k_clusters=2, return_distance=False)
+    ans = "暂时不能理解您的问题呢~"
     for index in range(len(result_array)):
         if index >= 10:
             break
         result = result_array[index]
         if len(result):
-            ans=qa[int(result[0])]['a']
+            ans = qa[int(result[0])]['a']
 
-    return { "data": {"chatForNow":ans} }
-
-
+    return {"data": {"chatForNow": ans}}
