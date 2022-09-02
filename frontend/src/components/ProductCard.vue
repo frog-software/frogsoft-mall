@@ -26,7 +26,7 @@ const props = defineProps<{
       <div style="padding-top: 16px">
         <p style="font-weight: bold; font-size: 20px; margin: 0">{{ props.product.productName || '商品名未定义' }}</p>
         <p style="font-size: 12px; color: #666666">{{
-            contentFormat(props.product.description, 60)
+            contentFormat(props.product.description, 30)
           }}</p>
       </div>
 
